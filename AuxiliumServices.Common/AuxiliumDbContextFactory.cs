@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using NetEscapades.Configuration.Yaml;
 
-namespace AuxiliumAPI
+namespace AuxiliumServices.Common
 {
     public class AuxiliumDbContextFactory : IDesignTimeDbContextFactory<AuxiliumDbContext>
     {
