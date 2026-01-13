@@ -1,0 +1,6 @@
+
+.vs/
+*.user
+
+/AuxiliumServices.Common/bin
+/AuxiliumServices.Common/obj

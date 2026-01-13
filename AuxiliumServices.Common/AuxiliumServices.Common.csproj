@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <RootNamespace>AuxiliumServices.Common</RootNamespace>
+    <AssemblyName>AuxiliumServices.Common</AssemblyName>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    
+    <Version>1.0.0.0</Version>
+    <Company>Auxilium Software</Company>
+    <Product>AuxiliumServices.Common</Product>
+    <Copyright>Copyright © 2026</Copyright>
+    <Description>A collection of common classes for use throughout AuxiliumServices.*</Description>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Title>Auxilium Services - Common</Title>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BCrypt.Net-Next" />
+    <PackageReference Include="Dapper" />
+    <PackageReference Include="Konscious.Security.Cryptography.Argon2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" />
+    <PackageReference Include="NetEscapades.Configuration.Yaml" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" />
+  </ItemGroup>
+
+</Project>
