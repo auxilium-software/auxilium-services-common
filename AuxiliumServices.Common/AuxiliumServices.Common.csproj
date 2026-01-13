@@ -7,14 +7,34 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     
-    <Version>1.0.0.0</Version>
+    <Version>3.0.0.1</Version>
     <Company>Auxilium Software</Company>
     <Product>AuxiliumServices.Common</Product>
     <Copyright>Copyright © 2026</Copyright>
     <Description>A collection of common classes for use throughout AuxiliumServices.*</Description>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Title>Auxilium Services - Common</Title>
+    <Authors>Auxilium Software</Authors>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/auxilium-software/auxilium-services-common</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <NeutralLanguage>en-GB</NeutralLanguage>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+    <AssemblyVersion></AssemblyVersion>
+    <FileVersion></FileVersion>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="BCrypt.Net-Next" />
