@@ -1,4 +1,4 @@
-﻿using AuxAuxiliumServicesiliumAPI.Common.Services;
+﻿using AuxiliumServices.Common.Services;
 using AuxiliumServices.Common.Services.Interfaces;
 using AuxiliumServices.Common.Utilities;
 using Dapper;
