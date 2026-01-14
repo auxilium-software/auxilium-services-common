@@ -7,8 +7,8 @@ namespace AuxiliumServices.Common.Configuration.Sections
 {
     public class DatabasesConfigurationSection
     {
-        public MariaDBConfigurationSection MariaDB { get; set; }
-        public RabbitMQConfigurationSection RabbitMQ { get; set; }
-        public ClickHouseConfigurationSection ClickHouse { get; set; }
+        public required MariaDBConfigurationSection MariaDB { get; set; }
+        public required RabbitMQConfigurationSection RabbitMQ { get; set; }
+        public required ClickHouseConfigurationSection ClickHouse { get; set; }
     }
 }
