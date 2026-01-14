@@ -1,9 +1,9 @@
-﻿using AuxiliumServices.Common.Configuration.Sections.Instance.Contacts.FirstPointOfContact;
+﻿using AuxiliumSoftware.AuxiliumServices.Common.Configuration.Sections.Instance.Contacts.FirstPointOfContact;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace AuxiliumServices.Common.Configuration.Sections.Instance.Contacts
+namespace AuxiliumSoftware.AuxiliumServices.Common.Configuration.Sections.Instance.Contacts
 {
     public class InstanceContactsFirstPointOfContactConfigurationSection
     {

@@ -1,9 +1,9 @@
-﻿using AuxiliumServices.Common.Configuration.Sections.FileSystem;
+﻿using AuxiliumSoftware.AuxiliumServices.Common.Configuration.Sections.FileSystem;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace AuxiliumServices.Common.Configuration.Sections
+namespace AuxiliumSoftware.AuxiliumServices.Common.Configuration.Sections
 {
     public class FileSystemConfigurationSection
     {

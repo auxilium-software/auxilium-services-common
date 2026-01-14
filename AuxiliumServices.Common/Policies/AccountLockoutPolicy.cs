@@ -1,6 +1,6 @@
-﻿using AuxiliumServices.Common.Configuration;
+﻿using AuxiliumSoftware.AuxiliumServices.Common.Configuration;
 
-namespace AuxiliumServices.Common.Policies
+namespace AuxiliumSoftware.AuxiliumServices.Common.Policies
 {
     public static class AccountLockoutPolicy
     {

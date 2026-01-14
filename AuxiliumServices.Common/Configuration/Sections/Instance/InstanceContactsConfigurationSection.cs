@@ -1,9 +1,9 @@
-﻿using AuxiliumServices.Common.Configuration.Sections.Instance.Contacts;
+﻿using AuxiliumSoftware.AuxiliumServices.Common.Configuration.Sections.Instance.Contacts;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace AuxiliumServices.Common.Configuration.Sections.Instance
+namespace AuxiliumSoftware.AuxiliumServices.Common.Configuration.Sections.Instance
 {
     public class InstanceContactsConfigurationSection
     {

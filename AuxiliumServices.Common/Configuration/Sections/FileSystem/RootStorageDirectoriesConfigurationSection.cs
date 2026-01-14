@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace AuxiliumServices.Common.Configuration.Sections.FileSystem
+namespace AuxiliumSoftware.AuxiliumServices.Common.Configuration.Sections.FileSystem
 {
     public class RootStorageDirectoriesConfigurationSection
     {

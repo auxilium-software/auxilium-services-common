@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace AuxiliumServices.Common.DataStructures
+namespace AuxiliumSoftware.AuxiliumServices.Common.DataStructures
 {
     public class AdditionalPropertySubStructure
     {

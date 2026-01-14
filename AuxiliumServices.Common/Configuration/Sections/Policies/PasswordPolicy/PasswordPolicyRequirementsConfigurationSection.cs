@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace AuxiliumServices.Common.Configuration.Sections.Policies.PasswordPolicy
+namespace AuxiliumSoftware.AuxiliumServices.Common.Configuration.Sections.Policies.PasswordPolicy
 {
     public class PasswordPolicyRequirementsConfigurationSection
     {

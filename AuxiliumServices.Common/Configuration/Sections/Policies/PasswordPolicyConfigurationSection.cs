@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using AuxiliumServices.Common.Configuration.Sections.Policies.PasswordPolicy;
+using AuxiliumSoftware.AuxiliumServices.Common.Configuration.Sections.Policies.PasswordPolicy;
 
-namespace AuxiliumServices.Common.Configuration.Sections.Policies
+namespace AuxiliumSoftware.AuxiliumServices.Common.Configuration.Sections.Policies
 {
     public class PasswordPolicyConfigurationSection
     {

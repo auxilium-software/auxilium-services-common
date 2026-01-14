@@ -1,4 +1,4 @@
-﻿namespace AuxiliumServices.Common.EntityModels
+﻿namespace AuxiliumSoftware.AuxiliumServices.Common.EntityModels
 {
     public class CaseTimelineItemModel
     {

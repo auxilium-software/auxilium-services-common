@@ -1,4 +1,4 @@
-﻿namespace AuxiliumServices.Common.Enumerators
+﻿namespace AuxiliumSoftware.AuxiliumServices.Common.Enumerators
 {
     public enum DatabaseObjectType
     {

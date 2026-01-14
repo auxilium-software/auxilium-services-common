@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace AuxiliumServices.Common.Configuration.Sections.Databases.ClickHouse
+namespace AuxiliumSoftware.AuxiliumServices.Common.Configuration.Sections.Databases.ClickHouse
 {
     public class ClickHousePortsConfigurationSection
     {

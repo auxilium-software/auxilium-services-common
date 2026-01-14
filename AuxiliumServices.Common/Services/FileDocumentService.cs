@@ -1,14 +1,14 @@
-﻿using AuxiliumServices.Common.Configuration;
-using AuxiliumServices.Common.EF;
-using AuxiliumServices.Common.EntityModels;
-using AuxiliumServices.Common.Enumerators;
-using AuxiliumServices.Common.Services.Interfaces;
-using AuxiliumServices.Common.Utilities;
+﻿using AuxiliumSoftware.AuxiliumServices.Common.Configuration;
+using AuxiliumSoftware.AuxiliumServices.Common.EF;
+using AuxiliumSoftware.AuxiliumServices.Common.EntityModels;
+using AuxiliumSoftware.AuxiliumServices.Common.Enumerators;
+using AuxiliumSoftware.AuxiliumServices.Common.Services.Interfaces;
+using AuxiliumSoftware.AuxiliumServices.Common.Utilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace AuxiliumServices.Common.Services;
+namespace AuxiliumSoftware.AuxiliumServices.Common.Services;
 
 public class FileDocumentService : IFileDocumentService
 {

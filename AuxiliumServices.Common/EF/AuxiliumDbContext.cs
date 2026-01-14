@@ -1,11 +1,11 @@
 ﻿using AuxiliumServices.Common.DataStructures;
-using AuxiliumServices.Common.EntityModels;
-using AuxiliumServices.Common.Enumerators;
+using AuxiliumSoftware.AuxiliumServices.Common.EntityModels;
+using AuxiliumSoftware.AuxiliumServices.Common.Enumerators;
 using Microsoft.EntityFrameworkCore;
 using System.IO;
 using System.Reflection.Emit;
 
-namespace AuxiliumServices.Common.EF;
+namespace AuxiliumSoftware.AuxiliumServices.Common.EF;
 
 public class AuxiliumDbContext : DbContext
 {

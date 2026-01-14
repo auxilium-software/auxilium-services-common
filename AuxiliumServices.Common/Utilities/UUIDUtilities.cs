@@ -1,8 +1,8 @@
-﻿using AuxiliumServices.Common.Enumerators;
+﻿using AuxiliumSoftware.AuxiliumServices.Common.Enumerators;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace AuxiliumServices.Common.Utilities
+namespace AuxiliumSoftware.AuxiliumServices.Common.Utilities
 {
     /// <summary>
     /// Utilities related to generating and parsing UUIDs.
@@ -68,8 +68,8 @@ namespace AuxiliumServices.Common.Utilities
             var newGuid = new byte[16];
             Array.Copy(hash, 0, newGuid, 0, 16);
 
-            newGuid[6] = (byte)((newGuid[6] & 0x0F) | 0x50);
-            newGuid[8] = (byte)((newGuid[8] & 0x3F) | 0x80);
+            newGuid[6] = (byte)(newGuid[6] & 0x0F | 0x50);
+            newGuid[8] = (byte)(newGuid[8] & 0x3F | 0x80);
 
             SwapByteOrder(newGuid);
 
@@ -86,8 +86,8 @@ namespace AuxiliumServices.Common.Utilities
             var uuid = new byte[16];
             Array.Copy(hash, 0, uuid, 0, 16);
 
-            uuid[6] = (byte)((uuid[6] & 0x0F) | 0x50);
-            uuid[8] = (byte)((uuid[8] & 0x3F) | 0x80);
+            uuid[6] = (byte)(uuid[6] & 0x0F | 0x50);
+            uuid[8] = (byte)(uuid[8] & 0x3F | 0x80);
 
             return new Guid(uuid);
         }

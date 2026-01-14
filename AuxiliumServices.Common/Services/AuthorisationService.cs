@@ -1,7 +1,7 @@
-﻿using AuxiliumServices.Common.EntityModels;
-using AuxiliumServices.Common.Services.Interfaces;
+﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityModels;
+using AuxiliumSoftware.AuxiliumServices.Common.Services.Interfaces;
 
-namespace AuxiliumServices.Common.Services
+namespace AuxiliumSoftware.AuxiliumServices.Common.Services
 {
     public class AuthorisationService : IAuthorisationService
     {

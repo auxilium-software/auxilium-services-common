@@ -1,11 +1,11 @@
-﻿using AuxiliumServices.Common.Configuration;
-using AuxiliumServices.Common.DataStructures;
-using AuxiliumServices.Common.Services.Interfaces;
+﻿using AuxiliumSoftware.AuxiliumServices.Common.Configuration;
+using AuxiliumSoftware.AuxiliumServices.Common.DataStructures;
+using AuxiliumSoftware.AuxiliumServices.Common.Services.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Net.Http.Json;
 
-namespace AuxiliumServices.Common.Services
+namespace AuxiliumSoftware.AuxiliumServices.Common.Services
 {
     public class CaptchaService : ICaptchaService
     {
@@ -20,9 +20,9 @@ namespace AuxiliumServices.Common.Services
             )
         {
             _configuration = configuration.Get<ConfigurationStructure>()!;
-            this._logger = logger;
+            _logger = logger;
 
-            this._httpClient = httpClient;
+            _httpClient = httpClient;
         }
 
         public async Task<bool> VerifyRecaptchaAsync(string token, string? clientIp)

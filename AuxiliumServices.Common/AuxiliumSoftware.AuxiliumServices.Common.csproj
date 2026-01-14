@@ -2,14 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
-    <RootNamespace>AuxiliumServices.Common</RootNamespace>
-    <AssemblyName>AuxiliumServices.Common</AssemblyName>
+    <RootNamespace>AuxiliumSoftware.AuxiliumServices.Common</RootNamespace>
+    <AssemblyName>AuxiliumSoftware.AuxiliumServices.Common</AssemblyName>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     
-    <Version>3.0.1.4</Version>
+    <Version>3.0.2.0</Version>
     <Company>Auxilium Software</Company>
-    <Product>AuxiliumServices.Common</Product>
+    <Product>AuxiliumSoftware.AuxiliumServices.Common</Product>
     <Copyright>Copyright © 2026</Copyright>
     <Description>A collection of common classes for use throughout AuxiliumServices.*</Description>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
