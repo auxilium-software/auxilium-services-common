@@ -7,7 +7,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     
-    <Version>3.0.2.4</Version>
+    <Version>3.0.2.5</Version>
     <Company>Auxilium Software</Company>
     <Product>AuxiliumSoftware.AuxiliumServices.Common</Product>
     <Copyright>Copyright © 2026</Copyright>
@@ -41,6 +41,8 @@
     <PackageReference Include="Dapper" />
     <PackageReference Include="Konscious.Security.Cryptography.Argon2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" />
     <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" />
