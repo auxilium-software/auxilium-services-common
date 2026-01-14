@@ -1,10 +1,10 @@
-﻿using AuxiliumServices.Common.Configuration.Sections;
-using AuxiliumServices.Common.Configuration.Sections.Databases;
+﻿using AuxiliumServices.Common.Configuration.Sections.Databases;
+using AuxiliumSoftware.AuxiliumServices.Common.Configuration.Sections;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace AuxiliumServices.Common.Configuration
+namespace AuxiliumSoftware.AuxiliumServices.Common.Configuration
 {
     public class ConfigurationStructure
     {

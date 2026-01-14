@@ -1,7 +1,7 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 
-namespace AuxiliumServices.Common.Utilities
+namespace AuxiliumSoftware.AuxiliumServices.Common.Utilities
 {
     /// <summary>
     /// Utilities related to hashing operations.

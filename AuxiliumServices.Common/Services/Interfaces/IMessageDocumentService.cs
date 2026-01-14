@@ -1,7 +1,6 @@
-﻿
-using AuxiliumServices.Common.EntityModels;
+﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityModels;
 
-namespace AuxiliumServices.Common.Services.Interfaces
+namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Interfaces
 {
     public interface IMessageDocumentService
     {

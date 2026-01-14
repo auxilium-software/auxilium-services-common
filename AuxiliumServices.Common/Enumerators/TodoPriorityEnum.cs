@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace AuxiliumServices.Common.Enumerators
+namespace AuxiliumSoftware.AuxiliumServices.Common.Enumerators
 {
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum TodoPriorityEnum

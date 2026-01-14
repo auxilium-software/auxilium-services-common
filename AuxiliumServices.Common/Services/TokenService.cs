@@ -1,13 +1,13 @@
-﻿using AuxiliumServices.Common.Configuration;
-using AuxiliumServices.Common.Services.Interfaces;
-using AuxiliumServices.Common.Utilities;
+﻿using AuxiliumSoftware.AuxiliumServices.Common.Configuration;
+using AuxiliumSoftware.AuxiliumServices.Common.Services.Interfaces;
+using AuxiliumSoftware.AuxiliumServices.Common.Utilities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace AuxiliumServices.Common.Services
+namespace AuxiliumSoftware.AuxiliumServices.Common.Services
 {
     public class TokenService : ITokenService
     {
@@ -21,7 +21,7 @@ namespace AuxiliumServices.Common.Services
 
         public string CreateAccessToken(Dictionary<string, object> userData)
         {
-            SymmetricSecurityKey securityKey = new(Encoding.UTF8.GetBytes(this._configuration.JWT.SecretKey));
+            SymmetricSecurityKey securityKey = new(Encoding.UTF8.GetBytes(_configuration.JWT.SecretKey));
             SigningCredentials credentials = new(securityKey, SecurityAlgorithms.HmacSha256);
 
             List<Claim> claims =
@@ -31,10 +31,10 @@ namespace AuxiliumServices.Common.Services
             ];
 
             JwtSecurityToken token = new(
-                issuer: this._configuration.JWT.ValidIssuer,
-                audience: this._configuration.JWT.ValidAudience,
+                issuer: _configuration.JWT.ValidIssuer,
+                audience: _configuration.JWT.ValidAudience,
                 claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(this._configuration.JWT.AccessTokenExpirationInMinutes),
+                expires: DateTime.UtcNow.AddMinutes(_configuration.JWT.AccessTokenExpirationInMinutes),
                 signingCredentials: credentials
             );
 
@@ -43,7 +43,7 @@ namespace AuxiliumServices.Common.Services
 
         public string CreateRefreshToken(Dictionary<string, object> userData)
         {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this._configuration.JWT.SecretKey));
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.JWT.SecretKey));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
             var claims = new List<Claim>
@@ -53,10 +53,10 @@ namespace AuxiliumServices.Common.Services
             };
 
             var token = new JwtSecurityToken(
-                issuer: this._configuration.JWT.ValidIssuer,
-                audience: this._configuration.JWT.ValidAudience,
+                issuer: _configuration.JWT.ValidIssuer,
+                audience: _configuration.JWT.ValidAudience,
                 claims: claims,
-                expires: DateTime.UtcNow.AddDays(this._configuration.JWT.RefreshTokenExpirationInDays),
+                expires: DateTime.UtcNow.AddDays(_configuration.JWT.RefreshTokenExpirationInDays),
                 signingCredentials: credentials
             );
 

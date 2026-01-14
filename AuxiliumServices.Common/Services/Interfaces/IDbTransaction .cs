@@ -1,4 +1,4 @@
-﻿namespace AuxiliumServices.Common.Services.Interfaces
+﻿namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Interfaces
 {
     public interface IDbTransaction : IAsyncDisposable
     {

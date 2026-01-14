@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Text;
 
-namespace AuxiliumServices.Common.Configuration.Sections.API.CORS
+namespace AuxiliumSoftware.AuxiliumServices.Common.Configuration.Sections.API.CORS
 {
     public class APICORSConfigurationSection
     {

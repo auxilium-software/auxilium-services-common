@@ -1,10 +1,10 @@
-﻿using AuxiliumServices.Common.EF;
+﻿using AuxiliumSoftware.AuxiliumServices.Common.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using NetEscapades.Configuration.Yaml;
 
-namespace AuxiliumServices.Common
+namespace AuxiliumSoftware.AuxiliumServices.Common
 {
     public class AuxiliumDbContextFactory : IDesignTimeDbContextFactory<AuxiliumDbContext>
     {

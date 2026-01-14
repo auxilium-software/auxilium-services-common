@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace AuxiliumServices.Common.Configuration.Sections.Instance.Contacts.FirstPointOfContact
+namespace AuxiliumSoftware.AuxiliumServices.Common.Configuration.Sections.Instance.Contacts.FirstPointOfContact
 {
     public class InstanceContactsFirstPointOfContactPhoneConfigurationSection
     {

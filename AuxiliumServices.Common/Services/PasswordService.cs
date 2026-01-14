@@ -1,9 +1,9 @@
-﻿using AuxiliumServices.Common.Services.Interfaces;
+﻿using AuxiliumSoftware.AuxiliumServices.Common.Services.Interfaces;
 using Konscious.Security.Cryptography;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace AuxiliumServices.Common.Services;
+namespace AuxiliumSoftware.AuxiliumServices.Common.Services;
 
 public class PasswordService : IPasswordService
 {

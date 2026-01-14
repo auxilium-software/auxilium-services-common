@@ -1,7 +1,6 @@
-﻿
-using AuxiliumServices.Common.Configuration.Sections.Databases.ClickHouse;
+﻿using AuxiliumSoftware.AuxiliumServices.Common.Configuration.Sections.Databases.ClickHouse;
 
-namespace AuxiliumServices.Common.Configuration.Sections.Databases
+namespace AuxiliumSoftware.AuxiliumServices.Common.Configuration.Sections.Databases
 {
     public class ClickHouseConfigurationSection
     {

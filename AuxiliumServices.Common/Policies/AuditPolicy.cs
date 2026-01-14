@@ -1,9 +1,9 @@
-﻿using AuxiliumServices.Common.Configuration;
+﻿using AuxiliumSoftware.AuxiliumServices.Common.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace AuxiliumServices.Common.Policies
+namespace AuxiliumSoftware.AuxiliumServices.Common.Policies
 {
     public static class AuditPolicy
     {
