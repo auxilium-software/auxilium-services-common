@@ -8,6 +8,6 @@ namespace AuxiliumServices.Common.Configuration.Sections.Policies
     {
         public required int MaximumFailedLoginAttempts { get; set; }
         public required int LockoutDurationInMinutes { get; set; }
-        public required int ResetDailedAttemptsAfterInMinutes { get; set; }
+        public required int ResetFailedAttemptsAfterInMinutes { get; set; }
     }
 }
