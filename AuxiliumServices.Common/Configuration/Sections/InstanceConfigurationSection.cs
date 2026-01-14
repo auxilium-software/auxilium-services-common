@@ -7,7 +7,7 @@ namespace AuxiliumServices.Common.Configuration.Sections
 {
     public class InstanceConfigurationSection
     {
-        public required string FQFN { get; set; }
+        public required string FQDN { get; set; }
         public required InstanceBrandingConfigurationSection Branding { get; set; }
         public required InstanceContactsConfigurationSection Contacts { get; set; }
         public required InstanceDefaultsConfigurationSection Defaults { get; set; }
