@@ -1,4 +1,5 @@
-﻿using AuxiliumServices.Common.Services.Interfaces;
+﻿using AuxiliumServices.Common.Configuration;
+using AuxiliumServices.Common.Services.Interfaces;
 using AuxiliumServices.Common.Utilities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -10,17 +11,17 @@ namespace AuxiliumServices.Common.Services
 {
     public class TokenService : ITokenService
     {
-        private readonly IConfiguration _configuration;
+        private readonly ConfigurationStructure _configuration;
         public TokenService(
             IConfiguration configuration
             )
         {
-            this._configuration = configuration;
+            _configuration = configuration.Get<ConfigurationStructure>()!;
         }
 
         public string CreateAccessToken(Dictionary<string, object> userData)
         {
-            SymmetricSecurityKey securityKey = new(Encoding.UTF8.GetBytes(this._configuration["JWT:SecretKey"]!));
+            SymmetricSecurityKey securityKey = new(Encoding.UTF8.GetBytes(this._configuration.JWT.SecretKey));
             SigningCredentials credentials = new(securityKey, SecurityAlgorithms.HmacSha256);
 
             List<Claim> claims =
@@ -30,10 +31,10 @@ namespace AuxiliumServices.Common.Services
             ];
 
             JwtSecurityToken token = new(
-                issuer: this._configuration["JWT:ValidIssuer"],
-                audience: this._configuration["JWT:ValidAudience"],
+                issuer: this._configuration.JWT.ValidIssuer,
+                audience: this._configuration.JWT.ValidAudience,
                 claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(this._configuration.GetValue<int>("JWT:AccessTokenExpireMinutes")),
+                expires: DateTime.UtcNow.AddMinutes(this._configuration.JWT.AccessTokenExpirationInMinutes),
                 signingCredentials: credentials
             );
 
@@ -42,7 +43,7 @@ namespace AuxiliumServices.Common.Services
 
         public string CreateRefreshToken(Dictionary<string, object> userData)
         {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this._configuration["JWT:SecretKey"]!));
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this._configuration.JWT.SecretKey));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
             var claims = new List<Claim>
@@ -52,10 +53,10 @@ namespace AuxiliumServices.Common.Services
             };
 
             var token = new JwtSecurityToken(
-                issuer: this._configuration["JWT:ValidIssuer"],
-                audience: this._configuration["JWT:ValidAudience"],
+                issuer: this._configuration.JWT.ValidIssuer,
+                audience: this._configuration.JWT.ValidAudience,
                 claims: claims,
-                expires: DateTime.UtcNow.AddDays(this._configuration.GetValue<int>("JWT:RefreshTokenExpireDays")),
+                expires: DateTime.UtcNow.AddDays(this._configuration.JWT.RefreshTokenExpirationInDays),
                 signingCredentials: credentials
             );
 
