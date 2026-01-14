@@ -31,6 +31,7 @@ public class AuxiliumDbContext : DbContext
     public DbSet<CaseTodoModel> CaseTodos { get; set; }
     public DbSet<CaseTimelineItemModel> CaseTimeline { get; set; }
     public DbSet<RefreshTokenModel> RefreshTokens { get; set; }
+    public DbSet<WEMWBSModel> WEMWBSAssessments { get; set; }
 
 
 
@@ -82,7 +83,7 @@ public class AuxiliumDbContext : DbContext
         // wemwbs
         modelBuilder.Entity<WEMWBSModel>(entity =>
         {
-            entity.ToTable("wemwbs");
+            entity.ToTable("wemwbs_assessments");
             entity.HasKey(e => e.Id);
 
 
