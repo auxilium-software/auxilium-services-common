@@ -1,4 +1,4 @@
-﻿using AuxiliumServices.Common.Configuration.Sections.Databases;
+﻿using AuxiliumSoftware.AuxiliumServices.Common.Configuration.Sections.Databases;
 using AuxiliumSoftware.AuxiliumServices.Common.Configuration.Sections;
 using System;
 using System.Collections.Generic;

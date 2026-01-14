@@ -1,4 +1,4 @@
-﻿using AuxiliumServices.Common.DataStructures;
+﻿using AuxiliumSoftware.AuxiliumServices.Common.DataStructures;
 using AuxiliumSoftware.AuxiliumServices.Common.EntityModels;
 using AuxiliumSoftware.AuxiliumServices.Common.Enumerators;
 using Microsoft.EntityFrameworkCore;
