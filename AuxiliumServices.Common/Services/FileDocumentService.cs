@@ -1,4 +1,5 @@
-﻿using AuxiliumServices.Common.EF;
+﻿using AuxiliumServices.Common.Configuration;
+using AuxiliumServices.Common.EF;
 using AuxiliumServices.Common.EntityModels;
 using AuxiliumServices.Common.Enumerators;
 using AuxiliumServices.Common.Services.Interfaces;
@@ -12,7 +13,6 @@ namespace AuxiliumServices.Common.Services;
 public class FileDocumentService : IFileDocumentService
 {
     private readonly AuxiliumDbContext _db;
-    private readonly IConfiguration _configuration;
     private readonly ILogger<FileDocumentService> _logger;
     private readonly string _lfsBasePath;
 
@@ -22,10 +22,9 @@ public class FileDocumentService : IFileDocumentService
         ILogger<FileDocumentService> logger)
     {
         _db = db;
-        _configuration = configuration;
         _logger = logger;
 
-        _lfsBasePath = _configuration["FileSystem:RootStorageDirectories:AuxLFS"]!;
+        _lfsBasePath = configuration.Get<ConfigurationStructure>()!.FileSystem.RootStorageDirectories.AuxLFS;
     }
 
     #region ========================= CASE FILE OPERATIONS =========================

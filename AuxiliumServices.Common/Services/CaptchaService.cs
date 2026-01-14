@@ -1,4 +1,5 @@
-﻿using AuxiliumServices.Common.DataStructures;
+﻿using AuxiliumServices.Common.Configuration;
+using AuxiliumServices.Common.DataStructures;
 using AuxiliumServices.Common.Services.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -8,7 +9,7 @@ namespace AuxiliumServices.Common.Services
 {
     public class CaptchaService : ICaptchaService
     {
-        private readonly IConfiguration _configuration;
+        private readonly ConfigurationStructure _configuration;
         private readonly ILogger<CaptchaService> _logger;
         private readonly HttpClient _httpClient;
 
@@ -18,8 +19,9 @@ namespace AuxiliumServices.Common.Services
             HttpClient httpClient
             )
         {
-            this._configuration = configuration;
+            _configuration = configuration.Get<ConfigurationStructure>()!;
             this._logger = logger;
+
             this._httpClient = httpClient;
         }
 
@@ -28,7 +30,7 @@ namespace AuxiliumServices.Common.Services
             try
             {
                 // WARNING WARNING WARNING WARNING WARNING
-                if (this._configuration["Development:DisableRecaptcha"] == "true")
+                if (_configuration.Development.DisableReCAPTCHA)
                 {
                     return true;
                 }
@@ -36,7 +38,7 @@ namespace AuxiliumServices.Common.Services
 
                 var content = new FormUrlEncodedContent(new[]
                 {
-                    new KeyValuePair<string, string>("secret", this._configuration["ReCAPTCHA:SecretKey"]!),
+                    new KeyValuePair<string, string>("secret", _configuration.ReCAPTCHA.SecretKey),
                     new KeyValuePair<string, string>("response", token),
                     new KeyValuePair<string, string>("remoteip", clientIp ?? "")
                 });
@@ -65,7 +67,7 @@ namespace AuxiliumServices.Common.Services
                     return false;
                 }
 
-                if (jsonResponse.Score.HasValue && jsonResponse.Score < this._configuration!.GetValue<float>("ReCAPTCHA:ScoreThreshold"))
+                if (jsonResponse.Score.HasValue && jsonResponse.Score < _configuration.ReCAPTCHA.ScoreThreshold)
                 {
                     _logger.LogWarning(
                         "reCAPTCHA score too low: {Score}",
