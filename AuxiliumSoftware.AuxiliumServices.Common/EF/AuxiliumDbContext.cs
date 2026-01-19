@@ -263,6 +263,7 @@ public class AuxiliumDbContext : DbContext
             entity.Property(e => e.MessageId)                       .HasColumnName("message_id")                                .HasColumnType("char(36)")                                                                                                          .IsRequired();
             
             entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.SetNull);
+            entity.HasOne(e => e.Message)                           .WithMany()                                                 .HasForeignKey(e => e.MessageId)        .OnDelete(DeleteBehavior.Cascade);
         });
 
         // case_todos

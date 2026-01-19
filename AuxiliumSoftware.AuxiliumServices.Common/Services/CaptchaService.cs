@@ -32,6 +32,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services
                 // WARNING WARNING WARNING WARNING WARNING
                 if (_configuration.Development.DisableReCAPTCHA)
                 {
+                    _logger.LogWarning("reCAPTCHA verification is disabled");
                     return true;
                 }
                 // WARNING WARNING WARNING WARNING WARNING
