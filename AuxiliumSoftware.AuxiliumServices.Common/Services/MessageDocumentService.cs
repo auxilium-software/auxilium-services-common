@@ -172,7 +172,7 @@ public class MessageDocumentService : IMessageDocumentService
         {
             return await _db.CaseMessagesReadBys
                 .Where(rb => rb.MessageId == messageId)
-                .Select(rb => rb.CreatedBy)
+                .Select(rb => rb.CreatedBy ?? new Guid())
                 .ToListAsync();
         }
         catch (Exception ex)
@@ -189,7 +189,7 @@ public class MessageDocumentService : IMessageDocumentService
             return await _db.CaseMessagesReadBys
                 .Where(rb => rb.MessageId == messageId)
                 .ToDictionaryAsync(
-                    rb => rb.CreatedBy,
+                    rb => rb.CreatedBy ?? new Guid(),
                     rb => rb.CreatedAt
                 );
         }
