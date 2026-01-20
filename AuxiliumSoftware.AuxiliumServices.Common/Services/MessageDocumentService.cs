@@ -25,7 +25,7 @@ public class MessageDocumentService : IMessageDocumentService
     }
 
     #region ========================= MESSAGE OPERATIONS =========================
-    public async Task<CaseMessageModel> CreateMessageAsync(
+    public async Task<CaseMessageEntityModel> CreateMessageAsync(
         Guid caseId,
         string subject,
         string content,
@@ -42,7 +42,7 @@ public class MessageDocumentService : IMessageDocumentService
             }
 
             // create the message entity
-            var message = new CaseMessageModel
+            var message = new CaseMessageEntityModel
             {
                 Id = UUIDUtilities.GenerateV5(DatabaseObjectType.Message),
                 CaseId = caseId,
@@ -80,7 +80,7 @@ public class MessageDocumentService : IMessageDocumentService
         }
     }
 
-    public async Task<CaseMessageModel?> GetMessageAsync(Guid messageId)
+    public async Task<CaseMessageEntityModel?> GetMessageAsync(Guid messageId)
     {
         try
         {
@@ -96,7 +96,7 @@ public class MessageDocumentService : IMessageDocumentService
         }
     }
 
-    public async Task<List<CaseMessageModel>> GetMessagesForCaseAsync(Guid caseId)
+    public async Task<List<CaseMessageEntityModel>> GetMessagesForCaseAsync(Guid caseId)
     {
         try
         {
@@ -127,7 +127,7 @@ public class MessageDocumentService : IMessageDocumentService
             if (!alreadyRead)
             {
                 // create a read-by entry
-                var readBy = new CaseMessageReadByModel
+                var readBy = new CaseMessageReadByEntityModel
                 {
                     Id = UUIDUtilities.GenerateV5(DatabaseObjectType.MessageReadBy),
                     MessageId = messageId,
@@ -230,7 +230,7 @@ public class MessageDocumentService : IMessageDocumentService
     #endregion
     #region ========================= PERMISSION CHECKS =========================
 
-    public async Task<bool> CheckUserAccessAsync(Guid messageId, UserModel currentUser)
+    public async Task<bool> CheckUserAccessAsync(Guid messageId, UserEntityModel currentUser)
     {
         try
         {

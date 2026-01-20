@@ -4,14 +4,14 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Interfaces
 {
     public interface IAuthorisationService
     {
-        bool IsAdmin(UserModel user);
-        bool IsCaseWorker(UserModel user);
-        bool CanViewCase(UserModel user, CaseModel caseDoc);
-        bool CanModifyCase(UserModel user, CaseModel caseDoc);
-        bool CanDeleteCase(UserModel user, CaseModel caseDoc);
-        bool CanManageCaseProperties(UserModel user, CaseModel caseDoc);
-        bool CanManageTodos(UserModel user, CaseModel caseDoc);
-        bool CanViewUser(UserModel currentUser, Guid targetUserId);
-        bool CanModifyUser(UserModel currentUser, Guid targetUserId);
+        bool IsAdmin(UserEntityModel user);
+        bool IsCaseWorker(UserEntityModel user);
+        bool CanViewCase(UserEntityModel user, CaseEntityModel caseDoc);
+        bool CanModifyCase(UserEntityModel user, CaseEntityModel caseDoc);
+        bool CanDeleteCase(UserEntityModel user, CaseEntityModel caseDoc);
+        bool CanManageCaseProperties(UserEntityModel user, CaseEntityModel caseDoc);
+        bool CanManageTodos(UserEntityModel user, CaseEntityModel caseDoc);
+        bool CanViewUser(UserEntityModel currentUser, Guid targetUserId);
+        bool CanModifyUser(UserEntityModel currentUser, Guid targetUserId);
     }
 }

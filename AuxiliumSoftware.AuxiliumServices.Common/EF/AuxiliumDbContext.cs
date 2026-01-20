@@ -18,20 +18,20 @@ public class AuxiliumDbContext : DbContext
 
 
 
-    public DbSet<UserModel> Users { get; set; }
-    public DbSet<CaseModel> Cases { get; set; }
-    public DbSet<CaseWorkerModel> CaseWorkers { get; set; }
-    public DbSet<CaseClientModel> CaseClients { get; set; }
-    public DbSet<CaseAdditionalPropertyModel> CaseAdditionalProperties { get; set; }
-    public DbSet<UserAdditionalPropertyModel> UserAdditionalProperties { get; set; }
-    public DbSet<CaseMessageModel> CaseMessages { get; set; }
-    public DbSet<CaseMessageReadByModel> CaseMessagesReadBys { get; set; }
-    public DbSet<CaseFileModel> CaseFiles { get; set; }
-    public DbSet<UserFileModel> UserFiles { get; set; }
-    public DbSet<CaseTodoModel> CaseTodos { get; set; }
-    public DbSet<CaseTimelineItemModel> CaseTimeline { get; set; }
-    public DbSet<RefreshTokenModel> RefreshTokens { get; set; }
-    public DbSet<WEMWBSModel> WEMWBSAssessments { get; set; }
+    public DbSet<UserEntityModel> Users { get; set; }
+    public DbSet<CaseEntityModel> Cases { get; set; }
+    public DbSet<CaseWorkerEntityModel> CaseWorkers { get; set; }
+    public DbSet<CaseClientEntityModel> CaseClients { get; set; }
+    public DbSet<CaseAdditionalPropertyEntityModel> CaseAdditionalProperties { get; set; }
+    public DbSet<UserAdditionalPropertyEntityModel> UserAdditionalProperties { get; set; }
+    public DbSet<CaseMessageEntityModel> CaseMessages { get; set; }
+    public DbSet<CaseMessageReadByEntityModel> CaseMessagesReadBys { get; set; }
+    public DbSet<CaseFileEntityModel> CaseFiles { get; set; }
+    public DbSet<UserFileEntityModel> UserFiles { get; set; }
+    public DbSet<CaseTodoEntityModel> CaseTodos { get; set; }
+    public DbSet<CaseTimelineItemEntityModel> CaseTimeline { get; set; }
+    public DbSet<RefreshTokenEntityModel> RefreshTokens { get; set; }
+    public DbSet<WEMWBSEntityModel> WEMWBSAssessments { get; set; }
 
 
 
@@ -42,7 +42,7 @@ public class AuxiliumDbContext : DbContext
         base.OnModelCreating(modelBuilder);
 
         // users
-        modelBuilder.Entity<UserModel>(entity =>
+        modelBuilder.Entity<UserEntityModel>(entity =>
         {
             entity.ToTable("users");
             entity.HasKey(e => e.Id);
@@ -81,7 +81,7 @@ public class AuxiliumDbContext : DbContext
         });
 
         // wemwbs
-        modelBuilder.Entity<WEMWBSModel>(entity =>
+        modelBuilder.Entity<WEMWBSEntityModel>(entity =>
         {
             entity.ToTable("wemwbs_assessments");
             entity.HasKey(e => e.Id);
@@ -111,7 +111,7 @@ public class AuxiliumDbContext : DbContext
         });
 
         // cases
-        modelBuilder.Entity<CaseModel>(entity =>
+        modelBuilder.Entity<CaseEntityModel>(entity =>
         {
             entity.ToTable("cases");
             entity.HasKey(e => e.Id);
@@ -143,7 +143,7 @@ public class AuxiliumDbContext : DbContext
         });
 
         // case_workers
-        modelBuilder.Entity<CaseWorkerModel>(entity =>
+        modelBuilder.Entity<CaseWorkerEntityModel>(entity =>
         {
             entity.ToTable("case_workers");
             entity.HasKey(e => e.Id);
@@ -165,7 +165,7 @@ public class AuxiliumDbContext : DbContext
         });
 
         // case_clients
-        modelBuilder.Entity<CaseClientModel>(entity =>
+        modelBuilder.Entity<CaseClientEntityModel>(entity =>
         {
             entity.ToTable("case_clients");
             entity.HasKey(e => e.Id);
@@ -183,7 +183,7 @@ public class AuxiliumDbContext : DbContext
         });
 
         // case_additional_properties
-        modelBuilder.Entity<CaseAdditionalPropertyModel>(entity =>
+        modelBuilder.Entity<CaseAdditionalPropertyEntityModel>(entity =>
         {
             entity.ToTable("case_additional_properties");
             entity.HasKey(e => e.Id);
@@ -205,7 +205,7 @@ public class AuxiliumDbContext : DbContext
         });
 
         // user_additional_properties
-        modelBuilder.Entity<UserAdditionalPropertyModel>(entity =>
+        modelBuilder.Entity<UserAdditionalPropertyEntityModel>(entity =>
         {
             entity.ToTable("user_additional_properties");
             entity.HasKey(e => e.Id);
@@ -227,7 +227,7 @@ public class AuxiliumDbContext : DbContext
         });
 
         // case_messages
-        modelBuilder.Entity<CaseMessageModel>(entity =>
+        modelBuilder.Entity<CaseMessageEntityModel>(entity =>
         {
             entity.ToTable("case_messages");
             entity.HasKey(e => e.Id);
@@ -251,7 +251,7 @@ public class AuxiliumDbContext : DbContext
         });
 
         // case_messages_read_bys
-        modelBuilder.Entity<CaseMessageReadByModel>(entity =>
+        modelBuilder.Entity<CaseMessageReadByEntityModel>(entity =>
         {
             entity.ToTable("case_messages_read_bys");
             entity.HasKey(e => e.Id);
@@ -267,7 +267,7 @@ public class AuxiliumDbContext : DbContext
         });
 
         // case_todos
-        modelBuilder.Entity<CaseTodoModel>(entity =>
+        modelBuilder.Entity<CaseTodoEntityModel>(entity =>
         {
             entity.ToTable("case_todos");
             entity.HasKey(e => e.Id);
@@ -298,7 +298,7 @@ public class AuxiliumDbContext : DbContext
         });
 
         // case_timeline
-        modelBuilder.Entity<CaseTimelineItemModel>(entity =>
+        modelBuilder.Entity<CaseTimelineItemEntityModel>(entity =>
         {
             entity.ToTable("case_timeline");
             entity.HasKey(e => e.Id);
@@ -315,7 +315,7 @@ public class AuxiliumDbContext : DbContext
         });
 
         // case_files
-        modelBuilder.Entity<CaseFileModel>(entity =>
+        modelBuilder.Entity<CaseFileEntityModel>(entity =>
         {
             entity.ToTable("case_files");
             entity.HasKey(e => e.Id);
@@ -340,7 +340,7 @@ public class AuxiliumDbContext : DbContext
         });
 
         // user_files
-        modelBuilder.Entity<UserFileModel>(entity =>
+        modelBuilder.Entity<UserFileEntityModel>(entity =>
         {
             entity.ToTable("user_files");
             entity.HasKey(e => e.Id);
@@ -365,7 +365,7 @@ public class AuxiliumDbContext : DbContext
         });
 
         // refresh_tokens
-        modelBuilder.Entity<RefreshTokenModel>(entity =>
+        modelBuilder.Entity<RefreshTokenEntityModel>(entity =>
         {
             entity.ToTable("refresh_tokens");
             entity.HasKey(e => e.Id);

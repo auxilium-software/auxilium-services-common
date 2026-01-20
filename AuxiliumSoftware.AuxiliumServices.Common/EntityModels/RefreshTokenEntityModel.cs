@@ -1,6 +1,6 @@
 ﻿namespace AuxiliumSoftware.AuxiliumServices.Common.EntityModels
 {
-    public class CaseClientModel
+    public class RefreshTokenEntityModel
     {
         /// <summary>
         /// The unique identifier for the additional property.
@@ -18,18 +18,16 @@
 
 
         /// <summary>
-        /// The unique identifier of the case this assignment is for.
+        /// A hash of the Refresh Token.
         /// </summary>
-        public required Guid CaseId { get; set; }
+        public required string TokenHash { get; set; }
         /// <summary>
-        /// The unique identifier of the user assigned to the case.
+        /// The expiration datetime of the Refresh Token.
         /// </summary>
-        public required Guid UserId { get; set; }
+        public required DateTime ExpiresAt { get; set; }
 
 
 
-        public UserModel? CreatedByUser { get; set; }
-        public CaseModel? Case { get; set; }
-        public UserModel? User { get; set; }
+        public UserEntityModel? CreatedByUser { get; set; }
     }
 }

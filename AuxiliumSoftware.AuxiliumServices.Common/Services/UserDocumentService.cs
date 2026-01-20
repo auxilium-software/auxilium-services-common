@@ -23,7 +23,7 @@ public class UserDocumentService : IUserDocumentService
     }
 
     #region ========================= USER OPERATIONS =========================
-    public async Task<UserModel?> GetDocumentAsync(Guid userId)
+    public async Task<UserEntityModel?> GetDocumentAsync(Guid userId)
     {
         try
         {
@@ -38,7 +38,7 @@ public class UserDocumentService : IUserDocumentService
         }
     }
 
-    public async Task SaveDocumentAsync(UserModel userDoc)
+    public async Task SaveDocumentAsync(UserEntityModel userDoc)
     {
         try
         {
@@ -60,7 +60,7 @@ public class UserDocumentService : IUserDocumentService
     }
     #endregion
     #region ========================= ADDITIONAL PROPERTIES =========================
-    public async Task<List<UserAdditionalPropertyModel>> GetAdditionalPropertiesAsync(Guid caseId)
+    public async Task<List<UserAdditionalPropertyEntityModel>> GetAdditionalPropertiesAsync(Guid caseId)
     {
         try
         {
@@ -94,7 +94,7 @@ public class UserDocumentService : IUserDocumentService
             else
             {
                 // create the new property entity
-                var newProperty = new UserAdditionalPropertyModel
+                var newProperty = new UserAdditionalPropertyEntityModel
                 {
                     Id = UUIDUtilities.GenerateV5(DatabaseObjectType.UserAdditionalProperty),
                     UserId = userId,
@@ -159,7 +159,7 @@ public class UserDocumentService : IUserDocumentService
     }
     #endregion
     #region ========================= PERMISSION CHECKS =========================
-    public bool CheckUserAccess(Guid userId, UserModel currentUser)
+    public bool CheckUserAccess(Guid userId, UserEntityModel currentUser)
     {
         try
         {

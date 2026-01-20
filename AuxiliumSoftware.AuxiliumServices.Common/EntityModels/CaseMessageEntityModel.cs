@@ -1,6 +1,6 @@
 ﻿namespace AuxiliumSoftware.AuxiliumServices.Common.EntityModels
 {
-    public class UserAdditionalPropertyModel
+    public class CaseMessageEntityModel
     {
         /// <summary>
         /// The unique identifier for the additional property.
@@ -26,26 +26,32 @@
 
 
         /// <summary>
-        /// The unique identifier of the user this additional property is for.
+        /// The unique identifier of the case this message is attached to.
         /// </summary>
-        public required Guid UserId { get; set; }
+        public required Guid CaseId { get; set; }
         /// <summary>
-        /// The name of the additional property.
+        /// The unique identifier of the user who sent the message.
         /// </summary>
-        public required string Name { get; set; }
+        public required Guid SenderId { get; set; }
         /// <summary>
-        /// The MIME type of the additional property (e.g., "text/plain", "application/json").
+        /// The subject of the message.
         /// </summary>
-        public required string ContentType { get; set; }
+        public required string Subject { get; set; }
         /// <summary>
-        /// The actual content of the additional property.
+        /// The content/body of the message.
         /// </summary>
         public required string Content { get; set; }
+        /// <summary>
+        /// Indicates whether the message is marked as urgent.
+        /// </summary>
+        public required bool IsUrgent { get; set; }
 
 
 
-        public UserModel? CreatedByUser { get; set; }
-        public UserModel? LastUpdatedByUser { get; set; }
-        public UserModel? User { get; set; }
+        public UserEntityModel? CreatedByUser { get; set; }
+        public UserEntityModel? LastUpdatedByUser { get; set; }
+        public CaseEntityModel? Case { get; set; }
+        public UserEntityModel? Sender { get; set; }
+        public ICollection<CaseMessageReadByEntityModel>? ReadBy { get; set; }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace AuxiliumSoftware.AuxiliumServices.Common.EntityModels
 {
-    public class WEMWBSModel
+    public class WEMWBSEntityModel
     {
         /// <summary>
         /// The unique identifier for the additional property.
@@ -34,6 +34,6 @@
 
 
 
-        public UserModel? CreatedByUser { get; set; }
+        public UserEntityModel? CreatedByUser { get; set; }
     }
 }

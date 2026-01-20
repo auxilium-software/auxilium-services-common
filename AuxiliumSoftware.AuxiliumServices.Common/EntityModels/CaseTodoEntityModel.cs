@@ -2,7 +2,7 @@
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityModels
 {
-    public class CaseTodoModel
+    public class CaseTodoEntityModel
     {
         /// <summary>
         /// The unique identifier for the additional property.
@@ -77,10 +77,10 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityModels
 
 
 
-        public UserModel? CreatedByUser { get; set; }
-        public UserModel? LastUpdatedByUser { get; set; }
-        public CaseModel? Case { get; set; }
-        public UserModel? AssignedToUser { get; set; }
-        public UserModel? CompletedByUser { get; set; }
+        public UserEntityModel? CreatedByUser { get; set; }
+        public UserEntityModel? LastUpdatedByUser { get; set; }
+        public CaseEntityModel? Case { get; set; }
+        public UserEntityModel? AssignedToUser { get; set; }
+        public UserEntityModel? CompletedByUser { get; set; }
     }
 }

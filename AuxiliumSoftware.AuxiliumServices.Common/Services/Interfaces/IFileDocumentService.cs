@@ -4,9 +4,9 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Interfaces;
 
 public interface IFileDocumentService
 {
-    Task<CaseFileModel?> GetCaseFileMetadataAsync(Guid fileId);
-    Task<List<CaseFileModel>> GetFilesForCaseAsync(Guid caseId);
-    Task<(string uri, CaseFileModel metadata)> SaveCaseFileAsync(
+    Task<CaseFileEntityModel?> GetCaseFileMetadataAsync(Guid fileId);
+    Task<List<CaseFileEntityModel>> GetFilesForCaseAsync(Guid caseId);
+    Task<(string uri, CaseFileEntityModel metadata)> SaveCaseFileAsync(
         byte[] fileContent,
         string filename,
         string contentType,
@@ -14,13 +14,13 @@ public interface IFileDocumentService
         Guid caseId,
         string? description = null);
     Task DeleteCaseFileAsync(Guid fileId);
-    Task<bool> CheckCaseFileAccessAsync(Guid fileId, UserModel currentUser);
+    Task<bool> CheckCaseFileAccessAsync(Guid fileId, UserEntityModel currentUser);
 
 
 
-    Task<UserFileModel?> GetUserFileMetadataAsync(Guid fileId);
-    Task<List<UserFileModel>> GetFilesForUserAsync(Guid userId);
-    Task<(string uri, UserFileModel metadata)> SaveUserFileAsync(
+    Task<UserFileEntityModel?> GetUserFileMetadataAsync(Guid fileId);
+    Task<List<UserFileEntityModel>> GetFilesForUserAsync(Guid userId);
+    Task<(string uri, UserFileEntityModel metadata)> SaveUserFileAsync(
         byte[] fileContent,
         string filename,
         string contentType,
@@ -28,7 +28,7 @@ public interface IFileDocumentService
         Guid userId,
         string? description = null);
     Task DeleteUserFileAsync(Guid fileId);
-    Task<bool> CheckUserFileAccessAsync(Guid fileId, UserModel currentUser);
+    Task<bool> CheckUserFileAccessAsync(Guid fileId, UserEntityModel currentUser);
 
 
 
