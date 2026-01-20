@@ -5,17 +5,17 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services
 {
     public class AuthorisationService : IAuthorisationService
     {
-        public bool IsAdmin(UserModel user)
+        public bool IsAdmin(UserEntityModel user)
         {
             return user.IsAdmin;
         }
 
-        public bool IsCaseWorker(UserModel user)
+        public bool IsCaseWorker(UserEntityModel user)
         {
             return user.IsCaseWorker || user.IsAdmin;
         }
 
-        public bool CanViewCase(UserModel user, CaseModel caseDoc)
+        public bool CanViewCase(UserEntityModel user, CaseEntityModel caseDoc)
         {
             // admins can very everything
             if (user.IsAdmin) return true;
@@ -27,7 +27,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services
             return isWorker || isClient;
         }
 
-        public bool CanModifyCase(UserModel user, CaseModel caseDoc)
+        public bool CanModifyCase(UserEntityModel user, CaseEntityModel caseDoc)
         {
             // admins can modify anything
             if (user.IsAdmin) return true;
@@ -36,25 +36,25 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services
             return caseDoc.Workers?.Any(w => w.UserId == user.Id) ?? false;
         }
 
-        public bool CanDeleteCase(UserModel user, CaseModel caseDoc)
+        public bool CanDeleteCase(UserEntityModel user, CaseEntityModel caseDoc)
         {
             // same permissions as to modify
             return CanModifyCase(user, caseDoc);
         }
 
-        public bool CanManageCaseProperties(UserModel user, CaseModel caseDoc)
+        public bool CanManageCaseProperties(UserEntityModel user, CaseEntityModel caseDoc)
         {
             // same permissions as to modify
             return CanModifyCase(user, caseDoc);
         }
 
-        public bool CanManageTodos(UserModel user, CaseModel caseDoc)
+        public bool CanManageTodos(UserEntityModel user, CaseEntityModel caseDoc)
         {
             // same permissions as to modify
             return CanModifyCase(user, caseDoc);
         }
 
-        public bool CanViewUser(UserModel currentUser, Guid targetUserId)
+        public bool CanViewUser(UserEntityModel currentUser, Guid targetUserId)
         {
             // admins can view anyone
             if (currentUser.IsAdmin) return true;
@@ -63,7 +63,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services
             return currentUser.Id == targetUserId;
         }
 
-        public bool CanModifyUser(UserModel currentUser, Guid targetUserId)
+        public bool CanModifyUser(UserEntityModel currentUser, Guid targetUserId)
         {
             // only admins can modify other users
             if (currentUser.IsAdmin) return true;

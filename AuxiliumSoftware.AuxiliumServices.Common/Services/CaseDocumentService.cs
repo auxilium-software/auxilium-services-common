@@ -23,7 +23,7 @@ public class CaseDocumentService : ICaseDocumentService
     }
 
     #region ========================= CASE DOCUMENT OPERATIONS =========================
-    public async Task<CaseModel?> GetDocumentAsync(Guid caseId)
+    public async Task<CaseEntityModel?> GetDocumentAsync(Guid caseId)
     {
         return await _db.Cases
             .Include(c => c.Workers)
@@ -35,7 +35,7 @@ public class CaseDocumentService : ICaseDocumentService
             .FirstOrDefaultAsync(c => c.Id == caseId);
     }
 
-    public async Task SaveDocumentAsync(CaseModel caseDoc)
+    public async Task SaveDocumentAsync(CaseEntityModel caseDoc)
     {
         caseDoc.LastUpdatedAt = DateTime.UtcNow;
 
@@ -66,7 +66,7 @@ public class CaseDocumentService : ICaseDocumentService
             }
 
             // add the new client relationship to the case
-            var caseClient = new CaseClientModel
+            var caseClient = new CaseClientEntityModel
             {
                 Id = UUIDUtilities.GenerateV5(DatabaseObjectType.CaseClient),
                 CaseId = caseId,
@@ -140,7 +140,7 @@ public class CaseDocumentService : ICaseDocumentService
             }
 
             // add the new worker to the case
-            var caseWorker = new CaseWorkerModel
+            var caseWorker = new CaseWorkerEntityModel
             {
                 Id = UUIDUtilities.GenerateV5(DatabaseObjectType.CaseWorker),
                 CaseId = caseId,
@@ -200,7 +200,7 @@ public class CaseDocumentService : ICaseDocumentService
     }
     #endregion
     #region ========================= ADDITIONAL PROPERTIES =========================
-    public async Task<List<CaseAdditionalPropertyModel>> GetAdditionalPropertiesAsync(Guid caseId)
+    public async Task<List<CaseAdditionalPropertyEntityModel>> GetAdditionalPropertiesAsync(Guid caseId)
     {
         try
         {
@@ -234,7 +234,7 @@ public class CaseDocumentService : ICaseDocumentService
             else
             {
                 // create the new additional property
-                var newProperty = new CaseAdditionalPropertyModel
+                var newProperty = new CaseAdditionalPropertyEntityModel
                 {
                     Id = UUIDUtilities.GenerateV5(DatabaseObjectType.CaseAdditionalProperty),
                     CaseId = caseId,
@@ -299,7 +299,7 @@ public class CaseDocumentService : ICaseDocumentService
     }
     #endregion
     #region ========================= TODO OPERATIONS =========================
-    public async Task<CaseTodoModel> CreateTodoAsync(
+    public async Task<CaseTodoEntityModel> CreateTodoAsync(
         Guid caseId,
         string summary,
         string? description,
@@ -319,7 +319,7 @@ public class CaseDocumentService : ICaseDocumentService
             }
 
             // create the todo entity/model
-            var todo = new CaseTodoModel
+            var todo = new CaseTodoEntityModel
             {
                 Id = UUIDUtilities.GenerateV5(DatabaseObjectType.CaseTodoItem),
                 CaseId = caseId,
@@ -357,7 +357,7 @@ public class CaseDocumentService : ICaseDocumentService
         }
     }
 
-    public async Task<CaseTodoModel?> GetTodoAsync(Guid caseId, Guid todoId)
+    public async Task<CaseTodoEntityModel?> GetTodoAsync(Guid caseId, Guid todoId)
     {
         try
         {
@@ -374,7 +374,7 @@ public class CaseDocumentService : ICaseDocumentService
         }
     }
 
-    public async Task<List<CaseTodoModel>> GetTodosAsync(Guid caseId)
+    public async Task<List<CaseTodoEntityModel>> GetTodosAsync(Guid caseId)
     {
         try
         {
@@ -509,7 +509,7 @@ public class CaseDocumentService : ICaseDocumentService
     }
     #endregion
     #region ========================= PERMISSION CHECKS =========================
-    public async Task<bool> CheckUserAccessAsync(Guid caseId, UserModel currentUser)
+    public async Task<bool> CheckUserAccessAsync(Guid caseId, UserEntityModel currentUser)
     {
         try
         {

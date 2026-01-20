@@ -1,6 +1,6 @@
 ﻿namespace AuxiliumSoftware.AuxiliumServices.Common.EntityModels
 {
-    public class CaseFileModel
+    public class UserFileEntityModel
     {
         /// <summary>
         /// The unique identifier for the additional property.
@@ -26,9 +26,9 @@
 
 
         /// <summary>
-        /// The unique identifier for the case this file is for.
+        /// The unique identifier for the user this file is for.
         /// </summary>
-        public required Guid CaseId { get; set; }
+        public required Guid UserId { get; set; }
         /// <summary>
         /// The original filename of the file.
         /// </summary>
@@ -56,8 +56,8 @@
 
 
 
-        public UserModel? CreatedByUser { get; set; }
-        public UserModel? LastUpdatedByUser { get; set; }
-        public CaseModel? Case { get; set; }
+        public UserEntityModel? CreatedByUser { get; set; }
+        public UserEntityModel? LastUpdatedByUser { get; set; }
+        public UserEntityModel? User { get; set; }
     }
 }

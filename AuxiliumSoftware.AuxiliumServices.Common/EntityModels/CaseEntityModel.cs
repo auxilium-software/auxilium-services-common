@@ -2,7 +2,7 @@
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityModels
 {
-    public class CaseModel
+    public class CaseEntityModel
     {
         /// <summary>
         /// The unique identifier for the additional property.
@@ -46,14 +46,14 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityModels
 
 
 
-        public UserModel? CreatedByUser { get; set; }
-        public UserModel? LastUpdatedByUser { get; set; }
-        public ICollection<CaseWorkerModel>? Workers { get; set; }
-        public ICollection<CaseClientModel>? Clients { get; set; }
-        public ICollection<CaseAdditionalPropertyModel>? AdditionalProperties { get; set; }
-        public ICollection<CaseMessageModel>? Messages { get; set; }
-        public ICollection<CaseFileModel>? Files { get; set; }
-        public ICollection<CaseTodoModel>? Todos { get; set; }
-        public ICollection<CaseTimelineItemModel>? Timeline { get; set; }
+        public UserEntityModel? CreatedByUser { get; set; }
+        public UserEntityModel? LastUpdatedByUser { get; set; }
+        public ICollection<CaseWorkerEntityModel>? Workers { get; set; }
+        public ICollection<CaseClientEntityModel>? Clients { get; set; }
+        public ICollection<CaseAdditionalPropertyEntityModel>? AdditionalProperties { get; set; }
+        public ICollection<CaseMessageEntityModel>? Messages { get; set; }
+        public ICollection<CaseFileEntityModel>? Files { get; set; }
+        public ICollection<CaseTodoEntityModel>? Todos { get; set; }
+        public ICollection<CaseTimelineItemEntityModel>? Timeline { get; set; }
     }
 }

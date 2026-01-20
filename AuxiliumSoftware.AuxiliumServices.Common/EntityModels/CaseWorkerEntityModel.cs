@@ -1,6 +1,6 @@
 ﻿namespace AuxiliumSoftware.AuxiliumServices.Common.EntityModels
 {
-    public class CaseMessageReadByModel
+    public class CaseWorkerEntityModel
     {
         /// <summary>
         /// The unique identifier for the additional property.
@@ -18,13 +18,18 @@
 
 
         /// <summary>
-        /// The unique identifier for the message that has been read.
+        /// The unique identifier of the case this assignment is for.
         /// </summary>
-        public required Guid MessageId { get; set; }
+        public required Guid CaseId { get; set; }
+        /// <summary>
+        /// The unique identifier of the user assigned to the case.
+        /// </summary>
+        public required Guid UserId { get; set; }
 
 
 
-        public UserModel? CreatedByUser { get; set; }
-        public CaseMessageModel? Message { get; set; }
+        public UserEntityModel? CreatedByUser { get; set; }
+        public CaseEntityModel? Case { get; set; }
+        public UserEntityModel? User { get; set; }
     }
 }

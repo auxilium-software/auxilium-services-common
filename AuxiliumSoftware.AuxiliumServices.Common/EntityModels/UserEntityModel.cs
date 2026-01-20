@@ -1,6 +1,6 @@
 ﻿namespace AuxiliumSoftware.AuxiliumServices.Common.EntityModels
 {
-    public class UserModel
+    public class UserEntityModel
     {
         /// <summary>
         /// The unique identifier for the additional property.
@@ -78,12 +78,12 @@
 
 
 
-        public UserModel? CreatedByUser { get; set; }
-        public UserModel? LastUpdatedByUser { get; set; }
-        public ICollection<CaseWorkerModel>? WorkerOnCases { get; set; }
-        public ICollection<CaseClientModel>? ClientOnCases { get; set; }
-        public ICollection<UserFileModel>? Files { get; set; }
-        public ICollection<UserAdditionalPropertyModel>? AdditionalProperties { get; set; }
-        public ICollection<RefreshTokenModel>? RefreshTokens { get; set; }
+        public UserEntityModel? CreatedByUser { get; set; }
+        public UserEntityModel? LastUpdatedByUser { get; set; }
+        public ICollection<CaseWorkerEntityModel>? WorkerOnCases { get; set; }
+        public ICollection<CaseClientEntityModel>? ClientOnCases { get; set; }
+        public ICollection<UserFileEntityModel>? Files { get; set; }
+        public ICollection<UserAdditionalPropertyEntityModel>? AdditionalProperties { get; set; }
+        public ICollection<RefreshTokenEntityModel>? RefreshTokens { get; set; }
     }
 }

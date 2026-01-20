@@ -5,9 +5,9 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Interfaces
 {
     public interface ICaseDocumentService
     {
-        Task<CaseModel?> GetDocumentAsync(Guid caseId);
-        Task SaveDocumentAsync(CaseModel caseDoc);
-        Task<bool> CheckUserAccessAsync(Guid caseId, UserModel currentUser);
+        Task<CaseEntityModel?> GetDocumentAsync(Guid caseId);
+        Task SaveDocumentAsync(CaseEntityModel caseDoc);
+        Task<bool> CheckUserAccessAsync(Guid caseId, UserEntityModel currentUser);
 
 
 
@@ -18,13 +18,13 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Interfaces
 
 
 
-        Task<List<CaseAdditionalPropertyModel>> GetAdditionalPropertiesAsync(Guid caseId);
+        Task<List<CaseAdditionalPropertyEntityModel>> GetAdditionalPropertiesAsync(Guid caseId);
         Task SaveAdditionalPropertyAsync(Guid caseId, string additionalPropertyName, string additionalPropertyContent);
         Task DeleteAdditionalPropertyAsync(Guid caseId, Guid additionalPropertyId);
 
 
 
-        Task<CaseTodoModel> CreateTodoAsync(
+        Task<CaseTodoEntityModel> CreateTodoAsync(
             Guid caseId,
             string summary,
             string? description,
@@ -33,8 +33,8 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Interfaces
             DateTime? dueDate = null,
             Guid? assignedTo = null,
             DateTime? reminder = null);
-        Task<CaseTodoModel?> GetTodoAsync(Guid caseId, Guid todoId);
-        Task<List<CaseTodoModel>> GetTodosAsync(Guid caseId);
+        Task<CaseTodoEntityModel?> GetTodoAsync(Guid caseId, Guid todoId);
+        Task<List<CaseTodoEntityModel>> GetTodosAsync(Guid caseId);
         Task UpdateTodoStatusAsync(
             Guid caseId,
             Guid todoId,

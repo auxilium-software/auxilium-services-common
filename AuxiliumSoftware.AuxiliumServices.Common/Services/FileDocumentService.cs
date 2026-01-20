@@ -28,7 +28,7 @@ public class FileDocumentService : IFileDocumentService
     }
 
     #region ========================= CASE FILE OPERATIONS =========================
-    public async Task<CaseFileModel?> GetCaseFileMetadataAsync(Guid fileId)
+    public async Task<CaseFileEntityModel?> GetCaseFileMetadataAsync(Guid fileId)
     {
         try
         {
@@ -44,7 +44,7 @@ public class FileDocumentService : IFileDocumentService
         }
     }
 
-    public async Task<List<CaseFileModel>> GetFilesForCaseAsync(Guid caseId)
+    public async Task<List<CaseFileEntityModel>> GetFilesForCaseAsync(Guid caseId)
     {
         try
         {
@@ -61,7 +61,7 @@ public class FileDocumentService : IFileDocumentService
         }
     }
 
-    public async Task<(string uri, CaseFileModel metadata)> SaveCaseFileAsync(
+    public async Task<(string uri, CaseFileEntityModel metadata)> SaveCaseFileAsync(
         byte[] fileContent,
         string filename,
         string contentType,
@@ -86,7 +86,7 @@ public class FileDocumentService : IFileDocumentService
             var hash = HashingUtilities.SHA256Hash(fileContent);
 
             // create metadata
-            var fileMetadata = new CaseFileModel
+            var fileMetadata = new CaseFileEntityModel
             {
                 Id = fileId,
                 CaseId = caseId,
@@ -162,7 +162,7 @@ public class FileDocumentService : IFileDocumentService
     }
     #endregion
     #region ========================= USER FILE OPERATIONS =========================
-    public async Task<UserFileModel?> GetUserFileMetadataAsync(Guid fileId)
+    public async Task<UserFileEntityModel?> GetUserFileMetadataAsync(Guid fileId)
     {
         try
         {
@@ -178,7 +178,7 @@ public class FileDocumentService : IFileDocumentService
         }
     }
 
-    public async Task<List<UserFileModel>> GetFilesForUserAsync(Guid userId)
+    public async Task<List<UserFileEntityModel>> GetFilesForUserAsync(Guid userId)
     {
         try
         {
@@ -195,7 +195,7 @@ public class FileDocumentService : IFileDocumentService
         }
     }
 
-    public async Task<(string uri, UserFileModel metadata)> SaveUserFileAsync(
+    public async Task<(string uri, UserFileEntityModel metadata)> SaveUserFileAsync(
         byte[] fileContent,
         string filename,
         string contentType,
@@ -220,7 +220,7 @@ public class FileDocumentService : IFileDocumentService
             var hash = HashingUtilities.SHA256Hash(fileContent);
 
             // create metadata
-            var fileMetadata = new UserFileModel
+            var fileMetadata = new UserFileEntityModel
             {
                 Id = fileId,
                 UserId = userId,
@@ -317,7 +317,7 @@ public class FileDocumentService : IFileDocumentService
         }
     }
 
-    public async Task<bool> CheckCaseFileAccessAsync(Guid fileId, UserModel currentUser)
+    public async Task<bool> CheckCaseFileAccessAsync(Guid fileId, UserEntityModel currentUser)
     {
         try
         {
@@ -341,7 +341,7 @@ public class FileDocumentService : IFileDocumentService
         }
     }
 
-    public async Task<bool> CheckUserFileAccessAsync(Guid fileId, UserModel currentUser)
+    public async Task<bool> CheckUserFileAccessAsync(Guid fileId, UserEntityModel currentUser)
     {
         try
         {

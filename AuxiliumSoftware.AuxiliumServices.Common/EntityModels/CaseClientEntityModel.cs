@@ -1,6 +1,6 @@
 ﻿namespace AuxiliumSoftware.AuxiliumServices.Common.EntityModels
 {
-    public class CaseWorkerModel
+    public class CaseClientEntityModel
     {
         /// <summary>
         /// The unique identifier for the additional property.
@@ -28,8 +28,8 @@
 
 
 
-        public UserModel? CreatedByUser { get; set; }
-        public CaseModel? Case { get; set; }
-        public UserModel? User { get; set; }
+        public UserEntityModel? CreatedByUser { get; set; }
+        public CaseEntityModel? Case { get; set; }
+        public UserEntityModel? User { get; set; }
     }
 }

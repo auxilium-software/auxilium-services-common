@@ -1,6 +1,6 @@
 ﻿namespace AuxiliumSoftware.AuxiliumServices.Common.EntityModels
 {
-    public class CaseTimelineItemModel
+    public class CaseTimelineItemEntityModel
     {
         /// <summary>
         /// The unique identifier for the timeline item.
@@ -29,8 +29,8 @@
 
 
 
-        public CaseModel? Case { get; set; }
-        public UserModel? CreatedByUser { get; set; }
-        public UserModel? LastUpdatedByUser { get; set; }
+        public CaseEntityModel? Case { get; set; }
+        public UserEntityModel? CreatedByUser { get; set; }
+        public UserEntityModel? LastUpdatedByUser { get; set; }
     }
 }

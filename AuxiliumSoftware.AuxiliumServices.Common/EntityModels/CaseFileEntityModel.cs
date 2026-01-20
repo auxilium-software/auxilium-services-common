@@ -1,6 +1,6 @@
 ﻿namespace AuxiliumSoftware.AuxiliumServices.Common.EntityModels
 {
-    public class CaseMessageModel
+    public class CaseFileEntityModel
     {
         /// <summary>
         /// The unique identifier for the additional property.
@@ -26,32 +26,38 @@
 
 
         /// <summary>
-        /// The unique identifier of the case this message is attached to.
+        /// The unique identifier for the case this file is for.
         /// </summary>
         public required Guid CaseId { get; set; }
         /// <summary>
-        /// The unique identifier of the user who sent the message.
+        /// The original filename of the file.
         /// </summary>
-        public required Guid SenderId { get; set; }
+        public required string Filename { get; set; }
         /// <summary>
-        /// The subject of the message.
+        /// The MIME type of the file (e.g., "image/png", "application/pdf").
         /// </summary>
-        public required string Subject { get; set; }
+        public required string ContentType { get; set; }
         /// <summary>
-        /// The content/body of the message.
+        /// The size of the file in bytes.
         /// </summary>
-        public required string Content { get; set; }
+        public required long Size { get; set; }
         /// <summary>
-        /// Indicates whether the message is marked as urgent.
+        /// A hash (checksum) of the file for integrity verification.
         /// </summary>
-        public required bool IsUrgent { get; set; }
+        public required string Hash { get; set; }
+        /// <summary>
+        /// The path (relative to that set in config) to the file in the LFS (Large File Storage) system.
+        /// </summary>
+        public required string LfsPath { get; set; }
+        /// <summary>
+        /// An optional description of the file the user can set.
+        /// </summary>
+        public required string Description { get; set; }
 
 
 
-        public UserModel? CreatedByUser { get; set; }
-        public UserModel? LastUpdatedByUser { get; set; }
-        public CaseModel? Case { get; set; }
-        public UserModel? Sender { get; set; }
-        public ICollection<CaseMessageReadByModel>? ReadBy { get; set; }
+        public UserEntityModel? CreatedByUser { get; set; }
+        public UserEntityModel? LastUpdatedByUser { get; set; }
+        public CaseEntityModel? Case { get; set; }
     }
 }
