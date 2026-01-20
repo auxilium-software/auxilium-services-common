@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Net.Http.Json;
 
-namespace AuxiliumSoftware.AuxiliumServices.Common.Services
+namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
 {
     public class CaptchaService : ICaptchaService
     {

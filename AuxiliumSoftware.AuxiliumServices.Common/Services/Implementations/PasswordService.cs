@@ -3,7 +3,7 @@ using Konscious.Security.Cryptography;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace AuxiliumSoftware.AuxiliumServices.Common.Services;
+namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations;
 
 public class PasswordService : IPasswordService
 {
