@@ -1,8 +1,6 @@
-﻿using AuxiliumSoftware.AuxiliumServices.Common.Enumerators;
-
-namespace AuxiliumSoftware.AuxiliumServices.Common.EntityModels
+﻿namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class CaseEntityModel
+    public class CaseMessageEntityModel
     {
         /// <summary>
         /// The unique identifier for the additional property.
@@ -28,32 +26,32 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityModels
 
 
         /// <summary>
-        /// The title of the case.
+        /// The unique identifier of the case this message is attached to.
         /// </summary>
-        public required string Title { get; set; }
+        public required Guid CaseId { get; set; }
         /// <summary>
-        /// An optional description of the case.
+        /// The unique identifier of the user who sent the message.
         /// </summary>
-        public required string? Description { get; set; }
+        public required Guid SenderId { get; set; }
         /// <summary>
-        /// The sensitivity level of the case.
+        /// The subject of the message.
         /// </summary>
-        public required CaseSensitivityEnum? Sensitivity { get; set; }
+        public required string Subject { get; set; }
         /// <summary>
-        /// The current status of the case.
+        /// The content/body of the message.
         /// </summary>
-        public required CaseStatusEnum? Status { get; set; }
+        public required string Content { get; set; }
+        /// <summary>
+        /// Indicates whether the message is marked as urgent.
+        /// </summary>
+        public required bool IsUrgent { get; set; }
 
 
 
         public UserEntityModel? CreatedByUser { get; set; }
         public UserEntityModel? LastUpdatedByUser { get; set; }
-        public ICollection<CaseWorkerEntityModel>? Workers { get; set; }
-        public ICollection<CaseClientEntityModel>? Clients { get; set; }
-        public ICollection<CaseAdditionalPropertyEntityModel>? AdditionalProperties { get; set; }
-        public ICollection<CaseMessageEntityModel>? Messages { get; set; }
-        public ICollection<CaseFileEntityModel>? Files { get; set; }
-        public ICollection<CaseTodoEntityModel>? Todos { get; set; }
-        public ICollection<CaseTimelineItemEntityModel>? Timeline { get; set; }
+        public CaseEntityModel? Case { get; set; }
+        public UserEntityModel? Sender { get; set; }
+        public ICollection<CaseMessageReadByEntityModel>? ReadBy { get; set; }
     }
 }

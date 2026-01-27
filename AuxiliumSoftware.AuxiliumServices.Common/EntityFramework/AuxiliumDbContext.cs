@@ -1,6 +1,6 @@
 ﻿using AuxiliumSoftware.AuxiliumServices.Common.DataStructures;
-using AuxiliumSoftware.AuxiliumServices.Common.EntityModels;
-using AuxiliumSoftware.AuxiliumServices.Common.Enumerators;
+using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels;
+using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators;
 using Microsoft.EntityFrameworkCore;
 using System.IO;
 using System.Reflection.Emit;
@@ -18,6 +18,8 @@ public class AuxiliumDbContext : DbContext
 
 
 
+    public DbSet<AuditLogEntryEntityModel> AuditLog { get; set; }
+    public DbSet<SystemBulletinEntryEntityModel> SystemBulletin { get; set; }
     public DbSet<UserEntityModel> Users { get; set; }
     public DbSet<CaseEntityModel> Cases { get; set; }
     public DbSet<CaseWorkerEntityModel> CaseWorkers { get; set; }
@@ -40,6 +42,54 @@ public class AuxiliumDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
+        // users
+        modelBuilder.Entity<AuditLogEntryEntityModel>(entity =>
+        {
+            entity.ToTable("audit_log");
+            entity.HasKey(e => e.Id);
+
+
+
+            entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
+            entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            
+            entity.Property(e => e.EventType)                       .HasColumnName("event_type")                                .HasColumnType("text")                                                                                                              .IsRequired();
+            entity.Property(e => e.ClientIPAddress)                 .HasColumnName("client_ip_address")                         .HasColumnType("text")                                                                                                              .IsRequired();
+            entity.Property(e => e.Metadata)                        .HasColumnName("metadata")                                  .HasColumnType("json")                                                                                                              .IsRequired();
+
+
+
+            entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.SetNull);
+        });
+
+        // system_bulletin
+        modelBuilder.Entity<SystemBulletinEntryEntityModel>(entity =>
+        {
+            entity.ToTable("system_bulletin");
+            entity.HasKey(e => e.Id);
+
+
+
+            entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
+            entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            
+            entity.Property(e => e.Severity)                        .HasColumnName("severity")                                  .HasColumnType("text")                                                                                                              .IsRequired();
+            entity.Property(e => e.Title)                           .HasColumnName("title")                                     .HasColumnType("text")                                                                                                              .IsRequired();
+            entity.Property(e => e.Content)                         .HasColumnName("content")                                   .HasColumnType("text")                                                                                                              .IsRequired();
+            entity.Property(e => e.IsActive)                        .HasColumnName("is_active")                                 .HasColumnType("bool")                                                          .HasDefaultValueSql("false")                        .IsRequired();
+            entity.Property(e => e.IsDismissable)                   .HasColumnName("is_dismissable")                            .HasColumnType("bool")                                                                                                              .IsRequired();
+            entity.Property(e => e.StartsAt)                        .HasColumnName("starts_at")                                 .HasColumnType("datetime")                                                                                                          .IsRequired();
+            entity.Property(e => e.EndsAt)                          .HasColumnName("ends_at")                                   .HasColumnType("datetime");
+            entity.Property(e => e.SpecificUserId)                  .HasColumnName("specific_user_id")                          .HasColumnType("char(36)");
+
+
+            
+            entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.SetNull);
+            entity.HasOne(e => e.SpecificUser)                      .WithMany()                                                 .HasForeignKey(e => e.SpecificUserId)   .OnDelete(DeleteBehavior.SetNull);
+        });
 
         // users
         modelBuilder.Entity<UserEntityModel>(entity =>
@@ -106,7 +156,9 @@ public class AuxiliumDbContext : DbContext
             entity.Property(e => e.FeelingLovedScore)               .HasColumnName("feeling_loved_score")                       .HasColumnType("int")                                                                                                               .IsRequired();
             entity.Property(e => e.InterestedInNewThingsScore)      .HasColumnName("interested_in_new_things_score")            .HasColumnType("int")                                                                                                               .IsRequired();
             entity.Property(e => e.FeelingCheerfulScore)            .HasColumnName("feeling_cheerful_score")                    .HasColumnType("int")                                                                                                               .IsRequired();
-            
+
+
+
             entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.SetNull);
         });
 

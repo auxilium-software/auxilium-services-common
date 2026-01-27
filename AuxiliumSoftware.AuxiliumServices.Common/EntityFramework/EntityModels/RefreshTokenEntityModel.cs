@@ -1,6 +1,6 @@
-﻿namespace AuxiliumSoftware.AuxiliumServices.Common.EntityModels
+﻿namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class CaseMessageReadByEntityModel
+    public class RefreshTokenEntityModel
     {
         /// <summary>
         /// The unique identifier for the additional property.
@@ -18,13 +18,16 @@
 
 
         /// <summary>
-        /// The unique identifier for the message that has been read.
+        /// A hash of the Refresh Token.
         /// </summary>
-        public required Guid MessageId { get; set; }
+        public required string TokenHash { get; set; }
+        /// <summary>
+        /// The expiration datetime of the Refresh Token.
+        /// </summary>
+        public required DateTime ExpiresAt { get; set; }
 
 
 
         public UserEntityModel? CreatedByUser { get; set; }
-        public CaseMessageEntityModel? Message { get; set; }
     }
 }

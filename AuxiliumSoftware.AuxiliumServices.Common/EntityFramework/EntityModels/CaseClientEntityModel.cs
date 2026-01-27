@@ -1,6 +1,6 @@
-﻿namespace AuxiliumSoftware.AuxiliumServices.Common.EntityModels
+﻿namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class CaseWorkerEntityModel
+    public class CaseClientEntityModel
     {
         /// <summary>
         /// The unique identifier for the additional property.

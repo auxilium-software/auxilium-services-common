@@ -1,4 +1,4 @@
-﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityModels;
+﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels;
 using AuxiliumSoftware.AuxiliumServices.Common.Services.Interfaces;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations

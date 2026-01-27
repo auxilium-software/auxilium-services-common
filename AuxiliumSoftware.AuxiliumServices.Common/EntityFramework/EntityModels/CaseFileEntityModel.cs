@@ -1,6 +1,6 @@
-﻿namespace AuxiliumSoftware.AuxiliumServices.Common.EntityModels
+﻿namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class UserAdditionalPropertyEntityModel
+    public class CaseFileEntityModel
     {
         /// <summary>
         /// The unique identifier for the additional property.
@@ -26,26 +26,38 @@
 
 
         /// <summary>
-        /// The unique identifier of the user this additional property is for.
+        /// The unique identifier for the case this file is for.
         /// </summary>
-        public required Guid UserId { get; set; }
+        public required Guid CaseId { get; set; }
         /// <summary>
-        /// The name of the additional property.
+        /// The original filename of the file.
         /// </summary>
-        public required string Name { get; set; }
+        public required string Filename { get; set; }
         /// <summary>
-        /// The MIME type of the additional property (e.g., "text/plain", "application/json").
+        /// The MIME type of the file (e.g., "image/png", "application/pdf").
         /// </summary>
         public required string ContentType { get; set; }
         /// <summary>
-        /// The actual content of the additional property.
+        /// The size of the file in bytes.
         /// </summary>
-        public required string Content { get; set; }
+        public required long Size { get; set; }
+        /// <summary>
+        /// A hash (checksum) of the file for integrity verification.
+        /// </summary>
+        public required string Hash { get; set; }
+        /// <summary>
+        /// The path (relative to that set in config) to the file in the LFS (Large File Storage) system.
+        /// </summary>
+        public required string LfsPath { get; set; }
+        /// <summary>
+        /// An optional description of the file the user can set.
+        /// </summary>
+        public required string Description { get; set; }
 
 
 
         public UserEntityModel? CreatedByUser { get; set; }
         public UserEntityModel? LastUpdatedByUser { get; set; }
-        public UserEntityModel? User { get; set; }
+        public CaseEntityModel? Case { get; set; }
     }
 }
