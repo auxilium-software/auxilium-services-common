@@ -1,6 +1,6 @@
-﻿using AuxiliumSoftware.AuxiliumServices.Common.Enumerators;
+﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators;
 
-namespace AuxiliumSoftware.AuxiliumServices.Common.EntityModels
+namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
     public class CaseTodoEntityModel
     {

@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace AuxiliumSoftware.AuxiliumServices.Common.EntityModels
+﻿namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class CaseAdditionalPropertyEntityModel
+    public class UserAdditionalPropertyEntityModel
     {
         /// <summary>
         /// The unique identifier for the additional property.
@@ -28,9 +26,9 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityModels
 
 
         /// <summary>
-        /// The unique identifier of the case this additional property is for.
+        /// The unique identifier of the user this additional property is for.
         /// </summary>
-        public required Guid CaseId { get; set; }
+        public required Guid UserId { get; set; }
         /// <summary>
         /// The name of the additional property.
         /// </summary>
@@ -48,6 +46,6 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityModels
 
         public UserEntityModel? CreatedByUser { get; set; }
         public UserEntityModel? LastUpdatedByUser { get; set; }
-        public CaseEntityModel? Case { get; set; }
+        public UserEntityModel? User { get; set; }
     }
 }

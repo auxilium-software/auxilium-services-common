@@ -1,6 +1,8 @@
-﻿namespace AuxiliumSoftware.AuxiliumServices.Common.EntityModels
+﻿using System;
+
+namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class CaseFileEntityModel
+    public class CaseAdditionalPropertyEntityModel
     {
         /// <summary>
         /// The unique identifier for the additional property.
@@ -26,33 +28,21 @@
 
 
         /// <summary>
-        /// The unique identifier for the case this file is for.
+        /// The unique identifier of the case this additional property is for.
         /// </summary>
         public required Guid CaseId { get; set; }
         /// <summary>
-        /// The original filename of the file.
+        /// The name of the additional property.
         /// </summary>
-        public required string Filename { get; set; }
+        public required string Name { get; set; }
         /// <summary>
-        /// The MIME type of the file (e.g., "image/png", "application/pdf").
+        /// The MIME type of the additional property (e.g., "text/plain", "application/json").
         /// </summary>
         public required string ContentType { get; set; }
         /// <summary>
-        /// The size of the file in bytes.
+        /// The actual content of the additional property.
         /// </summary>
-        public required long Size { get; set; }
-        /// <summary>
-        /// A hash (checksum) of the file for integrity verification.
-        /// </summary>
-        public required string Hash { get; set; }
-        /// <summary>
-        /// The path (relative to that set in config) to the file in the LFS (Large File Storage) system.
-        /// </summary>
-        public required string LfsPath { get; set; }
-        /// <summary>
-        /// An optional description of the file the user can set.
-        /// </summary>
-        public required string Description { get; set; }
+        public required string Content { get; set; }
 
 
 

@@ -1,5 +1,5 @@
-﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityModels;
-using AuxiliumSoftware.AuxiliumServices.Common.Enumerators;
+﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels;
+using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Interfaces
 {
