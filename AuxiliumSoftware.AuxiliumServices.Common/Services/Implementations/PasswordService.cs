@@ -1,5 +1,5 @@
 ﻿using AuxiliumSoftware.AuxiliumServices.Common.Configuration;
-using AuxiliumSoftware.AuxiliumServices.Common.EF;
+using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework;
 using AuxiliumSoftware.AuxiliumServices.Common.Services.Interfaces;
 using Konscious.Security.Cryptography;
 using Microsoft.Extensions.Configuration;
