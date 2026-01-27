@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System.IO;
 using System.Reflection.Emit;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework;
 
@@ -14,6 +15,12 @@ public class AuxiliumDbContext : DbContext
         : base(options)
     {
     }
+
+    private static readonly JsonSerializerOptions _jsonOptions = new()
+    {
+        Converters = { new JsonStringEnumConverter() }
+    };
+
 
 
 
@@ -56,15 +63,21 @@ public class AuxiliumDbContext : DbContext
             entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
             entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)")                                                                                                          .IsRequired();
             
-            entity.Property(e => e.EventType)                       .HasColumnName("event_type")                                .HasColumnType("text")                 .HasConversion<string>()                                                                     .IsRequired();
+            entity.Property(e => e.EventType)                       .HasColumnName("event_type")                                .HasColumnType("text")                  .HasConversion<string>()                                                                    .IsRequired();
             entity.Property(e => e.ClientIPAddress)                 .HasColumnName("client_ip_address")                         .HasColumnType("text")                                                                                                              .IsRequired();
-            entity.Property(e => e.Metadata)                        .HasColumnName("metadata")                                  .HasColumnType("json")                 .HasConversion(
-                                                                                                                                                                            v => JsonSerializer.Serialize(v, (JsonSerializerOptions?)null),
-                                                                                                                                                                            v => string.IsNullOrEmpty(v) 
+            entity.Property(e => e.Metadata)                        .HasColumnName("metadata")                                  .HasColumnType("json")                  .HasConversion(
+                                                                                                                                                                            v => JsonSerializer.Serialize(
+                                                                                                                                                                                v.ToDictionary(k => k.Key.ToString(), k => k.Value),
+                                                                                                                                                                                _jsonOptions),
+                                                                                                                                                                            v => string.IsNullOrEmpty(v)
                                                                                                                                                                             ? new Dictionary<AuditLogEntryMetadataKey, object>()
-                                                                                                                                                                            : JsonSerializer.Deserialize<Dictionary<AuditLogEntryMetadataKey, object>>(v, (JsonSerializerOptions?)null) 
-                                                                                                                                                                            ?? new Dictionary<AuditLogEntryMetadataKey, object>()
-                                                                                                                                                                        )                                                                                           .IsRequired();
+                                                                                                                                                                            : JsonSerializer.Deserialize<Dictionary<string, object>>(v, _jsonOptions) == null
+                                                                                                                                                                            ? new Dictionary<AuditLogEntryMetadataKey, object>()
+                                                                                                                                                                            : JsonSerializer.Deserialize<Dictionary<string, object>>(v, _jsonOptions)!
+                                                                                                                                                                            .ToDictionary(
+                                                                                                                                                                                k => Enum.Parse<AuditLogEntryMetadataKey>(k.Key),
+                                                                                                                                                                                k => k.Value)
+                                                                                                                                                                            )                                                                                       .IsRequired();
 
 
 
