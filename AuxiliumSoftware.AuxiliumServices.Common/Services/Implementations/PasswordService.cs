@@ -1,17 +1,25 @@
-﻿using AuxiliumSoftware.AuxiliumServices.Common.Services.Interfaces;
+﻿using AuxiliumSoftware.AuxiliumServices.Common.Configuration;
+using AuxiliumSoftware.AuxiliumServices.Common.EF;
+using AuxiliumSoftware.AuxiliumServices.Common.Services.Interfaces;
 using Konscious.Security.Cryptography;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace AuxiliumSoftware.AuxiliumServices.Common.Services;
+namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations;
 
 public class PasswordService : IPasswordService
 {
-    private const int Argon2MemoryCost = 65536;
-    private const int Argon2TimeCost = 3;
-    private const int Argon2Parallelism = 1;
-    private const int Argon2HashLength = 32;
-    private const int Argon2SaltLength = 16;
+    private readonly ConfigurationStructure _configuration;
+
+    public PasswordService(
+        IConfiguration configuration
+        )
+    {
+        _configuration = configuration.Get<ConfigurationStructure>()!;
+    }
+
 
     public string HashPassword(string password)
     {
@@ -48,22 +56,22 @@ public class PasswordService : IPasswordService
 
     private string HashPasswordArgon2(string password)
     {
-        var salt = RandomNumberGenerator.GetBytes(Argon2SaltLength);
+        var salt = RandomNumberGenerator.GetBytes(_configuration.Argon2.SaltLength);
 
         using var argon2 = new Argon2id(Encoding.UTF8.GetBytes(password))
         {
             Salt = salt,
-            DegreeOfParallelism = Argon2Parallelism,
-            MemorySize = Argon2MemoryCost,
-            Iterations = Argon2TimeCost
+            DegreeOfParallelism = _configuration.Argon2.Parallelism,
+            MemorySize = _configuration.Argon2.MemoryCost,
+            Iterations = _configuration.Argon2.TimeCost
         };
 
-        var hash = argon2.GetBytes(Argon2HashLength);
+        var hash = argon2.GetBytes(_configuration.Argon2.HashLength);
 
         var saltBase64 = Convert.ToBase64String(salt).TrimEnd('=');
         var hashBase64 = Convert.ToBase64String(hash).TrimEnd('=');
 
-        return $"$argon2id$v=19$m={Argon2MemoryCost},t={Argon2TimeCost},p={Argon2Parallelism}${saltBase64}${hashBase64}";
+        return $"$argon2id$v=19$m={_configuration.Argon2.MemoryCost},t={_configuration.Argon2.TimeCost},p={_configuration.Argon2.Parallelism}${saltBase64}${hashBase64}";
     }
 
     private bool VerifyPasswordArgon2(string password, string passwordHash)

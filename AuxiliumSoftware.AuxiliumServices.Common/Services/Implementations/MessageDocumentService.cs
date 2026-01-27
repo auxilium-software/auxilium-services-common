@@ -6,7 +6,7 @@ using AuxiliumSoftware.AuxiliumServices.Common.Utilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace AuxiliumSoftware.AuxiliumServices.Common.Services;
+namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations;
 
 /// <summary>
 /// Service for case message operations

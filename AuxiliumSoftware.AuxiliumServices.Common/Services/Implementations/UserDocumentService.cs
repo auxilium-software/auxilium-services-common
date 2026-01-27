@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
 
-namespace AuxiliumSoftware.AuxiliumServices.Common.Services;
+namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations;
 
 public class UserDocumentService : IUserDocumentService
 {
