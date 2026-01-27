@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System.IO;
 using System.Reflection.Emit;
 
-namespace AuxiliumSoftware.AuxiliumServices.Common.EF;
+namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework;
 
 public class AuxiliumDbContext : DbContext
 {
