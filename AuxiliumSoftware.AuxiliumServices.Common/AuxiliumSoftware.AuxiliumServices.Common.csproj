@@ -49,7 +49,6 @@
     <PackageReference Include="NetEscapades.Configuration.Yaml" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" />
-    <PackageReference Include="ClickHouse.Client" />
   </ItemGroup>
 
 </Project>
