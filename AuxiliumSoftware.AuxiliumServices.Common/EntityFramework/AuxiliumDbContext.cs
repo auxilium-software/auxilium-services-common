@@ -4,6 +4,7 @@ using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators;
 using Microsoft.EntityFrameworkCore;
 using System.IO;
 using System.Reflection.Emit;
+using System.Text.Json;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework;
 
@@ -55,9 +56,15 @@ public class AuxiliumDbContext : DbContext
             entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
             entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)")                                                                                                          .IsRequired();
             
-            entity.Property(e => e.EventType)                       .HasColumnName("event_type")                                .HasColumnType("text")                                                                                                              .IsRequired();
+            entity.Property(e => e.EventType)                       .HasColumnName("event_type")                                .HasColumnType("text")                 .HasConversion<string>()                                                                     .IsRequired();
             entity.Property(e => e.ClientIPAddress)                 .HasColumnName("client_ip_address")                         .HasColumnType("text")                                                                                                              .IsRequired();
-            entity.Property(e => e.Metadata)                        .HasColumnName("metadata")                                  .HasColumnType("json")                                                                                                              .IsRequired();
+            entity.Property(e => e.Metadata)                        .HasColumnName("metadata")                                  .HasColumnType("json")                 .HasConversion(
+                                                                                                                                                                            v => JsonSerializer.Serialize(v, (JsonSerializerOptions?)null),
+                                                                                                                                                                            v => string.IsNullOrEmpty(v) 
+                                                                                                                                                                            ? new Dictionary<AuditLogEntryMetadataKey, object>()
+                                                                                                                                                                            : JsonSerializer.Deserialize<Dictionary<AuditLogEntryMetadataKey, object>>(v, (JsonSerializerOptions?)null) 
+                                                                                                                                                                            ?? new Dictionary<AuditLogEntryMetadataKey, object>()
+                                                                                                                                                                        )                                                                                           .IsRequired();
 
 
 
@@ -76,7 +83,7 @@ public class AuxiliumDbContext : DbContext
             entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
             entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)")                                                                                                          .IsRequired();
             
-            entity.Property(e => e.Severity)                        .HasColumnName("severity")                                  .HasColumnType("text")                                                                                                              .IsRequired();
+            entity.Property(e => e.Severity)                        .HasColumnName("severity")                                  .HasColumnType("text")                  .HasConversion<string>()                                                                    .IsRequired();
             entity.Property(e => e.Title)                           .HasColumnName("title")                                     .HasColumnType("text")                                                                                                              .IsRequired();
             entity.Property(e => e.Content)                         .HasColumnName("content")                                   .HasColumnType("text")                                                                                                              .IsRequired();
             entity.Property(e => e.IsActive)                        .HasColumnName("is_active")                                 .HasColumnType("bool")                                                          .HasDefaultValueSql("false")                        .IsRequired();

@@ -7,11 +7,11 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     
-    <Version>3.0.4.2</Version>
+    <Version>3.0.4.3</Version>
     <Company>Auxilium Software</Company>
     <Product>AuxiliumSoftware.AuxiliumServices.Common</Product>
     <Copyright>Copyright © 2026</Copyright>
-    <Description>A collection of common classes for use throughout AuxiliumServices.*</Description>
+    <Description>A collection of common classes for use throughout AuxiliumSoftware.AuxiliumServices.+</Description>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Title>Auxilium Services - Common</Title>
     <Authors>Auxilium Software</Authors>
