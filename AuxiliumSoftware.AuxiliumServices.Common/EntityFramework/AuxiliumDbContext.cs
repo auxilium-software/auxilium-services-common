@@ -44,7 +44,7 @@ public class AuxiliumDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        // users
+        // audit_log
         modelBuilder.Entity<AuditLogEntryEntityModel>(entity =>
         {
             entity.ToTable("audit_log");
@@ -68,7 +68,7 @@ public class AuxiliumDbContext : DbContext
 
 
 
-            entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.SetNull);
+            entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.Cascade);
         });
 
         // system_bulletin
