@@ -13,13 +13,14 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 
 
 
-        public required SystemBulletinMessageSeverity Severity { get; set; }
+        public required SystemBulletinMessageSeverityEnum Severity { get; set; }
         public required string Title { get; set; }
         public required string Content { get; set; }
         public required bool IsActive { get; set; }
         public required bool IsDismissable { get; set; }
         public required DateTime StartsAt { get; set; }
         public DateTime? EndsAt { get; set; }
+        public SystemBulletinMessageTargetAudienceEnum TargetAudience { get; set; }
         public Guid? SpecificUserId { get; set; }
 
 

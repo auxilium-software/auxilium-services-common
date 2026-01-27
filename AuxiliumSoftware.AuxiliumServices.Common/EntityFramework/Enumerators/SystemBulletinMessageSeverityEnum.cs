@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators
 {
     [JsonConverter(typeof(JsonStringEnumConverter))]
-    public enum SystemBulletinMessageSeverity
+    public enum SystemBulletinMessageSeverityEnum
     {
         [JsonPropertyName("informational")]
         Informational,
