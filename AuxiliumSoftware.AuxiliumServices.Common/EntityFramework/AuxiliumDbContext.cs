@@ -103,6 +103,7 @@ public class AuxiliumDbContext : DbContext
             entity.Property(e => e.IsDismissable)                   .HasColumnName("is_dismissable")                            .HasColumnType("tinyint(1)")                                                                                                        .IsRequired();
             entity.Property(e => e.StartsAt)                        .HasColumnName("starts_at")                                 .HasColumnType("datetime")                                                                                                          .IsRequired();
             entity.Property(e => e.EndsAt)                          .HasColumnName("ends_at")                                   .HasColumnType("datetime");
+            entity.Property(e => e.TargetAudience)                  .HasColumnName("target_audience")                           .HasColumnType("text")                                                                                                              .IsRequired();
             entity.Property(e => e.SpecificUserId)                  .HasColumnName("specific_user_id")                          .HasColumnType("char(36)");
 
 
