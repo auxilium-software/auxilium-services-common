@@ -22,31 +22,10 @@ public class AuxiliumDbContext : DbContext
         Converters = { new JsonStringEnumConverter() }
     };
 
-    private static Dictionary<AuditLogEntryMetadataKey, object> DeserializeMetadata(string? v)
-    {
-        if (string.IsNullOrEmpty(v))
-        {
-            return new Dictionary<AuditLogEntryMetadataKey, object>();
-        }
-
-        var deserialized = JsonSerializer.Deserialize<Dictionary<string, object>>(v, _jsonOptions);
-
-        if (deserialized == null)
-        {
-            return new Dictionary<AuditLogEntryMetadataKey, object>();
-        }
-
-        return deserialized.ToDictionary(
-            k => Enum.Parse<AuditLogEntryMetadataKey>(k.Key),
-            k => k.Value
-        );
-    }
 
 
 
 
-
-    public DbSet<AuditLogEntryEntityModel> AuditLog { get; set; }
     public DbSet<SystemBulletinEntryEntityModel> SystemBulletins { get; set; }
     public DbSet<UserEntityModel> Users { get; set; }
     public DbSet<CaseEntityModel> Cases { get; set; }
@@ -62,6 +41,9 @@ public class AuxiliumDbContext : DbContext
     public DbSet<CaseTimelineItemEntityModel> CaseTimeline { get; set; }
     public DbSet<RefreshTokenEntityModel> RefreshTokens { get; set; }
     public DbSet<WEMWBSEntityModel> WEMWBSAssessments { get; set; }
+    public DbSet<LogLoginAttemptEntityModel> Log_LoginAttempts { get; set; }
+    public DbSet<LogSystemBulletinEntryDismissalEntityModel> Log_SystemBulletinEntryDismissals { get; set; }
+    public DbSet<LogSystemBulletinEntryViewEntityModel> Log_SystemBulletinEntryViews { get; set; }
 
 
 
@@ -70,35 +52,6 @@ public class AuxiliumDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-
-        // audit_log
-        modelBuilder.Entity<AuditLogEntryEntityModel>(entity =>
-        {
-            entity.ToTable("audit_log");
-            entity.HasKey(e => e.Id);
-
-
-
-            entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
-            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
-            entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)")                                                                                                          .IsRequired();
-            
-            entity.Property(e => e.EventType)                       .HasColumnName("event_type")                                .HasColumnType("text")                  .HasConversion(new JsonPropertyNameEnumConverter<AuditLogEntryType>())                      .IsRequired();
-            entity.Property(e => e.ClientIPAddress)                 .HasColumnName("client_ip_address")                         .HasColumnType("text")                                                                                                              .IsRequired();
-            entity.Property(e => e.Metadata)                        .HasColumnName("metadata")                                  .HasColumnType("json")                  .HasConversion(
-                                                                                                                                                                            v => JsonSerializer.Serialize(
-                                                                                                                                                                                v.ToDictionary(
-                                                                                                                                                                                    k => k.Key.ToString(),
-                                                                                                                                                                                    k => k.Value
-                                                                                                                                                                                ),
-                                                                                                                                                                                _jsonOptions),
-                                                                                                                                                                            v => DeserializeMetadata(v)
-                                                                                                                                                                        )                                                                                           .IsRequired();
-
-
-
-            entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.Cascade);
-        });
 
         // system_bulletin
         modelBuilder.Entity<SystemBulletinEntryEntityModel>(entity =>
@@ -467,6 +420,51 @@ public class AuxiliumDbContext : DbContext
             entity.Property(e => e.ExpiresAt)                       .HasColumnName("expires_at")                                .HasColumnType("datetime")                                                                                                          .IsRequired();
 
             entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        // log__login_attempts
+        modelBuilder.Entity<LogLoginAttemptEntityModel>(entity =>
+        {
+            entity.ToTable("log__login_attempts");
+            entity.HasKey(e => e.Id);
+            
+            entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
+            
+            entity.Property(e => e.AttemptedEmailAddress)           .HasColumnName("attempted_email_address")                   .HasColumnType("text")                                                                                                              .IsRequired();
+            entity.Property(e => e.WasLoginSuccessful)              .HasColumnName("was_login_successful")                      .HasColumnType("tinyint(1)")                                                                                                        .IsRequired();
+        });
+
+        // log__system_bulletin_views
+        modelBuilder.Entity<LogSystemBulletinEntryDismissalEntityModel>(entity =>
+        {
+            entity.ToTable("log__system_bulletin_views");
+            entity.HasKey(e => e.Id);
+            
+            entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
+            entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)");
+
+            entity.Property(e => e.SystemBulletinId)                .HasColumnName("system_bulletin_id")                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
+
+            entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.Cascade);
+            entity.HasOne(e => e.SystemBulletin)                    .WithMany()                                                 .HasForeignKey(e => e.SystemBulletinId) .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        // log__system_bulletin_dismissals
+        modelBuilder.Entity<LogSystemBulletinEntryViewEntityModel>(entity =>
+        {
+            entity.ToTable("log__system_bulletin_views");
+            entity.HasKey(e => e.Id);
+            
+            entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
+            entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)");
+
+            entity.Property(e => e.SystemBulletinId)                .HasColumnName("system_bulletin_id")                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
+
+            entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.Cascade);
+            entity.HasOne(e => e.SystemBulletin)                    .WithMany()                                                 .HasForeignKey(e => e.SystemBulletinId) .OnDelete(DeleteBehavior.Cascade);
         });
     }
 }
