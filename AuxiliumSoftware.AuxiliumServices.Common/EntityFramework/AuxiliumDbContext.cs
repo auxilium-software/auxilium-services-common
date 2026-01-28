@@ -34,7 +34,7 @@ public class AuxiliumDbContext : DbContext
     public DbSet<CaseAdditionalPropertyEntityModel> CaseAdditionalProperties { get; set; }
     public DbSet<UserAdditionalPropertyEntityModel> UserAdditionalProperties { get; set; }
     public DbSet<CaseMessageEntityModel> CaseMessages { get; set; }
-    public DbSet<CaseMessageReadByEntityModel> CaseMessagesReadBys { get; set; }
+    public DbSet<LogCaseMessageReadByEntityModel> CaseMessagesReadBys { get; set; }
     public DbSet<CaseFileEntityModel> CaseFiles { get; set; }
     public DbSet<UserFileEntityModel> UserFiles { get; set; }
     public DbSet<CaseTodoEntityModel> CaseTodos { get; set; }
@@ -292,22 +292,6 @@ public class AuxiliumDbContext : DbContext
             entity.HasOne(e => e.Sender)                            .WithMany()                                                 .HasForeignKey(e => e.SenderId);
         });
 
-        // case_messages_read_bys
-        modelBuilder.Entity<CaseMessageReadByEntityModel>(entity =>
-        {
-            entity.ToTable("case_messages_read_bys");
-            entity.HasKey(e => e.Id);
-            
-            entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
-            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
-            entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)");
-
-            entity.Property(e => e.MessageId)                       .HasColumnName("message_id")                                .HasColumnType("char(36)")                                                                                                          .IsRequired();
-            
-            entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.SetNull);
-            entity.HasOne(e => e.Message)                           .WithMany()                                                 .HasForeignKey(e => e.MessageId)        .OnDelete(DeleteBehavior.Cascade);
-        });
-
         // case_todos
         modelBuilder.Entity<CaseTodoEntityModel>(entity =>
         {
@@ -422,6 +406,10 @@ public class AuxiliumDbContext : DbContext
             entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.Cascade);
         });
 
+
+
+
+
         // log__login_attempts
         modelBuilder.Entity<LogLoginAttemptEntityModel>(entity =>
         {
@@ -435,15 +423,31 @@ public class AuxiliumDbContext : DbContext
             entity.Property(e => e.WasLoginSuccessful)              .HasColumnName("was_login_successful")                      .HasColumnType("tinyint(1)")                                                                                                        .IsRequired();
         });
 
-        // log__system_bulletin_views
-        modelBuilder.Entity<LogSystemBulletinEntryDismissalEntityModel>(entity =>
+        // case_messages_read_bys
+        modelBuilder.Entity<LogCaseMessageReadByEntityModel>(entity =>
         {
-            entity.ToTable("log__system_bulletin_views");
+            entity.ToTable("log__case_messages_read_bys");
             entity.HasKey(e => e.Id);
             
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
             entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
-            entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)");
+            entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)")                                                                                                          .IsRequired();
+
+            entity.Property(e => e.MessageId)                       .HasColumnName("message_id")                                .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            
+            entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.Cascade);
+            entity.HasOne(e => e.Message)                           .WithMany()                                                 .HasForeignKey(e => e.MessageId)        .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        // log__system_bulletin_dismissals
+        modelBuilder.Entity<LogSystemBulletinEntryDismissalEntityModel>(entity =>
+        {
+            entity.ToTable("log__system_bulletin_dismissals");
+            entity.HasKey(e => e.Id);
+            
+            entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
+            entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)")                                                                                                          .IsRequired();
 
             entity.Property(e => e.SystemBulletinId)                .HasColumnName("system_bulletin_id")                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
 
@@ -451,7 +455,7 @@ public class AuxiliumDbContext : DbContext
             entity.HasOne(e => e.SystemBulletin)                    .WithMany()                                                 .HasForeignKey(e => e.SystemBulletinId) .OnDelete(DeleteBehavior.Cascade);
         });
 
-        // log__system_bulletin_dismissals
+        // log__system_bulletin_views
         modelBuilder.Entity<LogSystemBulletinEntryViewEntityModel>(entity =>
         {
             entity.ToTable("log__system_bulletin_views");
@@ -459,7 +463,7 @@ public class AuxiliumDbContext : DbContext
             
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
             entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
-            entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)");
+            entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)")                                                                                                          .IsRequired();
 
             entity.Property(e => e.SystemBulletinId)                .HasColumnName("system_bulletin_id")                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
 

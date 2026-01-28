@@ -52,6 +52,6 @@
         public UserEntityModel? LastUpdatedByUser { get; set; }
         public CaseEntityModel? Case { get; set; }
         public UserEntityModel? Sender { get; set; }
-        public ICollection<CaseMessageReadByEntityModel>? ReadBy { get; set; }
+        public ICollection<LogCaseMessageReadByEntityModel>? ReadBy { get; set; }
     }
 }
