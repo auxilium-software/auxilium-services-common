@@ -127,7 +127,7 @@ public class MessageDocumentService : IMessageDocumentService
             if (!alreadyRead)
             {
                 // create a read-by entry
-                var readBy = new CaseMessageReadByEntityModel
+                var readBy = new LogCaseMessageReadByEntityModel
                 {
                     Id = UUIDUtilities.GenerateV5(DatabaseObjectType.MessageReadBy),
                     MessageId = messageId,

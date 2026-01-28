@@ -1,6 +1,6 @@
 ﻿namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class CaseMessageReadByEntityModel
+    public class LogCaseMessageReadByEntityModel
     {
         /// <summary>
         /// The unique identifier for the additional property.
@@ -13,7 +13,7 @@
         /// <summary>
         /// The unique identifier of the user who created the additional property.
         /// </summary>
-        public Guid? CreatedBy { get; set; }
+        public Guid CreatedBy { get; set; }
 
 
 
