@@ -6,5 +6,10 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators;
 public enum AuditLogEntryType
 {
     [JsonPropertyName("/service/api/start")]
-    Service_API_Start
+    Service_API_Start,
+
+    [JsonPropertyName("/system/bulletin/view")]
+    System_Bulletin_View,
+    [JsonPropertyName("/system/bulletin/dismissal")]
+    System_Bulletin_Dismissal
 }

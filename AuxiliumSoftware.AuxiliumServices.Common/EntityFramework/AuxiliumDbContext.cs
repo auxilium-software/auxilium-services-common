@@ -1,4 +1,5 @@
 ﻿using AuxiliumSoftware.AuxiliumServices.Common.DataStructures;
+using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Converters;
 using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels;
 using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators;
 using Microsoft.EntityFrameworkCore;
@@ -21,13 +22,32 @@ public class AuxiliumDbContext : DbContext
         Converters = { new JsonStringEnumConverter() }
     };
 
+    private static Dictionary<AuditLogEntryMetadataKey, object> DeserializeMetadata(string? v)
+    {
+        if (string.IsNullOrEmpty(v))
+        {
+            return new Dictionary<AuditLogEntryMetadataKey, object>();
+        }
+
+        var deserialized = JsonSerializer.Deserialize<Dictionary<string, object>>(v, _jsonOptions);
+
+        if (deserialized == null)
+        {
+            return new Dictionary<AuditLogEntryMetadataKey, object>();
+        }
+
+        return deserialized.ToDictionary(
+            k => Enum.Parse<AuditLogEntryMetadataKey>(k.Key),
+            k => k.Value
+        );
+    }
 
 
 
 
 
     public DbSet<AuditLogEntryEntityModel> AuditLog { get; set; }
-    public DbSet<SystemBulletinEntryEntityModel> SystemBulletin { get; set; }
+    public DbSet<SystemBulletinEntryEntityModel> SystemBulletins { get; set; }
     public DbSet<UserEntityModel> Users { get; set; }
     public DbSet<CaseEntityModel> Cases { get; set; }
     public DbSet<CaseWorkerEntityModel> CaseWorkers { get; set; }
@@ -63,21 +83,17 @@ public class AuxiliumDbContext : DbContext
             entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
             entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)")                                                                                                          .IsRequired();
             
-            entity.Property(e => e.EventType)                       .HasColumnName("event_type")                                .HasColumnType("text")                  .HasConversion<string>()                                                                    .IsRequired();
+            entity.Property(e => e.EventType)                       .HasColumnName("event_type")                                .HasColumnType("text")                  .HasConversion(new JsonPropertyNameEnumConverter<AuditLogEntryType>())                      .IsRequired();
             entity.Property(e => e.ClientIPAddress)                 .HasColumnName("client_ip_address")                         .HasColumnType("text")                                                                                                              .IsRequired();
             entity.Property(e => e.Metadata)                        .HasColumnName("metadata")                                  .HasColumnType("json")                  .HasConversion(
                                                                                                                                                                             v => JsonSerializer.Serialize(
-                                                                                                                                                                                v.ToDictionary(k => k.Key.ToString(), k => k.Value),
+                                                                                                                                                                                v.ToDictionary(
+                                                                                                                                                                                    k => k.Key.ToString(),
+                                                                                                                                                                                    k => k.Value
+                                                                                                                                                                                ),
                                                                                                                                                                                 _jsonOptions),
-                                                                                                                                                                            v => string.IsNullOrEmpty(v)
-                                                                                                                                                                            ? new Dictionary<AuditLogEntryMetadataKey, object>()
-                                                                                                                                                                            : JsonSerializer.Deserialize<Dictionary<string, object>>(v, _jsonOptions) == null
-                                                                                                                                                                            ? new Dictionary<AuditLogEntryMetadataKey, object>()
-                                                                                                                                                                            : JsonSerializer.Deserialize<Dictionary<string, object>>(v, _jsonOptions)!
-                                                                                                                                                                            .ToDictionary(
-                                                                                                                                                                                k => Enum.Parse<AuditLogEntryMetadataKey>(k.Key),
-                                                                                                                                                                                k => k.Value)
-                                                                                                                                                                            )                                                                                       .IsRequired();
+                                                                                                                                                                            v => DeserializeMetadata(v)
+                                                                                                                                                                        )                                                                                           .IsRequired();
 
 
 
@@ -96,14 +112,14 @@ public class AuxiliumDbContext : DbContext
             entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
             entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)");
             
-            entity.Property(e => e.Severity)                        .HasColumnName("severity")                                  .HasColumnType("text")                  .HasConversion<string>()                                                                    .IsRequired();
+            entity.Property(e => e.Severity)                        .HasColumnName("severity")                                  .HasColumnType("text")                  .HasConversion(new JsonPropertyNameEnumConverter<SystemBulletinMessageSeverityEnum>())      .IsRequired();
             entity.Property(e => e.Title)                           .HasColumnName("title")                                     .HasColumnType("text")                                                                                                              .IsRequired();
             entity.Property(e => e.Content)                         .HasColumnName("content")                                   .HasColumnType("text")                                                                                                              .IsRequired();
-            entity.Property(e => e.IsActive)                        .HasColumnName("is_active")                                 .HasColumnType("tinyint(1)")                                                          .HasDefaultValueSql("false")                  .IsRequired();
+            entity.Property(e => e.IsActive)                        .HasColumnName("is_active")                                 .HasColumnType("tinyint(1)")                                                    .HasDefaultValueSql("false")                        .IsRequired();
             entity.Property(e => e.IsDismissable)                   .HasColumnName("is_dismissable")                            .HasColumnType("tinyint(1)")                                                                                                        .IsRequired();
-            entity.Property(e => e.StartsAt)                        .HasColumnName("starts_at")                                 .HasColumnType("datetime")                                                                                                          .IsRequired();
+            entity.Property(e => e.StartsAt)                        .HasColumnName("starts_at")                                 .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
             entity.Property(e => e.EndsAt)                          .HasColumnName("ends_at")                                   .HasColumnType("datetime");
-            entity.Property(e => e.TargetAudience)                  .HasColumnName("target_audience")                           .HasColumnType("text")                                                                                                              .IsRequired();
+            entity.Property(e => e.TargetAudience)                  .HasColumnName("target_audience")                           .HasColumnType("text")                  .HasConversion(new JsonPropertyNameEnumConverter<SystemBulletinMessageTargetAudienceEnum>()).IsRequired();
             entity.Property(e => e.SpecificUserId)                  .HasColumnName("specific_user_id")                          .HasColumnType("char(36)");
 
 
@@ -199,8 +215,8 @@ public class AuxiliumDbContext : DbContext
 
             entity.Property(e => e.Title)                           .HasColumnName("title")                                     .HasColumnType("text")                                                                                                              .IsRequired();
             entity.Property(e => e.Description)                     .HasColumnName("description")                               .HasColumnType("text")                                                                                                              .IsRequired();
-            entity.Property(e => e.Status)                          .HasColumnName("status")                                    .HasColumnType("text")                  .HasConversion<string>()                .HasDefaultValue(CaseStatusEnum.Open)               .IsRequired();
-            entity.Property(e => e.Sensitivity)                     .HasColumnName("sensitivity")                               .HasColumnType("text")                  .HasConversion<string>()                .HasDefaultValue(CaseSensitivityEnum.Confidential)  .IsRequired();
+            entity.Property(e => e.Status)                          .HasColumnName("status")                                    .HasColumnType("text")                  .HasConversion(new JsonPropertyNameEnumConverter<CaseStatusEnum>()).HasDefaultValue(CaseStatusEnum.Open).IsRequired();
+            entity.Property(e => e.Sensitivity)                     .HasColumnName("sensitivity")                               .HasColumnType("text")                  .HasConversion(new JsonPropertyNameEnumConverter<CaseSensitivityEnum>()).HasDefaultValue(CaseSensitivityEnum.Confidential).IsRequired();
 
 
             
@@ -354,8 +370,8 @@ public class AuxiliumDbContext : DbContext
             entity.Property(e => e.CaseId)                          .HasColumnName("case_id")                                   .HasColumnType("char(36)")                                                                                                          .IsRequired();
             entity.Property(e => e.Summary)                         .HasColumnName("summary")                                   .HasColumnType("text")                                                                                                              .IsRequired();
             entity.Property(e => e.Description)                     .HasColumnName("description")                               .HasColumnType("text")                                                                                                              .IsRequired();
-            entity.Property(e => e.Status)                          .HasColumnName("status")                                    .HasColumnType("text")                  .HasConversion<string>()                                                                    .IsRequired();
-            entity.Property(e => e.Priority)                        .HasColumnName("priority")                                  .HasColumnType("text")                  .HasConversion<string>()                                                                    .IsRequired();
+            entity.Property(e => e.Status)                          .HasColumnName("status")                                    .HasColumnType("text")                  .HasConversion(new JsonPropertyNameEnumConverter<TodoStatusEnum>())                         .IsRequired();
+            entity.Property(e => e.Priority)                        .HasColumnName("priority")                                  .HasColumnType("text")                  .HasConversion(new JsonPropertyNameEnumConverter<TodoPriorityEnum>())                       .IsRequired();
             entity.Property(e => e.DueDate)                         .HasColumnName("due_date")                                  .HasColumnType("datetime");
             entity.Property(e => e.AssignedTo)                      .HasColumnName("assigned_to")                               .HasColumnType("char(36)");
             entity.Property(e => e.Reminder)                        .HasColumnName("reminder")                                  .HasColumnType("datetime");
