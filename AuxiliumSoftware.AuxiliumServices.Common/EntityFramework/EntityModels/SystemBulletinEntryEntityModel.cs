@@ -87,10 +87,10 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// <summary>
         /// A Log of Users who have dismissed the System Bulletin.
         /// </summary>
-        public ICollection<LogSystemBulletinEntryDismissalEntityModel>? Dismissals { get; set; }
+        public ICollection<LogSystemBulletinEntryDismissalEventEntityModel>? Dismissals { get; set; }
         /// <summary>
         /// A Log of Users who have viewed the System Bulletin.
         /// </summary>
-        public ICollection<LogSystemBulletinEntryViewEntityModel>? Views { get; set; }
+        public ICollection<LogSystemBulletinEntryViewEventEntityModel>? Views { get; set; }
     }
 }

@@ -81,6 +81,6 @@
         /// <summary>
         /// Read receipts for the Case Message.
         /// </summary>
-        public ICollection<LogCaseMessageReadByEntityModel>? ReadBy { get; set; }
+        public ICollection<LogCaseMessageReadByEventEntityModel>? ReadBy { get; set; }
     }
 }

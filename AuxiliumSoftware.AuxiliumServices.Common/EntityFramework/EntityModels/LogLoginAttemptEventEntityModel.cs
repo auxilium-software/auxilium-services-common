@@ -4,7 +4,7 @@ using System.Text;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class LogLoginAttemptEntityModel
+    public class LogLoginAttemptEventEntityModel
     {
         /// <summary>
         /// The unique identifier for the Log Entry.

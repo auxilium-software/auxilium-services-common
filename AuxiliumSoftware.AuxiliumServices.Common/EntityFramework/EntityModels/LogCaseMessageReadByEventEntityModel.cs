@@ -1,6 +1,6 @@
 ﻿namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class LogCaseMessageReadByEntityModel
+    public class LogCaseMessageReadByEventEntityModel
     {
         /// <summary>
         /// The unique identifier for the Read Receipt.

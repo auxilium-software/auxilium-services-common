@@ -4,18 +4,18 @@ using System.Text;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class LogSystemBulletinEntryDismissalEntityModel
+    public class LogSystemBulletinEntryViewEventEntityModel
     {
         /// <summary>
-        /// The unique identifier for the System Bulletin Dismissal Log Entry.
+        /// The unique identifier for the System Bulletin View Log Entry.
         /// </summary>
         public required Guid Id { get; set; }
         /// <summary>
-        /// The timestamp of when the System Bulletin was dismissed.
+        /// The timestamp of when the System Bulletin was viewed.
         /// </summary>
         public required DateTime CreatedAt { get; set; }
         /// <summary>
-        /// The unique identifier of the User who dismissed the System Bulletin.
+        /// The unique identifier of the User who viewed the System Bulletin.
         /// </summary>
         public Guid CreatedBy { get; set; }
 
@@ -24,7 +24,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 
 
         /// <summary>
-        /// The unique identifier of the Bulletin that was dismissed.
+        /// The unique identifier of the Bulletin that was viewed.
         /// </summary>
         public required Guid SystemBulletinId { get; set; }
 
@@ -33,11 +33,11 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 
 
         /// <summary>
-        /// The User who dismissed the System Bulletin.
+        /// The User who viewed the System Bulletin.
         /// </summary>
         public UserEntityModel? CreatedByUser { get; set; }
         /// <summary>
-        /// The System Bulletin that was dismissed.
+        /// The System Bulletin that was viewed.
         /// </summary>
         public SystemBulletinEntryEntityModel? SystemBulletin { get; set; }
     }
