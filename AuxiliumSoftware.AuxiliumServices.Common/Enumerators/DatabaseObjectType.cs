@@ -17,12 +17,12 @@
         CaseMessage,
         CaseFile,
 
-        LogCasseMessageReadByEvent,
+        LogCaseMessageReadByEvent,
         LogLoginAttemptEvent,
         LogSystemBulletinEntryDismissalEvent,
         LogSystemBulletinEntryViewEvent,
 
-        SystemBulletin,
+        SystemBulletinEntry,
 
         WemwbsAssessment,
     }
