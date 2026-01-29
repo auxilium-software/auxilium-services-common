@@ -80,10 +80,70 @@
 
         public UserEntityModel? CreatedByUser { get; set; }
         public UserEntityModel? LastUpdatedByUser { get; set; }
+
+
+
+        /// <summary>
+        /// Cases where this user is assigned as a worker.
+        /// </summary>
         public ICollection<CaseWorkerEntityModel>? WorkerOnCases { get; set; }
+        /// <summary>
+        /// Cases where this user is a client.
+        /// </summary>
         public ICollection<CaseClientEntityModel>? ClientOnCases { get; set; }
+
+        // User's own data collections
+        /// <summary>
+        /// Files belonging to this user.
+        /// </summary>
         public ICollection<UserFileEntityModel>? Files { get; set; }
+        /// <summary>
+        /// Additional properties for this user.
+        /// </summary>
         public ICollection<UserAdditionalPropertyEntityModel>? AdditionalProperties { get; set; }
+        /// <summary>
+        /// Refresh tokens issued to this user.
+        /// </summary>
         public ICollection<RefreshTokenEntityModel>? RefreshTokens { get; set; }
+
+        // Message-related collections
+        /// <summary>
+        /// Messages sent by this user.
+        /// </summary>
+        public ICollection<CaseMessageEntityModel>? SentMessages { get; set; }
+        /// <summary>
+        /// Message read receipts for this user.
+        /// </summary>
+        public ICollection<LogCaseMessageReadByEntityModel>? MessageReadReceipts { get; set; }
+
+        // Todo-related collections
+        /// <summary>
+        /// Todos assigned to this user.
+        /// </summary>
+        public ICollection<CaseTodoEntityModel>? AssignedTodos { get; set; }
+        /// <summary>
+        /// Todos completed by this user.
+        /// </summary>
+        public ICollection<CaseTodoEntityModel>? CompletedTodos { get; set; }
+
+        // Assessment collections
+        /// <summary>
+        /// WEMWBS assessments completed by this user.
+        /// </summary>
+        public ICollection<WEMWBSEntityModel>? WEMWBSAssessments { get; set; }
+
+        // System bulletin collections
+        /// <summary>
+        /// System bulletins targeted specifically at this user.
+        /// </summary>
+        public ICollection<SystemBulletinEntryEntityModel>? TargetedBulletins { get; set; }
+        /// <summary>
+        /// System bulletin dismissals by this user.
+        /// </summary>
+        public ICollection<LogSystemBulletinEntryDismissalEntityModel>? BulletinDismissals { get; set; }
+        /// <summary>
+        /// System bulletin views by this user.
+        /// </summary>
+        public ICollection<LogSystemBulletinEntryViewEntityModel>? BulletinViews { get; set; }
     }
 }

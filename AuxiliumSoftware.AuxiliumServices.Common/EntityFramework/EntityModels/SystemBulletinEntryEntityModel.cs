@@ -27,5 +27,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 
         public UserEntityModel? CreatedByUser { get; set; }
         public UserEntityModel? SpecificUser { get; set; }
+        public ICollection<LogSystemBulletinEntryDismissalEntityModel>? Dismissals { get; set; }
+        public ICollection<LogSystemBulletinEntryViewEntityModel>? Views { get; set; }
     }
 }
