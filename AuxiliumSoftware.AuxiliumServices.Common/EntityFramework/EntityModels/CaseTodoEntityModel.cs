@@ -5,82 +5,108 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
     public class CaseTodoEntityModel
     {
         /// <summary>
-        /// The unique identifier for the additional property.
+        /// The unique identifier for the Case Todo Entry.
         /// </summary>
         public required Guid Id { get; set; }
         /// <summary>
-        /// The timestamp when the additional property was created.
+        /// The timestamp of when the Case Todo Entry was created.
         /// </summary>
         public required DateTime CreatedAt { get; set; }
         /// <summary>
-        /// The unique identifier of the user who created the additional property.
+        /// The unique identifier of the User who created the Case Todo Entry.
         /// </summary>
         public Guid? CreatedBy { get; set; }
         /// <summary>
-        /// The timestamp when the additional property was last updated.
+        /// The timestamp of when the Case Todo Entry was last updated.
         /// </summary>
         public DateTime? LastUpdatedAt { get; set; }
         /// <summary>
-        /// The unique identifier of the user who last updated the additional property.
+        /// The unique identifier of the User who last updated the Case Todo Entry.
         /// </summary>
         public Guid? LastUpdatedBy { get; set; }
 
 
 
+
+
         /// <summary>
-        /// The unique identifier for the case this todo is for.
+        /// The unique identifier for the case the todo is for.
         /// </summary>
         public required Guid CaseId { get; set; }
 
 
 
+
+
         /// <summary>
-        /// The summary/title of the todo item.
+        /// The summary/title of the Case Todo Entry.
         /// </summary>
         public required string Summary { get; set; }
         /// <summary>
-        /// The detailed description of the todo item.
+        /// The detailed description of the Case Todo Entry.
         /// </summary>
         public required string Description { get; set; }
         /// <summary>
-        /// The current status of the todo item.
+        /// The current status of the Case Todo Entry.
         /// </summary>
         public required TodoStatusEnum Status { get; set; }
         /// <summary>
-        /// The priority level of the todo item.
+        /// The priority level of the Case Todo Entry.
         /// </summary>
         public required TodoPriorityEnum Priority { get; set; }
         /// <summary>
-        /// An optional due date for the todo item.
+        /// An optional due date for the Case Todo Entry.
         /// </summary>
         public required DateTime? DueDate { get; set; }
         /// <summary>
-        /// An optional unique identifier of the user this todo item is assigned to.
+        /// An optional unique identifier of the User the Case Todo Entry is assigned to.
         /// </summary>
         public required Guid? AssignedTo { get; set; }
         /// <summary>
-        /// An optional reminder date for the todo item.
+        /// An optional reminder timestamp for the Case Todo Entry.
         /// </summary>
         public required DateTime? Reminder { get; set; }
         /// <summary>
-        /// The timestamp when the todo item was completed.
+        /// The timestamp of when the Case Todo Entry was completed.
         /// </summary>
         public DateTime? CompletedAt { get; set; }
         /// <summary>
-        /// The unique identifier of the user who completed the todo item.
+        /// The unique identifier of the User who completed the Case Todo Entry.
         /// </summary>
         public Guid? CompletedBy { get; set; }
         /// <summary>
-        /// An optional note added upon completion of the todo item.
+        /// An optional note added upon completion of the Case Todo Entry.
         /// </summary>
         public string? CompletionNote { get; set; }
 
 
 
+
+
+        /// <summary>
+        /// The User that created the Case Todo Entry.
+        /// </summary>
         public UserEntityModel? CreatedByUser { get; set; }
+        /// <summary>
+        /// The User that last updated the Case Todo Entry.
+        /// </summary>
         public UserEntityModel? LastUpdatedByUser { get; set; }
+
+
+
+
+
+        /// <summary>
+        /// The case the todo belongs to.
+        /// </summary>
         public CaseEntityModel? Case { get; set; }
+        /// <summary>
+        /// The User the todo is assigned to.
+        /// </summary>
         public UserEntityModel? AssignedToUser { get; set; }
+        /// <summary>
+        /// The User who completed the todo.
+        /// </summary>
         public UserEntityModel? CompletedByUser { get; set; }
     }
 }

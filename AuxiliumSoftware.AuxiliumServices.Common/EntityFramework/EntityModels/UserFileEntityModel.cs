@@ -3,61 +3,80 @@
     public class UserFileEntityModel
     {
         /// <summary>
-        /// The unique identifier for the additional property.
+        /// The unique identifier for the Case File.
         /// </summary>
         public required Guid Id { get; set; }
         /// <summary>
-        /// The timestamp when the additional property was created.
+        /// The timestamp of when the Case File was created.
         /// </summary>
         public required DateTime CreatedAt { get; set; }
         /// <summary>
-        /// The unique identifier of the user who created the additional property.
+        /// The unique identifier of the User who created the Case File.
         /// </summary>
         public Guid? CreatedBy { get; set; }
         /// <summary>
-        /// The timestamp when the additional property was last updated.
+        /// The timestamp of when the Case File was last updated.
         /// </summary>
         public DateTime? LastUpdatedAt { get; set; }
         /// <summary>
-        /// The unique identifier of the user who last updated the additional property.
+        /// The unique identifier of the User who last updated the Case File.
         /// </summary>
         public Guid? LastUpdatedBy { get; set; }
 
 
 
+
+
         /// <summary>
-        /// The unique identifier for the user this file is for.
+        /// The unique identifier for the User the File is for.
         /// </summary>
         public required Guid UserId { get; set; }
         /// <summary>
-        /// The original filename of the file.
+        /// The original filename of the File.
         /// </summary>
         public required string Filename { get; set; }
         /// <summary>
-        /// The MIME type of the file (e.g., "image/png", "application/pdf").
+        /// The MIME type of the File.
         /// </summary>
+        /// <example>
+        /// image/png
+        /// </example>
+        /// <example>
+        /// application/pdf
+        /// </example>
         public required string ContentType { get; set; }
         /// <summary>
-        /// The size of the file in bytes.
+        /// The size of the File in bytes.
         /// </summary>
         public required long Size { get; set; }
         /// <summary>
-        /// A hash (checksum) of the file for integrity verification.
+        /// A hash (checksum) of the File.
         /// </summary>
         public required string Hash { get; set; }
         /// <summary>
-        /// The path (relative to that set in config) to the file in the LFS (Large File Storage) system.
+        /// The filepath (relative to that set in config) to the File in LFS.
         /// </summary>
         public required string LfsPath { get; set; }
         /// <summary>
-        /// An optional description of the file the user can set.
+        /// An optional description of the File the user can set.
         /// </summary>
         public required string Description { get; set; }
 
 
 
+
+
+        /// <summary>
+        /// The User who created the File.
+        /// </summary>
         public UserEntityModel? CreatedByUser { get; set; }
+        /// <summary>
+        /// The User who last updated the File.
+        /// </summary>
         public UserEntityModel? LastUpdatedByUser { get; set; }
+        /// <summary>
+        /// The User the File is for.
+        /// </summary>
         public UserEntityModel? User { get; set; }
     }
 }

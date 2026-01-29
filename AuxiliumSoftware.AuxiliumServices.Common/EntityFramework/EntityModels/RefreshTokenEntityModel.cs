@@ -3,17 +3,19 @@
     public class RefreshTokenEntityModel
     {
         /// <summary>
-        /// The unique identifier for the additional property.
+        /// The unique identifier for the Refresh Token.
         /// </summary>
         public required Guid Id { get; set; }
         /// <summary>
-        /// The timestamp when the additional property was created.
+        /// The timestamp of when the Refresh Token was created.
         /// </summary>
         public required DateTime CreatedAt { get; set; }
         /// <summary>
-        /// The unique identifier of the user who created the additional property.
+        /// The unique identifier of the User who created the Refresh Token.
         /// </summary>
         public Guid? CreatedBy { get; set; }
+
+
 
 
 
@@ -28,6 +30,11 @@
 
 
 
+
+
+        /// <summary>
+        /// The User that created the Refresh Token.
+        /// </summary>
         public UserEntityModel? CreatedByUser { get; set; }
     }
 }

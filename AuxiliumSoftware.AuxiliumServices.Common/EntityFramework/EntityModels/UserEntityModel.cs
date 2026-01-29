@@ -3,146 +3,176 @@
     public class UserEntityModel
     {
         /// <summary>
-        /// The unique identifier for the additional property.
+        /// The unique identifier for the User.
         /// </summary>
         public required Guid Id { get; set; }
         /// <summary>
-        /// The timestamp when the additional property was created.
+        /// The timestamp of when the User was created.
         /// </summary>
         public required DateTime CreatedAt { get; set; }
         /// <summary>
-        /// The unique identifier of the user who created the additional property.
+        /// The unique identifier of the User who created the User.
         /// </summary>
         public Guid? CreatedBy { get; set; }
         /// <summary>
-        /// The timestamp when the additional property was last updated.
+        /// The timestamp of when the User was last updated.
         /// </summary>
         public DateTime? LastUpdatedAt { get; set; }
         /// <summary>
-        /// The unique identifier of the user who last updated the additional property.
+        /// The unique identifier of the User who last updated the User.
         /// </summary>
         public Guid? LastUpdatedBy { get; set; }
 
 
 
+
+
         /// <summary>
-        /// The email address of the user.
+        /// The email address of the User.
         /// </summary>
         public required string? EmailAddress { get; set; }
         /// <summary>
-        /// The hashed password of the user.
+        /// The hashed password of the User.
         /// </summary>
         public required string? PasswordHash { get; set; }
         /// <summary>
-        /// The full name of the user.
+        /// The full name of the User.
         /// </summary>
         public required string FullName { get; set; }
         /// <summary>
-        /// The full address of the user.
+        /// The full address of the User.
         /// </summary>
         public required string? FullAddress { get; set; }
         /// <summary>
-        /// The telephone number of the user.
+        /// The telephone number of the User.
         /// </summary>
         public required string? TelephoneNumber { get; set; }
         /// <summary>
-        /// The gender of the user.
+        /// The gender of the User.
         /// </summary>
         public required string? Gender { get; set; }
         /// <summary>
-        /// The date of birth of the user.
+        /// The date of birth of the User.
         /// </summary>
         public required DateOnly? DateOfBirth { get; set; }
         /// <summary>
-        /// How the user found out about the service.
+        /// How the User found out about our service.
         /// </summary>
         public required string? HowDidYouFindOutAboutOurService { get; set; }
         /// <summary>
-        /// The preferred language for the user.
+        /// The preferred language for the User.
         /// </summary>
         public required string LanguagePreference { get; set; }
 
 
+
+
+
         /// <summary>
-        /// Whether the user is allowed to log in.
+        /// Whether the User is allowed to log in.
         /// </summary>
         public required bool AllowLogin { get; set; }
         /// <summary>
-        /// Whether the user is an Administrator.
+        /// Whether the User has the "Administrator" Role.
         /// </summary>
         public required bool IsAdmin { get; set; } = false;
         /// <summary>
-        /// Whether the user is a Case Worker.
+        /// Whether the User has the "Case Worker" Role.
         /// </summary>
         public required bool IsCaseWorker { get; set; } = false;
 
 
 
+
+
+        /// <summary>
+        /// The User that created the User.
+        /// </summary>
         public UserEntityModel? CreatedByUser { get; set; }
+        /// <summary>
+        /// The User that last updated the User.
+        /// </summary>
         public UserEntityModel? LastUpdatedByUser { get; set; }
 
 
 
+
+
         /// <summary>
-        /// Cases where this user is assigned as a worker.
+        /// Cases where the User is assigned as a worker.
         /// </summary>
         public ICollection<CaseWorkerEntityModel>? WorkerOnCases { get; set; }
         /// <summary>
-        /// Cases where this user is a client.
+        /// Cases where the User is a client.
         /// </summary>
         public ICollection<CaseClientEntityModel>? ClientOnCases { get; set; }
 
-        // User's own data collections
+
+
+
+
         /// <summary>
-        /// Files belonging to this user.
+        /// Files belonging to the User.
         /// </summary>
         public ICollection<UserFileEntityModel>? Files { get; set; }
         /// <summary>
-        /// Additional properties for this user.
+        /// Additional Properties for the User.
         /// </summary>
         public ICollection<UserAdditionalPropertyEntityModel>? AdditionalProperties { get; set; }
         /// <summary>
-        /// Refresh tokens issued to this user.
+        /// Refresh Tokens for the User.
         /// </summary>
         public ICollection<RefreshTokenEntityModel>? RefreshTokens { get; set; }
 
-        // Message-related collections
+
+
+
+
         /// <summary>
-        /// Messages sent by this user.
+        /// Messages sent by the User.
         /// </summary>
         public ICollection<CaseMessageEntityModel>? SentMessages { get; set; }
         /// <summary>
-        /// Message read receipts for this user.
+        /// Message Read Receipts for the User.
         /// </summary>
         public ICollection<LogCaseMessageReadByEntityModel>? MessageReadReceipts { get; set; }
 
-        // Todo-related collections
+
+
+
+
         /// <summary>
-        /// Todos assigned to this user.
+        /// Todos assigned to the User.
         /// </summary>
         public ICollection<CaseTodoEntityModel>? AssignedTodos { get; set; }
         /// <summary>
-        /// Todos completed by this user.
+        /// Todos completed by the User.
         /// </summary>
         public ICollection<CaseTodoEntityModel>? CompletedTodos { get; set; }
 
-        // Assessment collections
+
+
+
+
         /// <summary>
-        /// WEMWBS assessments completed by this user.
+        /// WEMWBS Assessments completed by the User.
         /// </summary>
         public ICollection<WEMWBSEntityModel>? WEMWBSAssessments { get; set; }
 
-        // System bulletin collections
+
+
+
+
         /// <summary>
-        /// System bulletins targeted specifically at this user.
+        /// System Bulletins targeted specifically for the User.
         /// </summary>
         public ICollection<SystemBulletinEntryEntityModel>? TargetedBulletins { get; set; }
         /// <summary>
-        /// System bulletin dismissals by this user.
+        /// System Bulletin dismissals by the User.
         /// </summary>
         public ICollection<LogSystemBulletinEntryDismissalEntityModel>? BulletinDismissals { get; set; }
         /// <summary>
-        /// System bulletin views by this user.
+        /// System Bulletin views by the User.
         /// </summary>
         public ICollection<LogSystemBulletinEntryViewEntityModel>? BulletinViews { get; set; }
     }
