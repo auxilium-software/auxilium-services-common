@@ -3,33 +3,42 @@
     public class CaseWorkerEntityModel
     {
         /// <summary>
-        /// The unique identifier for the additional property.
+        /// The unique identifier for the Case Worker Assignment.
         /// </summary>
         public required Guid Id { get; set; }
         /// <summary>
-        /// The timestamp when the additional property was created.
+        /// The timestamp of when the Case Worker Assignment was created.
         /// </summary>
         public required DateTime CreatedAt { get; set; }
         /// <summary>
-        /// The unique identifier of the user who created the additional property.
+        /// The unique identifier of the User who created the Case Worker Assignment.
         /// </summary>
         public Guid? CreatedBy { get; set; }
 
 
 
         /// <summary>
-        /// The unique identifier of the case this assignment is for.
+        /// The unique identifier of the Case the Worker Assignment is for.
         /// </summary>
         public required Guid CaseId { get; set; }
         /// <summary>
-        /// The unique identifier of the user assigned to the case.
+        /// The unique identifier of the User Assigned to the Case.
         /// </summary>
         public required Guid UserId { get; set; }
 
 
 
+        /// <summary>
+        /// The User who created the Case Worker Assignment.
+        /// </summary>
         public UserEntityModel? CreatedByUser { get; set; }
+        /// <summary>
+        /// The Case the Case Worker Assignment is for.
+        /// </summary>
         public CaseEntityModel? Case { get; set; }
+        /// <summary>
+        /// The User the Case Worker Assignment is for.
+        /// </summary>
         public UserEntityModel? User { get; set; }
     }
 }

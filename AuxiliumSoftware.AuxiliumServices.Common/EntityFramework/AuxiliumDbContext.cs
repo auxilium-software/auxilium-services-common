@@ -78,7 +78,9 @@ public class AuxiliumDbContext : DbContext
 
             
             entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.SetNull);
-            entity.HasOne(e => e.SpecificUser)                      .WithMany()                                                 .HasForeignKey(e => e.SpecificUserId)   .OnDelete(DeleteBehavior.SetNull);
+            entity.HasOne(e => e.SpecificUser)                      .WithMany(u => u.TargetedBulletins)                         .HasForeignKey(e => e.SpecificUserId)   .OnDelete(DeleteBehavior.SetNull);
+            entity.HasMany(e => e.Dismissals)                       .WithOne(d => d.SystemBulletin)                             .HasForeignKey(d => d.SystemBulletinId) .OnDelete(DeleteBehavior.Cascade);
+            entity.HasMany(e => e.Views)                            .WithOne(v => v.SystemBulletin)                             .HasForeignKey(v => v.SystemBulletinId) .OnDelete(DeleteBehavior.Cascade);
         });
 
         // users
@@ -115,6 +117,31 @@ public class AuxiliumDbContext : DbContext
             entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.SetNull);
             entity.HasOne(e => e.LastUpdatedByUser)                 .WithMany()                                                 .HasForeignKey(e => e.LastUpdatedBy)    .OnDelete(DeleteBehavior.SetNull);
 
+            // case-related collections
+            entity.HasMany(e => e.WorkerOnCases)                    .WithOne(w => w.User)                                       .HasForeignKey(w => w.UserId);
+            entity.HasMany(e => e.ClientOnCases)                    .WithOne(c => c.User)                                       .HasForeignKey(c => c.UserId);
+
+            // user's own data collections
+            entity.HasMany(e => e.Files)                            .WithOne(f => f.User)                                       .HasForeignKey(f => f.UserId)           .OnDelete(DeleteBehavior.Cascade);
+            entity.HasMany(e => e.AdditionalProperties)             .WithOne(p => p.User)                                       .HasForeignKey(p => p.UserId)           .OnDelete(DeleteBehavior.Cascade);
+            entity.HasMany(e => e.RefreshTokens)                    .WithOne(r => r.CreatedByUser)                              .HasForeignKey(r => r.CreatedBy)        .OnDelete(DeleteBehavior.Cascade);
+
+            // message-related collections
+            entity.HasMany(e => e.SentMessages)                     .WithOne(m => m.Sender)                                     .HasForeignKey(m => m.SenderId)         .OnDelete(DeleteBehavior.Restrict);
+            entity.HasMany(e => e.MessageReadReceipts)              .WithOne(r => r.CreatedByUser)                              .HasForeignKey(r => r.CreatedBy)        .OnDelete(DeleteBehavior.Cascade);
+
+            // todo-related collections
+            entity.HasMany(e => e.AssignedTodos)                    .WithOne(t => t.AssignedToUser)                             .HasForeignKey(t => t.AssignedTo)       .OnDelete(DeleteBehavior.Restrict);
+            entity.HasMany(e => e.CompletedTodos)                   .WithOne(t => t.CompletedByUser)                            .HasForeignKey(t => t.CompletedBy)      .OnDelete(DeleteBehavior.Restrict);
+
+            // assessment collections
+            entity.HasMany(e => e.WEMWBSAssessments)                .WithOne(w => w.CreatedByUser)                              .HasForeignKey(w => w.CreatedBy)        .OnDelete(DeleteBehavior.SetNull);
+
+            // system bulletin collections
+            entity.HasMany(e => e.TargetedBulletins)                .WithOne(b => b.SpecificUser)                               .HasForeignKey(b => b.SpecificUserId)   .OnDelete(DeleteBehavior.SetNull);
+            entity.HasMany(e => e.BulletinDismissals)               .WithOne(d => d.CreatedByUser)                              .HasForeignKey(d => d.CreatedBy)        .OnDelete(DeleteBehavior.Cascade);
+            entity.HasMany(e => e.BulletinViews)                    .WithOne(v => v.CreatedByUser)                              .HasForeignKey(v => v.CreatedBy)        .OnDelete(DeleteBehavior.Cascade);
+
 
 
             entity.HasIndex(e => e.EmailAddress).IsUnique();
@@ -149,7 +176,7 @@ public class AuxiliumDbContext : DbContext
 
 
 
-            entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.SetNull);
+            entity.HasOne(e => e.CreatedByUser)                     .WithMany(u => u.WEMWBSAssessments)                         .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.SetNull);
         });
 
         // cases
@@ -265,7 +292,7 @@ public class AuxiliumDbContext : DbContext
             
             entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.SetNull);
             entity.HasOne(e => e.LastUpdatedByUser)                 .WithMany()                                                 .HasForeignKey(e => e.LastUpdatedBy)    .OnDelete(DeleteBehavior.SetNull);
-            entity.HasOne(e => e.User)                              .WithMany(c => c.AdditionalProperties)                      .HasForeignKey(e => e.UserId);
+            entity.HasOne(e => e.User)                              .WithMany(u => u.AdditionalProperties)                      .HasForeignKey(e => e.UserId);
         });
 
         // case_messages
@@ -289,7 +316,8 @@ public class AuxiliumDbContext : DbContext
             entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.SetNull);
             entity.HasOne(e => e.LastUpdatedByUser)                 .WithMany()                                                 .HasForeignKey(e => e.LastUpdatedBy)    .OnDelete(DeleteBehavior.SetNull);
             entity.HasOne(e => e.Case)                              .WithMany(c => c.Messages)                                  .HasForeignKey(e => e.CaseId);
-            entity.HasOne(e => e.Sender)                            .WithMany()                                                 .HasForeignKey(e => e.SenderId);
+            entity.HasOne(e => e.Sender)                            .WithMany(u => u.SentMessages)                              .HasForeignKey(e => e.SenderId)         .OnDelete(DeleteBehavior.Restrict);
+            entity.HasMany(e => e.ReadBy)                           .WithOne(r => r.Message)                                    .HasForeignKey(r => r.MessageId)        .OnDelete(DeleteBehavior.Cascade);
         });
 
         // case_todos
@@ -319,8 +347,8 @@ public class AuxiliumDbContext : DbContext
             entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.SetNull);
             entity.HasOne(e => e.LastUpdatedByUser)                 .WithMany()                                                 .HasForeignKey(e => e.LastUpdatedBy)    .OnDelete(DeleteBehavior.SetNull);
             entity.HasOne(e => e.Case)                              .WithMany(c => c.Todos)                                     .HasForeignKey(e => e.CaseId)           .OnDelete(DeleteBehavior.Restrict);
-            entity.HasOne(e => e.AssignedToUser)                    .WithMany()                                                 .HasForeignKey(e => e.AssignedTo)       .OnDelete(DeleteBehavior.Restrict);
-            entity.HasOne(e => e.CompletedByUser)                   .WithMany()                                                 .HasForeignKey(e => e.CompletedBy)      .OnDelete(DeleteBehavior.Restrict);
+            entity.HasOne(e => e.AssignedToUser)                    .WithMany(u => u.AssignedTodos)                             .HasForeignKey(e => e.AssignedTo)       .OnDelete(DeleteBehavior.Restrict);
+            entity.HasOne(e => e.CompletedByUser)                   .WithMany(u => u.CompletedTodos)                            .HasForeignKey(e => e.CompletedBy)      .OnDelete(DeleteBehavior.Restrict);
         });
 
         // case_timeline
@@ -330,6 +358,7 @@ public class AuxiliumDbContext : DbContext
             entity.HasKey(e => e.Id);
             
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.CaseId)                          .HasColumnName("case_id")                                   .HasColumnType("char(36)")                                                                                                          .IsRequired();
             entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
             entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)");
             entity.Property(e => e.LastUpdatedAt)                   .HasColumnName("last_updated_at")                           .HasColumnType("datetime");
@@ -352,7 +381,7 @@ public class AuxiliumDbContext : DbContext
             entity.Property(e => e.LastUpdatedAt)                   .HasColumnName("last_updated_at")                           .HasColumnType("datetime");
             entity.Property(e => e.LastUpdatedBy)                   .HasColumnName("last_updated_by")                           .HasColumnType("char(36)");
 
-            entity.Property(e => e.CaseId)                          .HasColumnName("case_id")                                   .HasColumnType("char(36)");
+            entity.Property(e => e.CaseId)                          .HasColumnName("case_id")                                   .HasColumnType("char(36)")                                                                                                          .IsRequired();
             entity.Property(e => e.Filename)                        .HasColumnName("filename")                                  .HasColumnType("text")                                                                                                              .IsRequired();
             entity.Property(e => e.ContentType)                     .HasColumnName("content_type")                              .HasColumnType("text")                                                                                                              .IsRequired();
             entity.Property(e => e.Size)                            .HasColumnName("size")                                      .HasColumnType("bigint")                                                                                                            .IsRequired();
@@ -377,7 +406,7 @@ public class AuxiliumDbContext : DbContext
             entity.Property(e => e.LastUpdatedAt)                   .HasColumnName("last_updated_at")                           .HasColumnType("datetime");
             entity.Property(e => e.LastUpdatedBy)                   .HasColumnName("last_updated_by")                           .HasColumnType("char(36)");
 
-            entity.Property(e => e.UserId)                          .HasColumnName("user_id")                                   .HasColumnType("char(36)");
+            entity.Property(e => e.UserId)                          .HasColumnName("user_id")                                   .HasColumnType("char(36)")                                                                                                          .IsRequired();
             entity.Property(e => e.Filename)                        .HasColumnName("filename")                                  .HasColumnType("text")                                                                                                              .IsRequired();
             entity.Property(e => e.ContentType)                     .HasColumnName("content_type")                              .HasColumnType("text")                                                                                                              .IsRequired();
             entity.Property(e => e.Size)                            .HasColumnName("size")                                      .HasColumnType("bigint")                                                                                                            .IsRequired();
@@ -387,7 +416,7 @@ public class AuxiliumDbContext : DbContext
             
             entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.SetNull);
             entity.HasOne(e => e.LastUpdatedByUser)                 .WithMany()                                                 .HasForeignKey(e => e.LastUpdatedBy)    .OnDelete(DeleteBehavior.SetNull);
-            entity.HasOne(e => e.User)                              .WithMany(c => c.Files)                                     .HasForeignKey(e => e.UserId)           .OnDelete(DeleteBehavior.Cascade);
+            entity.HasOne(e => e.User)                              .WithMany(u => u.Files)                                     .HasForeignKey(e => e.UserId)           .OnDelete(DeleteBehavior.Cascade);
         });
 
         // refresh_tokens
@@ -403,7 +432,7 @@ public class AuxiliumDbContext : DbContext
             entity.Property(e => e.TokenHash)                       .HasColumnName("token_hash")                                .HasColumnType("text")                                                                                                              .IsRequired();
             entity.Property(e => e.ExpiresAt)                       .HasColumnName("expires_at")                                .HasColumnType("datetime")                                                                                                          .IsRequired();
 
-            entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.Cascade);
+            entity.HasOne(e => e.CreatedByUser)                     .WithMany(u => u.RefreshTokens)                             .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.Cascade);
         });
 
 
@@ -423,7 +452,7 @@ public class AuxiliumDbContext : DbContext
             entity.Property(e => e.WasLoginSuccessful)              .HasColumnName("was_login_successful")                      .HasColumnType("tinyint(1)")                                                                                                        .IsRequired();
         });
 
-        // case_messages_read_bys
+        // log__case_messages_read_bys
         modelBuilder.Entity<LogCaseMessageReadByEntityModel>(entity =>
         {
             entity.ToTable("log__case_messages_read_bys");
@@ -435,8 +464,8 @@ public class AuxiliumDbContext : DbContext
 
             entity.Property(e => e.MessageId)                       .HasColumnName("message_id")                                .HasColumnType("char(36)")                                                                                                          .IsRequired();
             
-            entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.Cascade);
-            entity.HasOne(e => e.Message)                           .WithMany()                                                 .HasForeignKey(e => e.MessageId)        .OnDelete(DeleteBehavior.Cascade);
+            entity.HasOne(e => e.CreatedByUser)                     .WithMany(u => u.MessageReadReceipts)                       .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.Cascade);
+            entity.HasOne(e => e.Message)                           .WithMany(m => m.ReadBy)                                    .HasForeignKey(e => e.MessageId)        .OnDelete(DeleteBehavior.Cascade);
         });
 
         // log__system_bulletin_dismissals
@@ -451,8 +480,8 @@ public class AuxiliumDbContext : DbContext
 
             entity.Property(e => e.SystemBulletinId)                .HasColumnName("system_bulletin_id")                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
 
-            entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.Cascade);
-            entity.HasOne(e => e.SystemBulletin)                    .WithMany()                                                 .HasForeignKey(e => e.SystemBulletinId) .OnDelete(DeleteBehavior.Cascade);
+            entity.HasOne(e => e.CreatedByUser)                     .WithMany(u => u.BulletinDismissals)                        .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.Cascade);
+            entity.HasOne(e => e.SystemBulletin)                    .WithMany(b => b.Dismissals)                                .HasForeignKey(e => e.SystemBulletinId) .OnDelete(DeleteBehavior.Cascade);
         });
 
         // log__system_bulletin_views
@@ -467,8 +496,8 @@ public class AuxiliumDbContext : DbContext
 
             entity.Property(e => e.SystemBulletinId)                .HasColumnName("system_bulletin_id")                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
 
-            entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.Cascade);
-            entity.HasOne(e => e.SystemBulletin)                    .WithMany()                                                 .HasForeignKey(e => e.SystemBulletinId) .OnDelete(DeleteBehavior.Cascade);
+            entity.HasOne(e => e.CreatedByUser)                     .WithMany(u => u.BulletinViews)                             .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.Cascade);
+            entity.HasOne(e => e.SystemBulletin)                    .WithMany(b => b.Views)                                     .HasForeignKey(e => e.SystemBulletinId) .OnDelete(DeleteBehavior.Cascade);
         });
     }
 }
