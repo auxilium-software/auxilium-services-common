@@ -1,6 +1,6 @@
 ﻿namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class WEMWBSEntityModel
+    public class WemwbsAssessmentEntityModel
     {
         /// <summary>
         /// The unique identifier for the WEMWBS Assessment.

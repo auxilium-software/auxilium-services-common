@@ -6,6 +6,7 @@
 
         User,
         UserAdditionalProperty,
+        UserFile,
 
         Case,
         CaseTimelineItem,
@@ -13,10 +14,16 @@
         CaseAdditionalProperty,
         CaseWorker,
         CaseClient,
+        CaseMessage,
+        CaseFile,
 
-        File,
+        LogCasseMessageReadByEvent,
+        LogLoginAttemptEvent,
+        LogSystemBulletinEntryDismissalEvent,
+        LogSystemBulletinEntryViewEvent,
 
-        Message,
-        MessageReadBy,
+        SystemBulletin,
+
+        WemwbsAssessment,
     }
 }

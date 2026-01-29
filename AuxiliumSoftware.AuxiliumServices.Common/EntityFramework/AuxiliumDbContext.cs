@@ -34,16 +34,16 @@ public class AuxiliumDbContext : DbContext
     public DbSet<CaseAdditionalPropertyEntityModel> CaseAdditionalProperties { get; set; }
     public DbSet<UserAdditionalPropertyEntityModel> UserAdditionalProperties { get; set; }
     public DbSet<CaseMessageEntityModel> CaseMessages { get; set; }
-    public DbSet<LogCaseMessageReadByEntityModel> CaseMessagesReadBys { get; set; }
+    public DbSet<LogCaseMessageReadByEventEntityModel> CaseMessagesReadBys { get; set; }
     public DbSet<CaseFileEntityModel> CaseFiles { get; set; }
     public DbSet<UserFileEntityModel> UserFiles { get; set; }
     public DbSet<CaseTodoEntityModel> CaseTodos { get; set; }
     public DbSet<CaseTimelineItemEntityModel> CaseTimeline { get; set; }
     public DbSet<RefreshTokenEntityModel> RefreshTokens { get; set; }
-    public DbSet<WEMWBSEntityModel> WEMWBSAssessments { get; set; }
-    public DbSet<LogLoginAttemptEntityModel> Log_LoginAttempts { get; set; }
-    public DbSet<LogSystemBulletinEntryDismissalEntityModel> Log_SystemBulletinEntryDismissals { get; set; }
-    public DbSet<LogSystemBulletinEntryViewEntityModel> Log_SystemBulletinEntryViews { get; set; }
+    public DbSet<WemwbsAssessmentEntityModel> WEMWBSAssessments { get; set; }
+    public DbSet<LogLoginAttemptEventEntityModel> Log_LoginAttempts { get; set; }
+    public DbSet<LogSystemBulletinEntryDismissalEventEntityModel> Log_SystemBulletinEntryDismissals { get; set; }
+    public DbSet<LogSystemBulletinEntryViewEventEntityModel> Log_SystemBulletinEntryViews { get; set; }
 
 
 
@@ -148,7 +148,7 @@ public class AuxiliumDbContext : DbContext
         });
 
         // wemwbs
-        modelBuilder.Entity<WEMWBSEntityModel>(entity =>
+        modelBuilder.Entity<WemwbsAssessmentEntityModel>(entity =>
         {
             entity.ToTable("wemwbs_assessments");
             entity.HasKey(e => e.Id);
@@ -440,7 +440,7 @@ public class AuxiliumDbContext : DbContext
 
 
         // log__login_attempts
-        modelBuilder.Entity<LogLoginAttemptEntityModel>(entity =>
+        modelBuilder.Entity<LogLoginAttemptEventEntityModel>(entity =>
         {
             entity.ToTable("log__login_attempts");
             entity.HasKey(e => e.Id);
@@ -453,7 +453,7 @@ public class AuxiliumDbContext : DbContext
         });
 
         // log__case_messages_read_bys
-        modelBuilder.Entity<LogCaseMessageReadByEntityModel>(entity =>
+        modelBuilder.Entity<LogCaseMessageReadByEventEntityModel>(entity =>
         {
             entity.ToTable("log__case_messages_read_bys");
             entity.HasKey(e => e.Id);
@@ -469,7 +469,7 @@ public class AuxiliumDbContext : DbContext
         });
 
         // log__system_bulletin_dismissals
-        modelBuilder.Entity<LogSystemBulletinEntryDismissalEntityModel>(entity =>
+        modelBuilder.Entity<LogSystemBulletinEntryDismissalEventEntityModel>(entity =>
         {
             entity.ToTable("log__system_bulletin_dismissals");
             entity.HasKey(e => e.Id);
@@ -485,7 +485,7 @@ public class AuxiliumDbContext : DbContext
         });
 
         // log__system_bulletin_views
-        modelBuilder.Entity<LogSystemBulletinEntryViewEntityModel>(entity =>
+        modelBuilder.Entity<LogSystemBulletinEntryViewEventEntityModel>(entity =>
         {
             entity.ToTable("log__system_bulletin_views");
             entity.HasKey(e => e.Id);

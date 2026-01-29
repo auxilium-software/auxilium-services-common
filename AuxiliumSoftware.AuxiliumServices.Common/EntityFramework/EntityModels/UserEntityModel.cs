@@ -135,7 +135,7 @@
         /// <summary>
         /// Message Read Receipts for the User.
         /// </summary>
-        public ICollection<LogCaseMessageReadByEntityModel>? MessageReadReceipts { get; set; }
+        public ICollection<LogCaseMessageReadByEventEntityModel>? MessageReadReceipts { get; set; }
 
 
 
@@ -157,7 +157,7 @@
         /// <summary>
         /// WEMWBS Assessments completed by the User.
         /// </summary>
-        public ICollection<WEMWBSEntityModel>? WEMWBSAssessments { get; set; }
+        public ICollection<WemwbsAssessmentEntityModel>? WEMWBSAssessments { get; set; }
 
 
 
@@ -170,10 +170,10 @@
         /// <summary>
         /// System Bulletin dismissals by the User.
         /// </summary>
-        public ICollection<LogSystemBulletinEntryDismissalEntityModel>? BulletinDismissals { get; set; }
+        public ICollection<LogSystemBulletinEntryDismissalEventEntityModel>? BulletinDismissals { get; set; }
         /// <summary>
         /// System Bulletin views by the User.
         /// </summary>
-        public ICollection<LogSystemBulletinEntryViewEntityModel>? BulletinViews { get; set; }
+        public ICollection<LogSystemBulletinEntryViewEventEntityModel>? BulletinViews { get; set; }
     }
 }
