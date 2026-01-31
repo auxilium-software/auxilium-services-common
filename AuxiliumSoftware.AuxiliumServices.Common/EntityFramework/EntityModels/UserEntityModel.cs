@@ -69,6 +69,10 @@
 
 
         /// <summary>
+        /// Whether the User has confirmed their Email Address.
+        /// </summary>
+        public required bool HasEmailAddressBeenVerified { get; set; }
+        /// <summary>
         /// Whether the User is allowed to log in.
         /// </summary>
         public required bool AllowLogin { get; set; }

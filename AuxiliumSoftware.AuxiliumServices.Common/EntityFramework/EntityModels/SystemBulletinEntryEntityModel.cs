@@ -44,7 +44,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// <summary>
         /// Whether Users are able to confirm that they've read the System Bulletin Entry and don't want to see it again.
         /// </summary>
-        public required bool IsDismissable { get; set; }
+        public required bool IsDismissible { get; set; }
         /// <summary>
         /// The DateTime representing when the System Bulletin Entry is due to go live, the default value in database is the current DateTime.
         /// This is useful for scheduling System Bulletin Entries.
