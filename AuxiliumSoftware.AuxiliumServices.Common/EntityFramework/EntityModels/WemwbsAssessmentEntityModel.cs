@@ -13,7 +13,7 @@
         /// <summary>
         /// The unique identifier of the User who created/completed the WEMWBS Assessment.
         /// </summary>
-        public Guid? CreatedBy { get; set; }
+        public required Guid CreatedBy { get; set; }
 
 
 

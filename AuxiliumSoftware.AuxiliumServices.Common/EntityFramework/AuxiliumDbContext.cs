@@ -107,8 +107,9 @@ public class AuxiliumDbContext : DbContext
             entity.Property(e => e.DateOfBirth)                     .HasColumnName("date_of_birth")                             .HasColumnType("date");
             entity.Property(e => e.HowDidYouFindOutAboutOurService) .HasColumnName("how_did_you_find_out_about_our_service")    .HasColumnType("text");
             entity.Property(e => e.LanguagePreference)              .HasColumnName("language_preference")                       .HasColumnType("text")                                                          .HasDefaultValue("en-GB")                           .IsRequired();
-
-            entity.Property(e => e.AllowLogin)                      .HasColumnName("allow_login")                               .HasColumnType("tinyint(1)")                                                    .HasDefaultValue(true)                              .IsRequired();
+            
+            entity.Property(e => e.HasEmailAddressBeenVerified)     .HasColumnName("has_email_address_been_verified")           .HasColumnType("tinyint(1)")                                                    .HasDefaultValue(false)                              .IsRequired();
+            entity.Property(e => e.AllowLogin)                      .HasColumnName("allow_login")                               .HasColumnType("tinyint(1)")                                                    .HasDefaultValue(false)                              .IsRequired();
             entity.Property(e => e.IsAdmin)                         .HasColumnName("is_admin")                                  .HasColumnType("tinyint(1)")                                                    .HasDefaultValue(false)                             .IsRequired();
             entity.Property(e => e.IsCaseWorker)                    .HasColumnName("is_case_worker")                            .HasColumnType("tinyint(1)")                                                    .HasDefaultValue(false)                             .IsRequired();
 
@@ -157,7 +158,7 @@ public class AuxiliumDbContext : DbContext
 
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
             entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
-            entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)");
+            entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)")                                                                                                          .IsRequired();
             
             entity.Property(e => e.OptimismScore)                   .HasColumnName("optimism_score")                            .HasColumnType("int")                                                                                                               .IsRequired();
             entity.Property(e => e.UsefulnessScore)                 .HasColumnName("usefulness_score")                          .HasColumnType("int")                                                                                                               .IsRequired();
@@ -176,7 +177,7 @@ public class AuxiliumDbContext : DbContext
 
 
 
-            entity.HasOne(e => e.CreatedByUser)                     .WithMany(u => u.WEMWBSAssessments)                         .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.SetNull);
+            entity.HasOne(e => e.CreatedByUser)                     .WithMany(u => u.WEMWBSAssessments)                         .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.Cascade);
         });
 
         // cases
