@@ -41,6 +41,7 @@ public class AuxiliumDbContext : DbContext
     public DbSet<CaseTimelineItemEntityModel> CaseTimeline { get; set; }
     public DbSet<RefreshTokenEntityModel> RefreshTokens { get; set; }
     public DbSet<WemwbsAssessmentEntityModel> WEMWBSAssessments { get; set; }
+    public DbSet<TotpSecretEntityModel> TotpSecrets { get; set; }
     public DbSet<LogLoginAttemptEventEntityModel> Log_LoginAttempts { get; set; }
     public DbSet<LogSystemBulletinEntryDismissalEventEntityModel> Log_SystemBulletinEntryDismissals { get; set; }
     public DbSet<LogSystemBulletinEntryViewEventEntityModel> Log_SystemBulletinEntryViews { get; set; }
@@ -434,6 +435,24 @@ public class AuxiliumDbContext : DbContext
             entity.Property(e => e.ExpiresAt)                       .HasColumnName("expires_at")                                .HasColumnType("datetime")                                                                                                          .IsRequired();
 
             entity.HasOne(e => e.CreatedByUser)                     .WithMany(u => u.RefreshTokens)                             .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.Cascade);
+        });
+
+
+
+
+
+        // totp_secrets
+        modelBuilder.Entity<TotpSecretEntityModel>(entity =>
+        {
+            entity.ToTable("totp_secrets");
+            entity.HasKey(e => e.Id);
+            
+            entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
+            entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            
+            entity.Property(e => e.EncryptedSecret)                 .HasColumnName("encrypted_secret")                          .HasColumnType("text")                                                                                                              .IsRequired();
+            entity.Property(e => e.FirstVerificationAt)             .HasColumnName("first_verification_at")                     .HasColumnType("datetime");
         });
 
 
