@@ -1,10 +1,13 @@
-﻿namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
     public class UserEntityModel
     {
         /// <summary>
         /// The unique identifier for the User.
         /// </summary>
+        [Key]
         public required Guid Id { get; set; }
         /// <summary>
         /// The timestamp of when the User was created.

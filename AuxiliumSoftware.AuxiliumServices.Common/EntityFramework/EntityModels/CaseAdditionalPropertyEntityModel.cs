@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
@@ -7,6 +8,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// <summary>
         /// The unique identifier for the Additional Property.
         /// </summary>
+        [Key]
         public required Guid Id { get; set; }
         /// <summary>
         /// The timestamp of when the Additional Property was created.

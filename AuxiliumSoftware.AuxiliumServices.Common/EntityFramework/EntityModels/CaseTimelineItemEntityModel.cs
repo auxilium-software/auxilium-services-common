@@ -1,10 +1,13 @@
-﻿namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
     public class CaseTimelineItemEntityModel
     {
         /// <summary>
         /// The unique identifier for the Case Timeline Item.
         /// </summary>
+        [Key]
         public required Guid Id { get; set; }
         /// <summary>
         /// The unique identifier for the case associated with the Case Timeline Item.

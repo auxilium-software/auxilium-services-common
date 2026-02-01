@@ -1,10 +1,13 @@
-﻿namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
     public class UserAdditionalPropertyEntityModel
     {
         /// <summary>
         /// The unique identifier for the Additional Property.
         /// </summary>
+        [Key]
         public required Guid Id { get; set; }
         /// <summary>
         /// The timestamp of when the Additional Property was created.
