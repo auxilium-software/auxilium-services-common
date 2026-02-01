@@ -93,6 +93,28 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 
 
         /// <summary>
+        /// Base32-encoded TOTP shared secret.
+        /// MUST be Null if the user has never started TOTP setup.
+        /// There MUST be a value but with TotpEnabled=false during pending setup.
+        /// </summary>
+        public string? TotpSecret { get; set; }
+
+        /// <summary>
+        /// Whether TOTP is active and enforced for this user.
+        /// </summary>
+        public bool TotpEnabled { get; set; }
+
+        /// <summary>
+        /// A timestamp of when the TOTP was activated (after verifying the first code).
+        /// MUST be null if not enabled.
+        /// </summary>
+        public DateTime? TotpEnabledAt { get; set; }
+
+
+
+
+
+        /// <summary>
         /// The User that created the User.
         /// </summary>
         public UserEntityModel? CreatedByUser { get; set; }

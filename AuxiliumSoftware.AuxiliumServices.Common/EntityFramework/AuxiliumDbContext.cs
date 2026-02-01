@@ -109,8 +109,12 @@ public class AuxiliumDbContext : DbContext
             entity.Property(e => e.HowDidYouFindOutAboutOurService) .HasColumnName("how_did_you_find_out_about_our_service")    .HasColumnType("text");
             entity.Property(e => e.LanguagePreference)              .HasColumnName("language_preference")                       .HasColumnType("text")                                                          .HasDefaultValue("en-GB")                           .IsRequired();
             
-            entity.Property(e => e.HasEmailAddressBeenVerified)     .HasColumnName("has_email_address_been_verified")           .HasColumnType("tinyint(1)")                                                    .HasDefaultValue(false)                              .IsRequired();
-            entity.Property(e => e.AllowLogin)                      .HasColumnName("allow_login")                               .HasColumnType("tinyint(1)")                                                    .HasDefaultValue(false)                              .IsRequired();
+            entity.Property(e => e.TotpSecret)                      .HasColumnName("totp_secret")                               .HasColumnType("text");
+            entity.Property(e => e.TotpEnabled)                     .HasColumnName("totp_enabled")                              .HasColumnType("tinyint(1)")                                                    .HasDefaultValue(false)                             .IsRequired();
+            entity.Property(e => e.TotpEnabledAt)                   .HasColumnName("totp_enabled_at")                           .HasColumnType("datetime");
+            
+            entity.Property(e => e.HasEmailAddressBeenVerified)     .HasColumnName("has_email_address_been_verified")           .HasColumnType("tinyint(1)")                                                    .HasDefaultValue(false)                             .IsRequired();
+            entity.Property(e => e.AllowLogin)                      .HasColumnName("allow_login")                               .HasColumnType("tinyint(1)")                                                    .HasDefaultValue(false)                             .IsRequired();
             entity.Property(e => e.IsAdmin)                         .HasColumnName("is_admin")                                  .HasColumnType("tinyint(1)")                                                    .HasDefaultValue(false)                             .IsRequired();
             entity.Property(e => e.IsCaseWorker)                    .HasColumnName("is_case_worker")                            .HasColumnType("tinyint(1)")                                                    .HasDefaultValue(false)                             .IsRequired();
 
@@ -435,24 +439,6 @@ public class AuxiliumDbContext : DbContext
             entity.Property(e => e.ExpiresAt)                       .HasColumnName("expires_at")                                .HasColumnType("datetime")                                                                                                          .IsRequired();
 
             entity.HasOne(e => e.CreatedByUser)                     .WithMany(u => u.RefreshTokens)                             .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.Cascade);
-        });
-
-
-
-
-
-        // totp_secrets
-        modelBuilder.Entity<TotpSecretEntityModel>(entity =>
-        {
-            entity.ToTable("totp_secrets");
-            entity.HasKey(e => e.Id);
-            
-            entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
-            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
-            entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)")                                                                                                          .IsRequired();
-            
-            entity.Property(e => e.EncryptedSecret)                 .HasColumnName("encrypted_secret")                          .HasColumnType("text")                                                                                                              .IsRequired();
-            entity.Property(e => e.FirstVerificationAt)             .HasColumnName("first_verification_at")                     .HasColumnType("datetime");
         });
 
 
