@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
@@ -9,6 +10,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// <summary>
         /// The unique identifier for the Log Entry.
         /// </summary>
+        [Key]
         public required Guid Id { get; set; }
         /// <summary>
         /// The timestamp of when the Log Entry was created.

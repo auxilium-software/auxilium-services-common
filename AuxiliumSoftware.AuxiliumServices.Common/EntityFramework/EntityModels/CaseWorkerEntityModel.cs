@@ -1,10 +1,13 @@
-﻿namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
     public class CaseWorkerEntityModel
     {
         /// <summary>
         /// The unique identifier for the Case Worker Assignment.
         /// </summary>
+        [Key]
         public required Guid Id { get; set; }
         /// <summary>
         /// The timestamp of when the Case Worker Assignment was created.
