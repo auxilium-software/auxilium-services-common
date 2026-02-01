@@ -445,6 +445,25 @@ public class AuxiliumDbContext : DbContext
 
 
 
+        // totp_recovery_codes
+        modelBuilder.Entity<TotpRecoveryCodeEntityModel>(entity =>
+        {
+            entity.ToTable("totp_recovery_codes");
+            entity.HasKey(e => e.Id);
+            
+            entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
+            entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            
+            entity.Property(e => e.CodeHash)                        .HasColumnName("code_hash")                                 .HasColumnType("text")                                                                                                              .IsRequired();
+            entity.Property(e => e.IsUsed)                          .HasColumnName("is_used")                                   .HasColumnType("tinyint(1)")                                                    .HasDefaultValue(false)                             .IsRequired();
+            entity.Property(e => e.UsedAt)                          .HasColumnName("used_at")                                   .HasColumnType("datetime");
+        });
+
+
+
+
+
         // log__login_attempts
         modelBuilder.Entity<LogLoginAttemptEventEntityModel>(entity =>
         {
