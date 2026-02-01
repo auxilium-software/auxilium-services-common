@@ -40,7 +40,7 @@ public class AuxiliumDbContext : DbContext
     public DbSet<CaseTodoEntityModel> CaseTodos { get; set; }
     public DbSet<CaseTimelineItemEntityModel> CaseTimeline { get; set; }
     public DbSet<RefreshTokenEntityModel> RefreshTokens { get; set; }
-    public DbSet<WemwbsAssessmentEntityModel> WEMWBSAssessments { get; set; }
+    public DbSet<WemwbsAssessmentEntityModel> WemwbsAssessments { get; set; }
     public DbSet<TotpSecretEntityModel> TotpSecrets { get; set; }
     public DbSet<LogLoginAttemptEventEntityModel> Log_LoginAttempts { get; set; }
     public DbSet<LogSystemBulletinEntryDismissalEventEntityModel> Log_SystemBulletinEntryDismissals { get; set; }
