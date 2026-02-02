@@ -1,4 +1,4 @@
-﻿namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Interfaces
+﻿namespace AuxiliumSoftware.AuxiliumServices.Common.Services
 {
     public interface ITokenService
     {
