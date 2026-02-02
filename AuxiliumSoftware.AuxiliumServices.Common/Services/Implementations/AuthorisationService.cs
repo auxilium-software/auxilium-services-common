@@ -1,5 +1,5 @@
 ﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels;
-using AuxiliumSoftware.AuxiliumServices.Common.Services.Interfaces;
+using AuxiliumSoftware.AuxiliumServices.Common.Services;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
 {

@@ -1,7 +1,7 @@
 ﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels;
 using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators;
 
-namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Interfaces
+namespace AuxiliumSoftware.AuxiliumServices.Common.Services
 {
     public interface ICaseDocumentService
     {

@@ -1,6 +1,6 @@
 ﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels;
 
-namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Interfaces;
+namespace AuxiliumSoftware.AuxiliumServices.Common.Services;
 
 public interface IFileDocumentService
 {
