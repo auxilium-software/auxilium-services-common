@@ -15,6 +15,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Configuration
         public required FileSystemConfigurationSection FileSystem { get; set; }
         public required PoliciesConfigurationSection Policies { get; set; }
         public required Argon2ConfigurationSection Argon2 { get; set; }
+        public required MfaConfigurationSection MFA { get; set; }
         public required InstanceConfigurationSection Instance { get; set; }
         public required NewRelicConfigurationSection NewRelic { get; set; }
         public required DevelopmentConfigurationSection Development { get; set; }
