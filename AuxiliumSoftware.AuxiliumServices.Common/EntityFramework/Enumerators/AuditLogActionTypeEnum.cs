@@ -8,13 +8,25 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum AuditLogActionTypeEnum
     {
-        [JsonPropertyName("created")]
-        Created,
+        [JsonPropertyName("creation")]
+        Creation,
+        [JsonPropertyName("modification")]
+        Modification,
+        [JsonPropertyName("deletion")]
+        Deletion,
 
-        [JsonPropertyName("modified")]
-        Modified,
+        [JsonPropertyName("assignment")]
+        Assignment,
+        [JsonPropertyName("unassignment")]
+        Unassignment,
 
-        [JsonPropertyName("deleted")]
-        Deleted
+        [JsonPropertyName("view")]
+        View,
+
+        [JsonPropertyName("send")]
+        Send,
+
+        [JsonPropertyName("upload")]
+        Upload,
     }
 }
