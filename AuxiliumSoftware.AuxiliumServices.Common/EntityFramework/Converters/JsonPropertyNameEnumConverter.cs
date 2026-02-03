@@ -1,8 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using System;
-using System.Collections.Generic;
 using System.Reflection;
-using System.Text;
 using System.Text.Json.Serialization;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Converters
@@ -12,7 +9,8 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Converters
     {
         public JsonPropertyNameEnumConverter() : base(
             v => EnumToString(v),
-            v => StringToEnum(v))
+            v => StringToEnum(v),
+            new ConverterMappingHints(unicode: true))
         {
         }
 
@@ -33,7 +31,6 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Converters
                     return (TEnum)field.GetValue(null)!;
                 }
             }
-
             return Enum.Parse<TEnum>(value);
         }
     }
