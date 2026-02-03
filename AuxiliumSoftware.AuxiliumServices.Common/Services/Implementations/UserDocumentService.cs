@@ -1,23 +1,28 @@
-﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework;
+﻿using AuxiliumSoftware.AuxiliumServices.Common.Configuration;
+using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework;
 using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels;
 using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators;
+using AuxiliumSoftware.AuxiliumServices.Common.Enumerators;
 using AuxiliumSoftware.AuxiliumServices.Common.Utilities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
-using AuxiliumSoftware.AuxiliumServices.Common.Enumerators;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations;
 
 public class UserDocumentService : IUserDocumentService
 {
+    private readonly ConfigurationStructure _configuration;
     private readonly AuxiliumDbContext _db;
     private readonly ILogger<UserDocumentService> _logger;
 
     public UserDocumentService(
+        IConfiguration configuration,
         AuxiliumDbContext db,
         ILogger<UserDocumentService> logger)
     {
+        this._configuration = configuration.Get<ConfigurationStructure>();
         _db = db;
         _logger = logger;
     }
@@ -182,6 +187,18 @@ public class UserDocumentService : IUserDocumentService
     }
     #endregion
     #region ========================= AUDIT LOGGING OPERATIONS =========================
+    /// <summary>
+    /// This method writes an entry to the audit log for case-related actions.
+    /// IT WILL NOT SAVE CHANGES TO THE DATABASE - CALLER MUST COMMIT CHANGES.
+    /// </summary>
+    /// <param name="currentUser">The currently logged in User // the User that did the Action.</param>
+    /// <param name="targetCase">The Case the Action that is being Audit Logged is for.</param>
+    /// <param name="entityType">The type of Case-related Entity that is being Audit Logged.</param>
+    /// <param name="entityId">The unique identifier for the Case-related Entity.</param>
+    /// <param name="actionType">The type of Action that is being Audit Logged.</param>
+    /// <param name="propertyName">This value is MANDATORY when actionType is set to `Modification` - it specifies the target Property that has been Modified.</param>
+    /// <param name="oldValue">This value is MANDATORY when actionType is set to `Modification` - it specifies the old value of the Property that has been Modified.</param>
+    /// <param name="newValue">This value is MANDATORY when actionType is set to `Modification` - it specifies the new value of the Property that has been Modified.</param>
     public void WriteToAuditLog(
         UserEntityModel currentUser,
         UserEntityModel targetUser, UserEntityTypeEnum entityType, Guid entityId,
@@ -189,6 +206,27 @@ public class UserDocumentService : IUserDocumentService
         string? propertyName = null, string? oldValue = null, string? newValue = null
     )
     {
+        // verification
+        switch (entityType)
+        {
+            case UserEntityTypeEnum.User:
+                if (actionType == AuditLogActionTypeEnum.Creation && !this._configuration.Policies.LoggingPolicy.EntityActions.Users.LogCreations) return;
+                if (actionType == AuditLogActionTypeEnum.Modification && !this._configuration.Policies.LoggingPolicy.EntityActions.Users.LogModifications) return;
+                if (actionType == AuditLogActionTypeEnum.Deletion && !this._configuration.Policies.LoggingPolicy.EntityActions.Users.LogDeletions) return;
+                break;
+            case UserEntityTypeEnum.User_AdditionalProperty:
+                if (actionType == AuditLogActionTypeEnum.Creation && !this._configuration.Policies.LoggingPolicy.EntityActions.UserAdditionalProperties.LogCreations) return;
+                if (actionType == AuditLogActionTypeEnum.Modification && !this._configuration.Policies.LoggingPolicy.EntityActions.UserAdditionalProperties.LogModifications) return;
+                if (actionType == AuditLogActionTypeEnum.Deletion && !this._configuration.Policies.LoggingPolicy.EntityActions.UserAdditionalProperties.LogDeletions) return;
+                break;
+            case UserEntityTypeEnum.User_File:
+                if (actionType == AuditLogActionTypeEnum.Upload && !this._configuration.Policies.LoggingPolicy.EntityActions.UserFiles.LogUploads) return;
+                if (actionType == AuditLogActionTypeEnum.View && !this._configuration.Policies.LoggingPolicy.EntityActions.UserFiles.LogViews) return;
+                if (actionType == AuditLogActionTypeEnum.Deletion && !this._configuration.Policies.LoggingPolicy.EntityActions.UserFiles.LogDeletions) return;
+                break;
+        }
+
+        // actually logging
         var logEntry = new LogUserModificationEventEntityModel
         {
             Id = UUIDUtilities.GenerateV5(DatabaseObjectType.LogUserModificationEvent),
@@ -198,11 +236,12 @@ public class UserDocumentService : IUserDocumentService
             EntityType = entityType,
             EntityId = entityId,
             Action = actionType,
-            PropertyName = actionType == AuditLogActionTypeEnum.Modified ? propertyName : null,
-            PreviousValue = actionType == AuditLogActionTypeEnum.Modified ? oldValue : null,
-            NewValue = actionType == AuditLogActionTypeEnum.Modified ? newValue : null,
+            PropertyName = actionType == AuditLogActionTypeEnum.Modification ? propertyName : null,
+            PreviousValue = actionType == AuditLogActionTypeEnum.Modification ? oldValue : null,
+            NewValue = actionType == AuditLogActionTypeEnum.Modification ? newValue : null,
         };
 
+        // commiting
         _db.Log_UserModificationEvents.Add(logEntry);
     }
     #endregion

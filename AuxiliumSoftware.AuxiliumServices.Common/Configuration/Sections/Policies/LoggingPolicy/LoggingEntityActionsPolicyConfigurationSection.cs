@@ -15,7 +15,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Configuration.Sections.Polici
         public required UploadsViewsDeletionsSet CaseFiles { get; set; }
         public required CreationsModificationsDeletionsSet CaseTodos { get; set; }
         public required CreationsModificationsDeletionsSet Users { get; set; }
-        public required CreationsModificationsDeletionsSet UsersAdditionalProperties { get; set; }
+        public required CreationsModificationsDeletionsSet UserAdditionalProperties { get; set; }
         public required UploadsViewsDeletionsSet UserFiles { get; set; }
     }
 }
