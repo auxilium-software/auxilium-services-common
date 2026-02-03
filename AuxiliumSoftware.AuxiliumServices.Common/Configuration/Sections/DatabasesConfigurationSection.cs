@@ -9,6 +9,5 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Configuration.Sections
     {
         public required MariaDBConfigurationSection MariaDB { get; set; }
         public required RabbitMQConfigurationSection RabbitMQ { get; set; }
-        public required ClickHouseConfigurationSection ClickHouse { get; set; }
     }
 }

@@ -38,7 +38,6 @@ public class AuxiliumDbContext : DbContext
     public DbSet<CaseFileEntityModel> CaseFiles { get; set; }
     public DbSet<UserFileEntityModel> UserFiles { get; set; }
     public DbSet<CaseTodoEntityModel> CaseTodos { get; set; }
-    public DbSet<CaseTimelineItemEntityModel> CaseTimeline { get; set; }
     public DbSet<RefreshTokenEntityModel> RefreshTokens { get; set; }
     public DbSet<WemwbsAssessmentEntityModel> WemwbsAssessments { get; set; }
     public DbSet<TotpRecoveryCodeEntityModel> TotpRecoveryCodes { get; set; }
@@ -148,7 +147,8 @@ public class AuxiliumDbContext : DbContext
             entity.HasMany(e => e.BulletinDismissals)               .WithOne(d => d.CreatedByUser)                              .HasForeignKey(d => d.CreatedBy)        .OnDelete(DeleteBehavior.Cascade);
             entity.HasMany(e => e.BulletinViews)                    .WithOne(v => v.CreatedByUser)                              .HasForeignKey(v => v.CreatedBy)        .OnDelete(DeleteBehavior.Cascade);
 
-
+            // misc collections
+            entity.HasMany(e => e.EventLog)                         .WithOne(t => t.User)                                       .HasForeignKey(t => t.UserId)           .OnDelete(DeleteBehavior.Cascade);
 
             entity.HasIndex(e => e.EmailAddress).IsUnique();
         });
@@ -214,7 +214,7 @@ public class AuxiliumDbContext : DbContext
             entity.HasMany(e => e.Messages)                         .WithOne(m => m.Case)                                       .HasForeignKey(m => m.CaseId)           .OnDelete(DeleteBehavior.Cascade);
             entity.HasMany(e => e.Files)                            .WithOne(f => f.Case)                                       .HasForeignKey(f => f.CaseId)           .OnDelete(DeleteBehavior.Cascade);
             entity.HasMany(e => e.Todos)                            .WithOne(t => t.Case)                                       .HasForeignKey(t => t.CaseId)           .OnDelete(DeleteBehavior.Cascade);
-            entity.HasMany(e => e.Timeline)                         .WithOne(t => t.Case)                                       .HasForeignKey(t => t.CaseId)           .OnDelete(DeleteBehavior.Cascade);
+            entity.HasMany(e => e.EventLog)                         .WithOne(t => t.Case)                                       .HasForeignKey(t => t.CaseId)           .OnDelete(DeleteBehavior.Cascade);
         });
 
         // case_workers
@@ -357,24 +357,6 @@ public class AuxiliumDbContext : DbContext
             entity.HasOne(e => e.CompletedByUser)                   .WithMany(u => u.CompletedTodos)                            .HasForeignKey(e => e.CompletedBy)      .OnDelete(DeleteBehavior.Restrict);
         });
 
-        // case_timeline
-        modelBuilder.Entity<CaseTimelineItemEntityModel>(entity =>
-        {
-            entity.ToTable("case_timeline");
-            entity.HasKey(e => e.Id);
-            
-            entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
-            entity.Property(e => e.CaseId)                          .HasColumnName("case_id")                                   .HasColumnType("char(36)")                                                                                                          .IsRequired();
-            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
-            entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)");
-            entity.Property(e => e.LastUpdatedAt)                   .HasColumnName("last_updated_at")                           .HasColumnType("datetime");
-            entity.Property(e => e.LastUpdatedBy)                   .HasColumnName("last_updated_by")                           .HasColumnType("char(36)");
-            
-            entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.SetNull);
-            entity.HasOne(e => e.LastUpdatedByUser)                 .WithMany()                                                 .HasForeignKey(e => e.LastUpdatedBy)    .OnDelete(DeleteBehavior.SetNull);
-            entity.HasOne(e => e.Case)                              .WithMany(c => c.Timeline)                                  .HasForeignKey(e => e.CaseId)           .OnDelete(DeleteBehavior.Restrict);
-        });
-
         // case_files
         modelBuilder.Entity<CaseFileEntityModel>(entity =>
         {
@@ -445,6 +427,11 @@ public class AuxiliumDbContext : DbContext
 
 
 
+
+
+
+
+
         // totp_recovery_codes
         modelBuilder.Entity<TotpRecoveryCodeEntityModel>(entity =>
         {
@@ -464,18 +451,10 @@ public class AuxiliumDbContext : DbContext
 
 
 
-        // log__login_attempts
-        modelBuilder.Entity<LogLoginAttemptEventEntityModel>(entity =>
-        {
-            entity.ToTable("log__login_attempts");
-            entity.HasKey(e => e.Id);
-            
-            entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
-            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
-            
-            entity.Property(e => e.AttemptedEmailAddress)           .HasColumnName("attempted_email_address")                   .HasColumnType("text")                                                                                                              .IsRequired();
-            entity.Property(e => e.WasLoginSuccessful)              .HasColumnName("was_login_successful")                      .HasColumnType("tinyint(1)")                                                                                                        .IsRequired();
-        });
+
+
+
+        
 
         // log__case_messages_read_bys
         modelBuilder.Entity<LogCaseMessageReadByEventEntityModel>(entity =>
@@ -491,6 +470,42 @@ public class AuxiliumDbContext : DbContext
             
             entity.HasOne(e => e.CreatedByUser)                     .WithMany(u => u.MessageReadReceipts)                       .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.Cascade);
             entity.HasOne(e => e.Message)                           .WithMany(m => m.ReadBy)                                    .HasForeignKey(e => e.MessageId)        .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        // log__case_modification_events
+        modelBuilder.Entity<LogCaseModificationEventEntityModel>(entity =>
+        {
+            entity.ToTable("log__case_modification_events");
+            entity.HasKey(e => e.Id);
+            
+            entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
+            entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            
+            entity.Property(e => e.CaseId)                          .HasColumnName("case_id")                                   .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            
+            entity.Property(e => e.EntityType)                      .HasColumnName("entity_type")                               .HasColumnType("text")                  .HasConversion(new JsonPropertyNameEnumConverter<CaseEntityTypeEnum>())                     .IsRequired();
+            entity.Property(e => e.EntityId)                        .HasColumnName("entity_id")                                 .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.Action)                          .HasColumnName("action")                                    .HasColumnType("text")                  .HasConversion(new JsonPropertyNameEnumConverter<AuditLogActionTypeEnum>())                 .IsRequired();
+            entity.Property(e => e.PropertyName)                    .HasColumnName("property_name")                             .HasColumnType("char(36)");
+            entity.Property(e => e.PreviousValue)                   .HasColumnName("previous_value")                            .HasColumnType("char(36)");
+            entity.Property(e => e.NewValue)                        .HasColumnName("new_value")                                 .HasColumnType("char(36)");
+            
+            entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.Cascade);
+            entity.HasOne(e => e.Case)                              .WithMany(c => c.EventLog)                                  .HasForeignKey(e => e.CaseId)           .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        // log__login_attempts
+        modelBuilder.Entity<LogLoginAttemptEventEntityModel>(entity =>
+        {
+            entity.ToTable("log__login_attempts");
+            entity.HasKey(e => e.Id);
+
+            entity.Property(e => e.Id).HasColumnName("id").HasColumnType("char(36)").IsRequired();
+            entity.Property(e => e.CreatedAt).HasColumnName("created_at").HasColumnType("datetime").HasDefaultValueSql("UTC_TIMESTAMP()").IsRequired();
+
+            entity.Property(e => e.AttemptedEmailAddress).HasColumnName("attempted_email_address").HasColumnType("text").IsRequired();
+            entity.Property(e => e.WasLoginSuccessful).HasColumnName("was_login_successful").HasColumnType("tinyint(1)").IsRequired();
         });
 
         // log__system_bulletin_dismissals
@@ -523,6 +538,29 @@ public class AuxiliumDbContext : DbContext
 
             entity.HasOne(e => e.CreatedByUser)                     .WithMany(u => u.BulletinViews)                             .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.Cascade);
             entity.HasOne(e => e.SystemBulletin)                    .WithMany(b => b.Views)                                     .HasForeignKey(e => e.SystemBulletinId) .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        // log__user_modification_events
+        modelBuilder.Entity<LogUserModificationEventEntityModel>(entity =>
+        {
+            entity.ToTable("log__user_modification_events");
+            entity.HasKey(e => e.Id);
+            
+            entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
+            entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            
+            entity.Property(e => e.UserId)                          .HasColumnName("user_id")                                   .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            
+            entity.Property(e => e.EntityType)                      .HasColumnName("entity_type")                               .HasColumnType("text")                  .HasConversion(new JsonPropertyNameEnumConverter<UserEntityTypeEnum>())                     .IsRequired();
+            entity.Property(e => e.EntityId)                        .HasColumnName("entity_id")                                 .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.Action)                          .HasColumnName("action")                                    .HasColumnType("text")                  .HasConversion(new JsonPropertyNameEnumConverter<AuditLogActionTypeEnum>())                 .IsRequired();
+            entity.Property(e => e.PropertyName)                    .HasColumnName("property_name")                             .HasColumnType("char(36)");
+            entity.Property(e => e.PreviousValue)                   .HasColumnName("previous_value")                            .HasColumnType("char(36)");
+            entity.Property(e => e.NewValue)                        .HasColumnName("new_value")                                 .HasColumnType("char(36)");
+            
+            entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.Cascade);
+            entity.HasOne(e => e.User)                              .WithMany(u => u.EventLog)                                  .HasForeignKey(e => e.UserId)           .OnDelete(DeleteBehavior.Cascade);
         });
     }
 }
