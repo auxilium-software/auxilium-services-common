@@ -208,5 +208,9 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// A Log of Modification Events related to the User.
         /// </summary>
         public ICollection<LogUserModificationEventEntityModel>? EventLog { get; set; }
+        /// <summary>
+        /// A list of TOTP Recovery Codes belonging to the User.
+        /// </summary>
+        public ICollection<TotpRecoveryCodeEntityModel>? TotpRecoveryCodes { get; set; }
     }
 }

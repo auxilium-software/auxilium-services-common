@@ -41,5 +41,14 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// Null if unused.
         /// </summary>
         public DateTime? UsedAt { get; set; }
+
+
+
+
+
+        /// <summary>
+        /// The User who created the TOTP Recovery Code (this is who the TOTP Recovery Code belongs to).
+        /// </summary>
+        public UserEntityModel? CreatedByUser { get; set; }
     }
 }

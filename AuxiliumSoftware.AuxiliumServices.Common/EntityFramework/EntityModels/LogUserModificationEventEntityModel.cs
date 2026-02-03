@@ -20,7 +20,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// <summary>
         /// The unique identifier of the user who created the Additional Property.
         /// </summary>
-        public Guid? CreatedBy { get; set; }
+        public required Guid CreatedBy { get; set; }
 
 
 
@@ -56,17 +56,17 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// <summary>
         /// The name of the Property that was modified (if Action == `Modified`).
         /// </summary>
-        public required string PropertyName { get; set; }
+        public string? PropertyName { get; set; }
 
         /// <summary>
         /// The previous value of the Property that was modified (if Action == `Modified`).
         /// </summary>
-        public required string PreviousValue { get; set; }
+        public string? PreviousValue { get; set; }
 
         /// <summary>
         /// The new value of the Property that was modified (if Action == `Modified`).
         /// </summary>
-        public required string NewValue { get; set; }
+        public string? NewValue { get; set; }
 
 
 

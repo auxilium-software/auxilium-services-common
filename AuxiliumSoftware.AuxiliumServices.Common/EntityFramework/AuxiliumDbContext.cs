@@ -34,16 +34,18 @@ public class AuxiliumDbContext : DbContext
     public DbSet<CaseAdditionalPropertyEntityModel> CaseAdditionalProperties { get; set; }
     public DbSet<UserAdditionalPropertyEntityModel> UserAdditionalProperties { get; set; }
     public DbSet<CaseMessageEntityModel> CaseMessages { get; set; }
-    public DbSet<LogCaseMessageReadByEventEntityModel> CaseMessagesReadBys { get; set; }
     public DbSet<CaseFileEntityModel> CaseFiles { get; set; }
     public DbSet<UserFileEntityModel> UserFiles { get; set; }
     public DbSet<CaseTodoEntityModel> CaseTodos { get; set; }
     public DbSet<RefreshTokenEntityModel> RefreshTokens { get; set; }
     public DbSet<WemwbsAssessmentEntityModel> WemwbsAssessments { get; set; }
     public DbSet<TotpRecoveryCodeEntityModel> TotpRecoveryCodes { get; set; }
+    public DbSet<LogCaseMessageReadByEventEntityModel> Log_CaseMessageReadBys { get; set; }
+    public DbSet<LogCaseModificationEventEntityModel> Log_CaseModificationEvents { get; set; }
     public DbSet<LogLoginAttemptEventEntityModel> Log_LoginAttempts { get; set; }
     public DbSet<LogSystemBulletinEntryDismissalEventEntityModel> Log_SystemBulletinEntryDismissals { get; set; }
     public DbSet<LogSystemBulletinEntryViewEventEntityModel> Log_SystemBulletinEntryViews { get; set; }
+    public DbSet<LogUserModificationEventEntityModel> Log_UserModificationEvents { get; set; }
 
 
 
@@ -445,6 +447,8 @@ public class AuxiliumDbContext : DbContext
             entity.Property(e => e.CodeHash)                        .HasColumnName("code_hash")                                 .HasColumnType("text")                                                                                                              .IsRequired();
             entity.Property(e => e.IsUsed)                          .HasColumnName("is_used")                                   .HasColumnType("tinyint(1)")                                                    .HasDefaultValue(false)                             .IsRequired();
             entity.Property(e => e.UsedAt)                          .HasColumnName("used_at")                                   .HasColumnType("datetime");
+
+            entity.HasOne(e => e.CreatedByUser)                     .WithMany(u => u.TotpRecoveryCodes)                         .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.Cascade);
         });
 
 
