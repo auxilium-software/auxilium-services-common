@@ -247,8 +247,6 @@ public class CaseDocumentService : ICaseDocumentService
                 ContentType = contentType ?? "text/plain",
                 CreatedBy = currentUser.Id,
                 CreatedAt = DateTime.UtcNow,
-                LastUpdatedAt = DateTime.UtcNow,
-                LastUpdatedBy = Guid.Empty,
                 Name = additionalPropertyName,
                 Content = additionalPropertyContent,
             };
