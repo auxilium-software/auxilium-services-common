@@ -491,9 +491,9 @@ public class AuxiliumDbContext : DbContext
             entity.Property(e => e.EntityType)                      .HasColumnName("entity_type")                               .HasColumnType("text")                  .HasConversion(new JsonPropertyNameEnumConverter<CaseEntityTypeEnum>())                     .IsRequired();
             entity.Property(e => e.EntityId)                        .HasColumnName("entity_id")                                 .HasColumnType("char(36)")                                                                                                          .IsRequired();
             entity.Property(e => e.Action)                          .HasColumnName("action")                                    .HasColumnType("text")                  .HasConversion(new JsonPropertyNameEnumConverter<AuditLogActionTypeEnum>())                 .IsRequired();
-            entity.Property(e => e.PropertyName)                    .HasColumnName("property_name")                             .HasColumnType("char(36)");
-            entity.Property(e => e.PreviousValue)                   .HasColumnName("previous_value")                            .HasColumnType("char(36)");
-            entity.Property(e => e.NewValue)                        .HasColumnName("new_value")                                 .HasColumnType("char(36)");
+            entity.Property(e => e.PropertyName)                    .HasColumnName("property_name")                             .HasColumnType("text");
+            entity.Property(e => e.PreviousValue)                   .HasColumnName("previous_value")                            .HasColumnType("text");
+            entity.Property(e => e.NewValue)                        .HasColumnName("new_value")                                 .HasColumnType("text");
             
             entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.Cascade);
             entity.HasOne(e => e.Case)                              .WithMany(c => c.EventLog)                                  .HasForeignKey(e => e.CaseId)           .OnDelete(DeleteBehavior.Cascade);
@@ -505,11 +505,11 @@ public class AuxiliumDbContext : DbContext
             entity.ToTable("log__login_attempts");
             entity.HasKey(e => e.Id);
 
-            entity.Property(e => e.Id).HasColumnName("id").HasColumnType("char(36)").IsRequired();
-            entity.Property(e => e.CreatedAt).HasColumnName("created_at").HasColumnType("datetime").HasDefaultValueSql("UTC_TIMESTAMP()").IsRequired();
+            entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
 
-            entity.Property(e => e.AttemptedEmailAddress).HasColumnName("attempted_email_address").HasColumnType("text").IsRequired();
-            entity.Property(e => e.WasLoginSuccessful).HasColumnName("was_login_successful").HasColumnType("tinyint(1)").IsRequired();
+            entity.Property(e => e.AttemptedEmailAddress)           .HasColumnName("attempted_email_address")                   .HasColumnType("text")                                                                                                              .IsRequired();
+            entity.Property(e => e.WasLoginSuccessful)              .HasColumnName("was_login_successful")                      .HasColumnType("tinyint(1)")                                                                                                        .IsRequired();
         });
 
         // log__system_bulletin_dismissals
@@ -559,9 +559,9 @@ public class AuxiliumDbContext : DbContext
             entity.Property(e => e.EntityType)                      .HasColumnName("entity_type")                               .HasColumnType("text")                  .HasConversion(new JsonPropertyNameEnumConverter<UserEntityTypeEnum>())                     .IsRequired();
             entity.Property(e => e.EntityId)                        .HasColumnName("entity_id")                                 .HasColumnType("char(36)")                                                                                                          .IsRequired();
             entity.Property(e => e.Action)                          .HasColumnName("action")                                    .HasColumnType("text")                  .HasConversion(new JsonPropertyNameEnumConverter<AuditLogActionTypeEnum>())                 .IsRequired();
-            entity.Property(e => e.PropertyName)                    .HasColumnName("property_name")                             .HasColumnType("char(36)");
-            entity.Property(e => e.PreviousValue)                   .HasColumnName("previous_value")                            .HasColumnType("char(36)");
-            entity.Property(e => e.NewValue)                        .HasColumnName("new_value")                                 .HasColumnType("char(36)");
+            entity.Property(e => e.PropertyName)                    .HasColumnName("property_name")                             .HasColumnType("text");
+            entity.Property(e => e.PreviousValue)                   .HasColumnName("previous_value")                            .HasColumnType("text");
+            entity.Property(e => e.NewValue)                        .HasColumnName("new_value")                                 .HasColumnType("text");
             
             entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.Cascade);
             entity.HasOne(e => e.User)                              .WithMany(u => u.EventLog)                                  .HasForeignKey(e => e.UserId)           .OnDelete(DeleteBehavior.Cascade);
