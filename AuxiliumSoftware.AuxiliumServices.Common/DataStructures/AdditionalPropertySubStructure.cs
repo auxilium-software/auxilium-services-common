@@ -22,11 +22,9 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.DataStructures
 
 
 
+
         [JsonPropertyName("originalName")]
         public required string OriginalName { get; set; }
-
-        [JsonPropertyName("prettyName")]
-        public required string PrettyName { get; set; }
 
         [JsonPropertyName("urlSlug")]
         public required string UrlSlug { get; set; }
