@@ -88,7 +88,7 @@ public class UserDocumentService : IUserDocumentService
         string additionalPropertyOriginalName,
         string additionalPropertyUrlSlug,
         string additionalPropertyContent,
-        string? contentType = null
+        string contentType
     )
     {
         try
@@ -109,7 +109,7 @@ public class UserDocumentService : IUserDocumentService
                 ContentType = contentType ?? "text/plain",
                 CreatedBy = currentUser.Id,
                 CreatedAt = DateTime.UtcNow,
-                PrettyName = additionalPropertyOriginalName,
+                OriginalName = additionalPropertyOriginalName,
                 UrlSlug = additionalPropertyUrlSlug,
                 Content = additionalPropertyContent,
             };
