@@ -51,5 +51,14 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services
             Guid? assignedTo = null,
             DateTime? reminder = null);
         Task DeleteTodoAsync(Guid caseId, Guid todoId);
+
+
+
+        void WriteToAuditLog(
+            UserEntityModel currentUser,
+            CaseEntityModel targetUser, CaseEntityTypeEnum entityType, Guid entityId,
+            AuditLogActionTypeEnum actionType,
+            string? propertyName = null, string? oldValue = null, string? newValue = null
+        );
     }
 }

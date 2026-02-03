@@ -534,4 +534,29 @@ public class CaseDocumentService : ICaseDocumentService
         }
     }
     #endregion
+    #region ========================= AUDIT LOGGING OPERATIONS =========================
+    public void WriteToAuditLog(
+        UserEntityModel currentUser,
+        CaseEntityModel targetUser, CaseEntityTypeEnum entityType, Guid entityId,
+        AuditLogActionTypeEnum actionType,
+        string? propertyName = null, string? oldValue = null, string? newValue = null
+    )
+    {
+        var logEntry = new LogCaseModificationEventEntityModel
+        {
+            Id = UUIDUtilities.GenerateV5(DatabaseObjectType.LogCaseModificationEvent),
+            CreatedAt = DateTime.UtcNow,
+            CreatedBy = currentUser.Id,
+            CaseId = targetUser.Id,
+            EntityType = entityType,
+            EntityId = entityId,
+            Action = actionType,
+            PropertyName = actionType == AuditLogActionTypeEnum.Modified ? propertyName : null,
+            PreviousValue = actionType == AuditLogActionTypeEnum.Modified ? oldValue : null,
+            NewValue = actionType == AuditLogActionTypeEnum.Modified ? newValue : null,
+        };
+
+        _db.Log_CaseModificationEvents.Add(logEntry);
+    }
+    #endregion
 }

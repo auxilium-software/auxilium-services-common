@@ -17,10 +17,12 @@
         CaseMessage,
         CaseFile,
 
+        LogCaseModificationEvent,
         LogCaseMessageReadByEvent,
         LogLoginAttemptEvent,
         LogSystemBulletinEntryDismissalEvent,
         LogSystemBulletinEntryViewEvent,
+        LogUserModificationEvent,
 
         SystemBulletinEntry,
 

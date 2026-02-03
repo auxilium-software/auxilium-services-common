@@ -1,4 +1,5 @@
 ﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels;
+using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.Services
 {
@@ -17,5 +18,13 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services
 
         bool CheckUserAccess(Guid userId, UserEntityModel currentUser);
 
+
+
+        void WriteToAuditLog(
+            UserEntityModel currentUser,
+            UserEntityModel targetUser, UserEntityTypeEnum entityType, Guid entityId,
+            AuditLogActionTypeEnum actionType,
+            string? propertyName = null, string? oldValue = null, string? newValue = null
+        );
     }
 }

@@ -1,11 +1,11 @@
 ﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework;
 using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels;
-using AuxiliumSoftware.AuxiliumServices.Common.Enumerators;
-using AuxiliumSoftware.AuxiliumServices.Common.Services;
+using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators;
 using AuxiliumSoftware.AuxiliumServices.Common.Utilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
+using AuxiliumSoftware.AuxiliumServices.Common.Enumerators;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations;
 
@@ -179,6 +179,31 @@ public class UserDocumentService : IUserDocumentService
             _logger.LogError(ex, "Failed to check access for user {UserId}", userId);
             return false;
         }
+    }
+    #endregion
+    #region ========================= AUDIT LOGGING OPERATIONS =========================
+    public void WriteToAuditLog(
+        UserEntityModel currentUser,
+        UserEntityModel targetUser, UserEntityTypeEnum entityType, Guid entityId,
+        AuditLogActionTypeEnum actionType,
+        string? propertyName = null, string? oldValue = null, string? newValue = null
+    )
+    {
+        var logEntry = new LogUserModificationEventEntityModel
+        {
+            Id = UUIDUtilities.GenerateV5(DatabaseObjectType.LogUserModificationEvent),
+            CreatedAt = DateTime.UtcNow,
+            CreatedBy = currentUser.Id,
+            UserId = targetUser.Id,
+            EntityType = entityType,
+            EntityId = entityId,
+            Action = actionType,
+            PropertyName = actionType == AuditLogActionTypeEnum.Modified ? propertyName : null,
+            PreviousValue = actionType == AuditLogActionTypeEnum.Modified ? oldValue : null,
+            NewValue = actionType == AuditLogActionTypeEnum.Modified ? newValue : null,
+        };
+
+        _db.Log_UserModificationEvents.Add(logEntry);
     }
     #endregion
 }
