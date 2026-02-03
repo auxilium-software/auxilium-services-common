@@ -272,7 +272,8 @@ public class AuxiliumDbContext : DbContext
             entity.Property(e => e.LastUpdatedBy)                   .HasColumnName("last_updated_by")                           .HasColumnType("char(36)");
 
             entity.Property(e => e.CaseId)                          .HasColumnName("case_id")                                   .HasColumnType("char(36)")                                                                                                          .IsRequired();
-            entity.Property(e => e.Name)                            .HasColumnName("name")                                      .HasColumnType("text")                                                                                                              .IsRequired();
+            entity.Property(e => e.PrettyName)                      .HasColumnName("pretty_name")                               .HasColumnType("text")                                                                                                              .IsRequired();
+            entity.Property(e => e.UrlSlug)                         .HasColumnName("url_slug")                                  .HasColumnType("text")                                                                                                              .IsRequired();
             entity.Property(e => e.Content)                         .HasColumnName("content")                                   .HasColumnType("text")                                                                                                              .IsRequired();
             entity.Property(e => e.ContentType)                     .HasColumnName("content_type")                              .HasColumnType("text")                                                                                                              .IsRequired();
             
@@ -280,7 +281,7 @@ public class AuxiliumDbContext : DbContext
             entity.HasOne(e => e.LastUpdatedByUser)                 .WithMany()                                                 .HasForeignKey(e => e.LastUpdatedBy)    .OnDelete(DeleteBehavior.SetNull);
             entity.HasOne(e => e.Case)                              .WithMany(c => c.AdditionalProperties)                      .HasForeignKey(e => e.CaseId);
 
-            entity.HasIndex(e => new { e.CaseId, e.Name })          .IsUnique();
+            entity.HasIndex(e => new { e.CaseId, e.UrlSlug })          .IsUnique();
         });
 
         // user_additional_properties
@@ -296,7 +297,8 @@ public class AuxiliumDbContext : DbContext
             entity.Property(e => e.LastUpdatedBy)                   .HasColumnName("last_updated_by")                           .HasColumnType("char(36)");
 
             entity.Property(e => e.UserId)                          .HasColumnName("user_id")                                   .HasColumnType("char(36)")                                                                                                          .IsRequired();
-            entity.Property(e => e.Name)                            .HasColumnName("name")                                      .HasColumnType("text")                                                                                                              .IsRequired();
+            entity.Property(e => e.PrettyName)                      .HasColumnName("pretty_name")                               .HasColumnType("text")                                                                                                              .IsRequired();
+            entity.Property(e => e.UrlSlug)                         .HasColumnName("url_slug")                                  .HasColumnType("text")                                                                                                              .IsRequired();
             entity.Property(e => e.Content)                         .HasColumnName("content")                                   .HasColumnType("text")                                                                                                              .IsRequired();
             entity.Property(e => e.ContentType)                     .HasColumnName("content_type")                              .HasColumnType("text")                                                                                                              .IsRequired();
             
@@ -304,7 +306,7 @@ public class AuxiliumDbContext : DbContext
             entity.HasOne(e => e.LastUpdatedByUser)                 .WithMany()                                                 .HasForeignKey(e => e.LastUpdatedBy)    .OnDelete(DeleteBehavior.SetNull);
             entity.HasOne(e => e.User)                              .WithMany(u => u.AdditionalProperties)                      .HasForeignKey(e => e.UserId);
 
-            entity.HasIndex(e => new { e.UserId, e.Name })          .IsUnique();
+            entity.HasIndex(e => new { e.UserId, e.UrlSlug })          .IsUnique();
         });
 
         // case_messages
