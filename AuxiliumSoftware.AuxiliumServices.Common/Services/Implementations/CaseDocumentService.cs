@@ -228,7 +228,7 @@ public class CaseDocumentService : ICaseDocumentService
         string additionalPropertyOriginalName,
         string additionalPropertyUrlSlug,
         string additionalPropertyContent,
-        string? contentType = null)
+        string contentType)
     {
         try
         {
@@ -248,7 +248,7 @@ public class CaseDocumentService : ICaseDocumentService
                 ContentType = contentType ?? "text/plain",
                 CreatedBy = currentUser.Id,
                 CreatedAt = DateTime.UtcNow,
-                PrettyName = additionalPropertyOriginalName,
+                OriginalName = additionalPropertyOriginalName,
                 UrlSlug = additionalPropertyUrlSlug,
                 Content = additionalPropertyContent,
             };
