@@ -279,6 +279,8 @@ public class AuxiliumDbContext : DbContext
             entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.SetNull);
             entity.HasOne(e => e.LastUpdatedByUser)                 .WithMany()                                                 .HasForeignKey(e => e.LastUpdatedBy)    .OnDelete(DeleteBehavior.SetNull);
             entity.HasOne(e => e.Case)                              .WithMany(c => c.AdditionalProperties)                      .HasForeignKey(e => e.CaseId);
+
+            entity.HasIndex(e => new { e.CaseId, e.Name })          .IsUnique();
         });
 
         // user_additional_properties
@@ -301,6 +303,8 @@ public class AuxiliumDbContext : DbContext
             entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.SetNull);
             entity.HasOne(e => e.LastUpdatedByUser)                 .WithMany()                                                 .HasForeignKey(e => e.LastUpdatedBy)    .OnDelete(DeleteBehavior.SetNull);
             entity.HasOne(e => e.User)                              .WithMany(u => u.AdditionalProperties)                      .HasForeignKey(e => e.UserId);
+
+            entity.HasIndex(e => new { e.UserId, e.Name })          .IsUnique();
         });
 
         // case_messages

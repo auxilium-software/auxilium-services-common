@@ -19,7 +19,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services
 
 
         Task<List<CaseAdditionalPropertyEntityModel>> GetAdditionalPropertiesAsync(Guid caseId);
-        Task SaveAdditionalPropertyAsync(Guid caseId, string additionalPropertyName, string additionalPropertyContent);
+        Task SaveAdditionalPropertyAsync(UserEntityModel currentUser, Guid userId, string name, string content, string? contentType = null);
         Task DeleteAdditionalPropertyAsync(Guid caseId, Guid additionalPropertyId);
 
 
