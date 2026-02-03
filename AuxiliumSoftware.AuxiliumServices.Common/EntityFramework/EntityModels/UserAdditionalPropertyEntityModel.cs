@@ -35,10 +35,10 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// </summary>
         public required Guid UserId { get; set; }
         /// <summary>
-        /// This is the pretty name of the Additional Property (can have spaces and special characters).
+        /// This is the Original Name of the Additional Property (eg what the User entered into the text field in the GUI) (can have spaces and special characters).
         /// I.E. This is what the User has entered.
         /// </summary>
-        public required string PrettyName { get; set; }
+        public required string OriginalName { get; set; }
         /// <summary>
         /// This is the name to work on programmatically (no spaces or special characters).
         /// </summary>
