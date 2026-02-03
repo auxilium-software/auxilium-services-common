@@ -22,7 +22,7 @@ public class CaseDocumentService : ICaseDocumentService
         IConfiguration configuration,
         AuxiliumDbContext db,
         ILogger<CaseDocumentService> logger
-        )
+    )
     {
         this._configuration = configuration.Get<ConfigurationStructure>();
         this._db = db;
@@ -223,10 +223,11 @@ public class CaseDocumentService : ICaseDocumentService
     }
 
     public async Task SaveAdditionalPropertyAsync(
+        UserEntityModel currentUser,
         Guid caseId,
         string additionalPropertyName,
-        string additionalPropertyContent
-        )
+        string additionalPropertyContent,
+        string? contentType = null)
     {
         try
         {
@@ -238,24 +239,21 @@ public class CaseDocumentService : ICaseDocumentService
             {
                 throw new Exception($"Additional property {additionalPropertyName} already exists for case {caseId}");
             }
-            else
-            {
-                // create the new additional property
-                var newProperty = new CaseAdditionalPropertyEntityModel
-                {
-                    Id = UUIDUtilities.GenerateV5(DatabaseObjectType.CaseAdditionalProperty),
-                    CaseId = caseId,
-                    ContentType = "text/plain",
-                    CreatedBy = Guid.Empty, // TODO: Pass current user
-                    CreatedAt = DateTime.UtcNow,
-                    LastUpdatedAt = DateTime.UtcNow,
-                    LastUpdatedBy = Guid.Empty,
-                    Name = additionalPropertyName,
-                    Content = additionalPropertyContent,
-                };
 
-                _db.CaseAdditionalProperties.Add(newProperty);
-            }
+            var newProperty = new CaseAdditionalPropertyEntityModel
+            {
+                Id = UUIDUtilities.GenerateV5(DatabaseObjectType.CaseAdditionalProperty),
+                CaseId = caseId,
+                ContentType = contentType ?? "text/plain",
+                CreatedBy = currentUser.Id,
+                CreatedAt = DateTime.UtcNow,
+                LastUpdatedAt = DateTime.UtcNow,
+                LastUpdatedBy = Guid.Empty,
+                Name = additionalPropertyName,
+                Content = additionalPropertyContent,
+            };
+
+            _db.CaseAdditionalProperties.Add(newProperty);
 
             // update the LastUpdatedAt timestamp for the case
             var caseEntity = await _db.Cases.FindAsync(caseId);

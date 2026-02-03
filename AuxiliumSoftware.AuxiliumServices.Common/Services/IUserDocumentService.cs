@@ -11,7 +11,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services
 
 
         Task<List<UserAdditionalPropertyEntityModel>> GetAdditionalPropertiesAsync(Guid userId);
-        Task SaveAdditionalPropertyAsync(Guid userId, string additionalPropertyName, string additionalPropertyContent);
+        Task SaveAdditionalPropertyAsync(UserEntityModel currentUser, Guid userId, string name, string content, string? contentType = null);
         Task DeleteAdditionalPropertyAsync(Guid userId, Guid additionalPropertyId);
 
 

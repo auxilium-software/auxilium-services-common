@@ -20,7 +20,8 @@ public class UserDocumentService : IUserDocumentService
     public UserDocumentService(
         IConfiguration configuration,
         AuxiliumDbContext db,
-        ILogger<UserDocumentService> logger)
+        ILogger<UserDocumentService> logger
+    )
     {
         this._configuration = configuration.Get<ConfigurationStructure>();
         _db = db;
@@ -81,10 +82,12 @@ public class UserDocumentService : IUserDocumentService
     }
 
     public async Task SaveAdditionalPropertyAsync(
+        UserEntityModel currentUser,
         Guid userId,
         string additionalPropertyName,
-        string additionalPropertyContent
-        )
+        string additionalPropertyContent,
+        string? contentType = null
+    )
     {
         try
         {
@@ -94,28 +97,25 @@ public class UserDocumentService : IUserDocumentService
 
             if (existing != null)
             {
-                throw new Exception($"Additional property {additionalPropertyName} already exists for case {userId}");
+                throw new Exception($"Additional property {additionalPropertyName} already exists for user {userId}");
             }
-            else
+
+            var newProperty = new UserAdditionalPropertyEntityModel
             {
-                // create the new property entity
-                var newProperty = new UserAdditionalPropertyEntityModel
-                {
-                    Id = UUIDUtilities.GenerateV5(DatabaseObjectType.UserAdditionalProperty),
-                    UserId = userId,
-                    ContentType = "text/plain",
-                    CreatedBy = Guid.Empty, // TODO: Pass current user
-                    CreatedAt = DateTime.UtcNow,
-                    LastUpdatedAt = DateTime.UtcNow,
-                    LastUpdatedBy = Guid.Empty,
-                    Name = additionalPropertyName,
-                    Content = additionalPropertyContent,
-                };
+                Id = UUIDUtilities.GenerateV5(DatabaseObjectType.UserAdditionalProperty),
+                UserId = userId,
+                ContentType = contentType ?? "text/plain",
+                CreatedBy = currentUser.Id,
+                CreatedAt = DateTime.UtcNow,
+                LastUpdatedAt = DateTime.UtcNow,
+                LastUpdatedBy = Guid.Empty,
+                Name = additionalPropertyName,
+                Content = additionalPropertyContent,
+            };
 
-                _db.UserAdditionalProperties.Add(newProperty);
-            }
+            _db.UserAdditionalProperties.Add(newProperty);
 
-            // update the LastUpdatedAt timestamp for the case
+            // update the LastUpdatedAt timestamp for the user
             var userEntity = await _db.Users.FindAsync(userId);
             if (userEntity != null)
             {
@@ -124,11 +124,11 @@ public class UserDocumentService : IUserDocumentService
 
             await _db.SaveChangesAsync();
 
-            _logger.LogInformation("Saved property {AdditionalPropertyName} for case {UserId}", additionalPropertyName, userId);
+            _logger.LogInformation("Saved property {AdditionalPropertyName} for user {UserId}", additionalPropertyName, userId);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to save property {AdditionalPropertyName} for case {UserId}", additionalPropertyName, userId);
+            _logger.LogError(ex, "Failed to save property {AdditionalPropertyName} for user {UserId}", additionalPropertyName, userId);
             throw;
         }
     }
