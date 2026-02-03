@@ -9,6 +9,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Configuration.Sections
     {
         public required PasswordPolicyConfigurationSection PasswordPolicy { get; set; }
         public required AccountLockoutPolicyConfigurationSection AccountLockoutPolicy { get; set; }
-        public required AuthenticationPolicyConfigurationSection AuditPolicy { get; set; }
+        public required AuthenticationPolicyConfigurationSection AuthenticationPolicy { get; set; }
+        public required LoggingPolicyConfigurationSection LoggingPolicy { get; set; }
     }
 }
