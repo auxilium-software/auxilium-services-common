@@ -204,5 +204,9 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// System Bulletin views by the User.
         /// </summary>
         public ICollection<LogSystemBulletinEntryViewEventEntityModel>? BulletinViews { get; set; }
+        /// <summary>
+        /// A Log of Modification Events related to the User.
+        /// </summary>
+        public ICollection<LogUserModificationEventEntityModel>? EventLog { get; set; }
     }
 }

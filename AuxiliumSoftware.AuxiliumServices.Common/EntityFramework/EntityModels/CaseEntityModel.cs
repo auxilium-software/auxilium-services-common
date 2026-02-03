@@ -90,8 +90,8 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// </summary>
         public ICollection<CaseTodoEntityModel>? Todos { get; set; }
         /// <summary>
-        /// The Timeline of Events on the Case.
+        /// A Log of Modification Events related to the Case.
         /// </summary>
-        public ICollection<CaseTimelineItemEntityModel>? Timeline { get; set; }
+        public ICollection<LogCaseModificationEventEntityModel>? EventLog { get; set; }
     }
 }
