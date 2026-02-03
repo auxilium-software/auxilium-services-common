@@ -121,7 +121,7 @@ public class MessageDocumentService : IMessageDocumentService
                 ?? throw new KeyNotFoundException($"Message {messageId} not found");
 
             // check if it's already marked as read
-            var alreadyRead = await _db.CaseMessagesReadBys
+            var alreadyRead = await _db.Log_CaseMessageReadBys
                 .AnyAsync(rb => rb.MessageId == messageId && rb.CreatedBy == userId);
 
             if (!alreadyRead)
@@ -135,7 +135,7 @@ public class MessageDocumentService : IMessageDocumentService
                     CreatedAt = DateTime.UtcNow
                 };
 
-                _db.CaseMessagesReadBys.Add(readBy);
+                _db.Log_CaseMessageReadBys.Add(readBy);
 
                 // update the LastUpdatedAt timestamp for the case
                 message.LastUpdatedAt = DateTime.UtcNow;
@@ -156,7 +156,7 @@ public class MessageDocumentService : IMessageDocumentService
     {
         try
         {
-            return await _db.CaseMessagesReadBys
+            return await _db.Log_CaseMessageReadBys
                 .AnyAsync(rb => rb.MessageId == messageId && rb.CreatedBy == userId);
         }
         catch (Exception ex)
@@ -170,7 +170,7 @@ public class MessageDocumentService : IMessageDocumentService
     {
         try
         {
-            return await _db.CaseMessagesReadBys
+            return await _db.Log_CaseMessageReadBys
                 .Where(rb => rb.MessageId == messageId)
                 .Select(rb => rb.CreatedBy)
                 .ToListAsync();
@@ -186,7 +186,7 @@ public class MessageDocumentService : IMessageDocumentService
     {
         try
         {
-            return await _db.CaseMessagesReadBys
+            return await _db.Log_CaseMessageReadBys
                 .Where(rb => rb.MessageId == messageId)
                 .ToDictionaryAsync(
                     rb => rb.CreatedBy,
