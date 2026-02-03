@@ -4,6 +4,7 @@ using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels;
 using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators;
 using AuxiliumSoftware.AuxiliumServices.Common.Enumerators;
 using AuxiliumSoftware.AuxiliumServices.Common.Utilities;
+using Microsoft.CodeAnalysis.Operations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -84,7 +85,8 @@ public class UserDocumentService : IUserDocumentService
     public async Task SaveAdditionalPropertyAsync(
         UserEntityModel currentUser,
         Guid userId,
-        string additionalPropertyName,
+        string additionalPropertyOriginalName,
+        string additionalPropertyUrlSlug,
         string additionalPropertyContent,
         string? contentType = null
     )
@@ -93,11 +95,11 @@ public class UserDocumentService : IUserDocumentService
         {
             // check if the property exists
             var existing = await _db.UserAdditionalProperties
-                .FirstOrDefaultAsync(a => a.UserId == userId && a.Name == additionalPropertyName);
+                .FirstOrDefaultAsync(a => a.UserId == userId && a.UrlSlug == additionalPropertyUrlSlug);
 
             if (existing != null)
             {
-                throw new Exception($"Additional property {additionalPropertyName} already exists for user {userId}");
+                throw new Exception($"Additional property {additionalPropertyOriginalName} already exists for user {userId}");
             }
 
             var newProperty = new UserAdditionalPropertyEntityModel
@@ -107,7 +109,8 @@ public class UserDocumentService : IUserDocumentService
                 ContentType = contentType ?? "text/plain",
                 CreatedBy = currentUser.Id,
                 CreatedAt = DateTime.UtcNow,
-                Name = additionalPropertyName,
+                PrettyName = additionalPropertyOriginalName,
+                UrlSlug = additionalPropertyUrlSlug,
                 Content = additionalPropertyContent,
             };
 
@@ -122,11 +125,11 @@ public class UserDocumentService : IUserDocumentService
 
             await _db.SaveChangesAsync();
 
-            _logger.LogInformation("Saved property {AdditionalPropertyName} for user {UserId}", additionalPropertyName, userId);
+            _logger.LogInformation("Saved property {AdditionalPropertyName} for user {UserId}", additionalPropertyOriginalName, userId);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to save property {AdditionalPropertyName} for user {UserId}", additionalPropertyName, userId);
+            _logger.LogError(ex, "Failed to save property {AdditionalPropertyName} for user {UserId}", additionalPropertyOriginalName, userId);
             throw;
         }
     }
