@@ -14,29 +14,31 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Utilities
         /// </summary>
         private static readonly Dictionary<DatabaseObjectType, string> NamespacePaths = new()
         {
-            [DatabaseObjectType.RefreshToken] = "/auxilium/3/database-object/refresh_token",
+            [DatabaseObjectType.RefreshToken]                           = "/auxilium/3/database-object/refresh_token",
+            
+            [DatabaseObjectType.User]                                   = "/auxilium/3/database-object/mariadb/user",
+            [DatabaseObjectType.UserAdditionalProperty]                 = "/auxilium/3/database-object/mariadb/user/additional-property",
+            [DatabaseObjectType.UserFile]                               = "/auxilium/3/database-object/mariadb/user/file",
 
-            [DatabaseObjectType.User] = "/auxilium/3/database-object/mariadb/user",
-            [DatabaseObjectType.UserAdditionalProperty] = "/auxilium/3/database-object/mariadb/user/additional-property",
-            [DatabaseObjectType.UserFile] = "/auxilium/3/database-object/mariadb/user/file",
+            [DatabaseObjectType.Case]                                   = "/auxilium/3/database-object/mariadb/case",
+            [DatabaseObjectType.CaseTimelineItem]                       = "/auxilium/3/database-object/mariadb/case/timeline-item",
+            [DatabaseObjectType.CaseTodoItem]                           = "/auxilium/3/database-object/mariadb/case/todo-item",
+            [DatabaseObjectType.CaseAdditionalProperty]                 = "/auxilium/3/database-object/mariadb/case/additional-property",
+            [DatabaseObjectType.CaseWorker]                             = "/auxilium/3/database-object/mariadb/case/worker",
+            [DatabaseObjectType.CaseClient]                             = "/auxilium/3/database-object/mariadb/case/client",
+            [DatabaseObjectType.CaseMessage]                            = "/auxilium/3/database-object/mariadb/case/message",
+            [DatabaseObjectType.CaseFile]                               = "/auxilium/3/database-object/mariadb/case/file",
+            
+            [DatabaseObjectType.LogCaseModificationEvent]               = "/auxilium/3/database-object/mariadb/log/case-modification-event",
+            [DatabaseObjectType.LogCaseMessageReadByEvent]              = "/auxilium/3/database-object/mariadb/log/case-message-read-by-event",
+            [DatabaseObjectType.LogLoginAttemptEvent]                   = "/auxilium/3/database-object/mariadb/log/login-attempt-event",
+            [DatabaseObjectType.LogSystemBulletinEntryDismissalEvent]   = "/auxilium/3/database-object/mariadb/log/system-bulletin-entry-dismissal-event",
+            [DatabaseObjectType.LogSystemBulletinEntryViewEvent]        = "/auxilium/3/database-object/mariadb/log/system-bulletin-entry-view-event",
+            [DatabaseObjectType.LogUserModificationEvent]               = "/auxilium/3/database-object/mariadb/log/user-modification-event",
+            
+            [DatabaseObjectType.SystemBulletinEntry]                    = "/auxilium/3/database-object/mariadb/system-bulletin-entry",
 
-            [DatabaseObjectType.Case] = "/auxilium/3/database-object/mariadb/case",
-            [DatabaseObjectType.CaseTimelineItem] = "/auxilium/3/database-object/mariadb/case/timeline-item",
-            [DatabaseObjectType.CaseTodoItem] = "/auxilium/3/database-object/mariadb/case/todo-item",
-            [DatabaseObjectType.CaseAdditionalProperty] = "/auxilium/3/database-object/mariadb/case/additional-property",
-            [DatabaseObjectType.CaseWorker] = "/auxilium/3/database-object/mariadb/case/worker",
-            [DatabaseObjectType.CaseClient] = "/auxilium/3/database-object/mariadb/case/client",
-            [DatabaseObjectType.CaseMessage] = "/auxilium/3/database-object/mariadb/case/message",
-            [DatabaseObjectType.CaseFile] = "/auxilium/3/database-object/mariadb/case/file",
-
-            [DatabaseObjectType.LogCaseMessageReadByEvent] = "/auxilium/3/database-object/mariadb/log/case-message-read-by-event",
-            [DatabaseObjectType.LogLoginAttemptEvent] = "/auxilium/3/database-object/mariadb/log/login-attempt-event",
-            [DatabaseObjectType.LogSystemBulletinEntryDismissalEvent] = "/auxilium/3/database-object/mariadb/log/system-bulletin-entry-dismissal-event",
-            [DatabaseObjectType.LogSystemBulletinEntryViewEvent] = "/auxilium/3/database-object/mariadb/log/system-bulletin-entry-view-event",
-
-            [DatabaseObjectType.SystemBulletinEntry] = "/auxilium/3/database-object/mariadb/system-bulletin-entry",
-
-            [DatabaseObjectType.WemwbsAssessment] = "/auxilium/3/database-object/mariadb/assessments/wemwbs",
+            [DatabaseObjectType.WemwbsAssessment]                       = "/auxilium/3/database-object/mariadb/assessments/wemwbs",
         };
 
 
