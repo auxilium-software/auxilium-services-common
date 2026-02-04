@@ -7,6 +7,5 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Configuration.Sections.FileSy
     public class RootStorageDirectoriesConfigurationSection
     {
         public required string AuxLFS { get; set; }
-        public required string SecondaryLogs { get; set; }
     }
 }

@@ -8,6 +8,5 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Configuration.Sections.MFA.To
     {
         public required int GroupSize { get; set; }
         public required int GroupCount { get; set; }
-        public required string CharacterSet { get; set; }
     }
 }
