@@ -5,34 +5,34 @@
     /// </summary>
     internal class RecaptchaResponse
     {
-        /**
-         * Whether the reCAPTCHA verification was successful.
-         */
+        /// <summary>
+        /// Whether the reCAPTCHA verification was successful.
+        /// </summary>
         public bool Success { get; set; }
 
-        /**
-         * The timestamp of the challenge.
-         */
+        /// <summary>
+        /// The timestamp of the challenge.
+        /// </summary>
         public DateTime ChallengeTs { get; set; }
 
-        /**
-         * The hostname of the site where the reCAPTCHA was solved.
-         */
+        /// <summary>
+        /// The hostname of the site where the reCAPTCHA was solved.
+        /// </summary>
         public string? Hostname { get; set; }
 
-        /**
-         * The score assigned by reCAPTCHA (v3 only).
-         */
+        /// <summary>
+        /// The score assigned by reCAPTCHA (v3 only).
+        /// </summary>
         public double? Score { get; set; }
 
-        /**
-         * The action name for reCAPTCHA (v3 only).
-         */
+        /// <summary>
+        /// The action name for reCAPTCHA (v3 only).
+        /// </summary>
         public string? Action { get; set; }
 
-        /**
-         * Any error codes returned by the reCAPTCHA service.
-         */
+        /// <summary>
+        /// Any error codes returned by the reCAPTCHA service.
+        /// </summary>
         public string[]? ErrorCodes { get; set; }
     }
 }
