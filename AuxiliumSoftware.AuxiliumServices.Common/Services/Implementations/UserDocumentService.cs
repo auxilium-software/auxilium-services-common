@@ -3,6 +3,7 @@ using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework;
 using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels;
 using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators;
 using AuxiliumSoftware.AuxiliumServices.Common.Enumerators;
+using AuxiliumSoftware.AuxiliumServices.Common.Services.Interfaces;
 using AuxiliumSoftware.AuxiliumServices.Common.Utilities;
 using Microsoft.CodeAnalysis.Operations;
 using Microsoft.EntityFrameworkCore;
@@ -14,17 +15,17 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations;
 
 public class UserDocumentService : IUserDocumentService
 {
-    private readonly ConfigurationStructure _configuration;
+    private readonly ISystemSettingsService _systemSettings;
     private readonly AuxiliumDbContext _db;
     private readonly ILogger<UserDocumentService> _logger;
 
     public UserDocumentService(
-        IConfiguration configuration,
+        ISystemSettingsService systemSettings,
         AuxiliumDbContext db,
         ILogger<UserDocumentService> logger
     )
     {
-        this._configuration = configuration.Get<ConfigurationStructure>();
+        this._systemSettings = systemSettings;
         _db = db;
         _logger = logger;
     }
@@ -200,7 +201,7 @@ public class UserDocumentService : IUserDocumentService
     /// <param name="propertyName">This value is MANDATORY when actionType is set to `Modification` - it specifies the target Property that has been Modified.</param>
     /// <param name="oldValue">This value is MANDATORY when actionType is set to `Modification` - it specifies the old value of the Property that has been Modified.</param>
     /// <param name="newValue">This value is MANDATORY when actionType is set to `Modification` - it specifies the new value of the Property that has been Modified.</param>
-    public void WriteToAuditLog(
+    public async void WriteToAuditLog(
         UserEntityModel currentUser,
         UserEntityModel targetUser, UserEntityTypeEnum entityType, Guid entityId,
         AuditLogActionTypeEnum actionType,
@@ -211,19 +212,19 @@ public class UserDocumentService : IUserDocumentService
         switch (entityType)
         {
             case UserEntityTypeEnum.User:
-                if (actionType == AuditLogActionTypeEnum.Creation && !this._configuration.Policies.LoggingPolicy.EntityActions.Users.LogCreations) return;
-                if (actionType == AuditLogActionTypeEnum.Modification && !this._configuration.Policies.LoggingPolicy.EntityActions.Users.LogModifications) return;
-                if (actionType == AuditLogActionTypeEnum.Deletion && !this._configuration.Policies.LoggingPolicy.EntityActions.Users.LogDeletions) return;
+                if (actionType == AuditLogActionTypeEnum.Creation       && !await this._systemSettings.GetBoolAsync(SystemSettingKeyEnum.Policies_Logging_EntityActions_Users_LogCreations)) return;
+                if (actionType == AuditLogActionTypeEnum.Modification   && !await this._systemSettings.GetBoolAsync(SystemSettingKeyEnum.Policies_Logging_EntityActions_Users_LogModifications)) return;
+                if (actionType == AuditLogActionTypeEnum.Deletion       && !await this._systemSettings.GetBoolAsync(SystemSettingKeyEnum.Policies_Logging_EntityActions_Users_LogDeletions)) return;
                 break;
             case UserEntityTypeEnum.User_AdditionalProperty:
-                if (actionType == AuditLogActionTypeEnum.Creation && !this._configuration.Policies.LoggingPolicy.EntityActions.UserAdditionalProperties.LogCreations) return;
-                if (actionType == AuditLogActionTypeEnum.Modification && !this._configuration.Policies.LoggingPolicy.EntityActions.UserAdditionalProperties.LogModifications) return;
-                if (actionType == AuditLogActionTypeEnum.Deletion && !this._configuration.Policies.LoggingPolicy.EntityActions.UserAdditionalProperties.LogDeletions) return;
+                if (actionType == AuditLogActionTypeEnum.Creation       && !await this._systemSettings.GetBoolAsync(SystemSettingKeyEnum.Policies_Logging_EntityActions_UserAdditionalProperties_LogCreations)) return;
+                if (actionType == AuditLogActionTypeEnum.Modification   && !await this._systemSettings.GetBoolAsync(SystemSettingKeyEnum.Policies_Logging_EntityActions_UserAdditionalProperties_LogModifications)) return;
+                if (actionType == AuditLogActionTypeEnum.Deletion       && !await this._systemSettings.GetBoolAsync(SystemSettingKeyEnum.Policies_Logging_EntityActions_UserAdditionalProperties_LogDeletions)) return;
                 break;
             case UserEntityTypeEnum.User_File:
-                if (actionType == AuditLogActionTypeEnum.Upload && !this._configuration.Policies.LoggingPolicy.EntityActions.UserFiles.LogUploads) return;
-                if (actionType == AuditLogActionTypeEnum.View && !this._configuration.Policies.LoggingPolicy.EntityActions.UserFiles.LogViews) return;
-                if (actionType == AuditLogActionTypeEnum.Deletion && !this._configuration.Policies.LoggingPolicy.EntityActions.UserFiles.LogDeletions) return;
+                if (actionType == AuditLogActionTypeEnum.Upload         && !await this._systemSettings.GetBoolAsync(SystemSettingKeyEnum.Policies_Logging_EntityActions_UserFiles_LogUploads)) return;
+                if (actionType == AuditLogActionTypeEnum.View           && !await this._systemSettings.GetBoolAsync(SystemSettingKeyEnum.Policies_Logging_EntityActions_UserFiles_LogViews)) return;
+                if (actionType == AuditLogActionTypeEnum.Deletion       && !await this._systemSettings.GetBoolAsync(SystemSettingKeyEnum.Policies_Logging_EntityActions_UserFiles_LogDeletions)) return;
                 break;
         }
 

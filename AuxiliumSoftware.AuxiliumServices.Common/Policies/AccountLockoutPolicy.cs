@@ -1,37 +1,39 @@
 ﻿using AuxiliumSoftware.AuxiliumServices.Common.Configuration;
+using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators;
+using AuxiliumSoftware.AuxiliumServices.Common.Services.Interfaces;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.Policies
 {
     public static class AccountLockoutPolicy
     {
-        public static bool IsAccountLocked(ConfigurationStructure configuration, int failedLoginAttempts, DateTime? lockoutStartTime)
+        public static async Task<bool> IsAccountLocked(ISystemSettingsService systemSettings, int failedLoginAttempts, DateTime? lockoutStartTime)
         {
-            if (failedLoginAttempts < configuration.Policies.AccountLockoutPolicy.MaximumFailedLoginAttempts)
+            if (failedLoginAttempts < await systemSettings.GetIntAsync(SystemSettingKeyEnum.Policies_AccountLockout_MaximumFailedLoginAttempts))
                 return false;
 
             if (lockoutStartTime == null)
                 return false;
 
             // locked... but has the lockout period expired?
-            return !IsLockoutPeriodOver(configuration, lockoutStartTime.Value);
+            return !(await IsLockoutPeriodOver(systemSettings, lockoutStartTime.Value));
         }
 
-        public static bool IsLockoutPeriodOver(ConfigurationStructure configuration, DateTime lockoutStartTime)
+        public static async Task<bool> IsLockoutPeriodOver(ISystemSettingsService systemSettings, DateTime lockoutStartTime)
         {
-            return DateTime.UtcNow >= lockoutStartTime.AddMinutes(configuration.Policies.AccountLockoutPolicy.LockoutDurationInMinutes);
+            return DateTime.UtcNow >= lockoutStartTime.AddMinutes((double)await systemSettings.GetIntAsync(SystemSettingKeyEnum.Policies_AccountLockout_LockoutDurationInMinutes));
         }
 
-        public static bool ShouldResetFailedAttempts(ConfigurationStructure configuration, DateTime lastFailedAttemptTime)
+        public static async Task<bool> ShouldResetFailedAttempts(ISystemSettingsService systemSettings, DateTime lastFailedAttemptTime)
         {
-            return DateTime.UtcNow >= lastFailedAttemptTime.AddMinutes(configuration.Policies.AccountLockoutPolicy.ResetFailedAttemptsAfterInMinutes);
+            return DateTime.UtcNow >= lastFailedAttemptTime.AddMinutes((double)await systemSettings.GetIntAsync(SystemSettingKeyEnum.Policies_AccountLockout_ResetFailedAttemptsAfterInMinutes));
         }
 
-        public static int GetEffectiveFailedAttempts(ConfigurationStructure configuration, int failedLoginAttempts, DateTime? lastFailedAttemptTime)
+        public static async Task<int> GetEffectiveFailedAttempts(ISystemSettingsService systemSettings, int failedLoginAttempts, DateTime? lastFailedAttemptTime)
         {
             if (lastFailedAttemptTime == null)
                 return 0;
 
-            if (ShouldResetFailedAttempts(configuration, lastFailedAttemptTime.Value))
+            if (await ShouldResetFailedAttempts(systemSettings, lastFailedAttemptTime.Value))
                 return 0;
 
             return failedLoginAttempts;
