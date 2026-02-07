@@ -5,6 +5,7 @@ using System.Text;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.Attributes
 {
+    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
     internal class SystemSettingExpectedValueTypeAttribute : Attribute
     {
         public SystemSettingValueTypeEnum ValueType { get; }
