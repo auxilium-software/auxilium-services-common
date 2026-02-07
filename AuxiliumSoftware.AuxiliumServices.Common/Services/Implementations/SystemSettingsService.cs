@@ -87,7 +87,8 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
         {
             var setting = await _db.SystemSettings
                 .AsNoTracking()
-                .FirstOrDefaultAsync(s => s.ConfigKey == key);
+                .OrderBy(s => s.CreatedAt)
+                .LastOrDefaultAsync(s => s.ConfigKey == key);
 
             return setting is null ? throw new Exception($"No setting found for key: {key}") : setting.ConfigValue;
         }
