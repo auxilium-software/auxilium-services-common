@@ -19,9 +19,5 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Interfaces
             Guid? modifiedBy,
             string reasonForModification
         );
-
-        public Task<string> GetRawValueAsync(SystemSettingKeyEnum key);
-
-        public SystemSettingValueTypeEnum InferValueType<T>(T value);
     }
 }
