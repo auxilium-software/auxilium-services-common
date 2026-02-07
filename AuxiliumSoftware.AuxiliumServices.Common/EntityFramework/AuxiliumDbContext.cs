@@ -26,6 +26,7 @@ public class AuxiliumDbContext : DbContext
 
 
 
+    public DbSet<SystemSettingEntityModel> SystemSettings { get; set; }
     public DbSet<SystemBulletinEntryEntityModel> SystemBulletins { get; set; }
     public DbSet<UserEntityModel> Users { get; set; }
     public DbSet<CaseEntityModel> Cases { get; set; }
@@ -54,6 +55,27 @@ public class AuxiliumDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
+        // system_settings
+        modelBuilder.Entity<SystemSettingEntityModel>(entity =>
+        {
+            entity.ToTable("system_settings");
+            entity.HasKey(e => e.Id);
+
+
+
+            entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
+            entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)");
+            
+            entity.Property(e => e.ConfigKey)                       .HasColumnName("config_key")                                .HasColumnType("text")                  .HasConversion(new JsonPropertyNameEnumConverter<SystemSettingKeyEnum>())                         .IsRequired();
+            entity.Property(e => e.ConfigValue)                     .HasColumnName("config_value")                              .HasColumnType("text")                                                                                                              .IsRequired();
+            entity.Property(e => e.ReasonForModification)           .HasColumnName("reason_for_modification")                   .HasColumnType("text")                                                                                                              .IsRequired();
+
+
+            
+            entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.SetNull);
+        });
 
         // system_bulletin
         modelBuilder.Entity<SystemBulletinEntryEntityModel>(entity =>
