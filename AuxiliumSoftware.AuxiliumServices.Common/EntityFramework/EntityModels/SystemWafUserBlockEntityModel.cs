@@ -77,6 +77,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 
 
         public UserEntityModel? CreatedByUser { get; set; }
+        public UserEntityModel? BlockedUser { get; set; }
         public UserEntityModel? UnblockedByUser { get; set; }
     }
 }

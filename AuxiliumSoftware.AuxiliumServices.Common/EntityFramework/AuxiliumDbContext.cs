@@ -27,8 +27,8 @@ public class AuxiliumDbContext : DbContext
 
 
     public DbSet<SystemSettingEntityModel> System_Settings { get; set; }
-    public DbSet<SystemWafIpBlockEntityModel> System_WafIpBlocks { get; set; }
-    public DbSet<SystemWafUserBlockEntityModel> System_WafUserblocks { get; set; }
+    public DbSet<SystemWafIpBlockEntityModel> System_Waf_IpBlocks { get; set; }
+    public DbSet<SystemWafUserBlockEntityModel> System_Waf_UserBlocks { get; set; }
     public DbSet<SystemBulletinEntryEntityModel> System_Bulletins { get; set; }
 
     public DbSet<UserEntityModel> Users { get; set; }
@@ -133,6 +133,7 @@ public class AuxiliumDbContext : DbContext
 
             
             entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.SetNull);
+            entity.HasOne(e => e.BlockedUser)                       .WithMany()                                                 .HasForeignKey(e => e.UserId)           .OnDelete(DeleteBehavior.Cascade);
             entity.HasOne(e => e.UnblockedByUser)                   .WithMany()                                                 .HasForeignKey(e => e.UnblockedBy)      .OnDelete(DeleteBehavior.SetNull);
         });
 
