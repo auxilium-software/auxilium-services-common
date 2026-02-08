@@ -34,9 +34,9 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         public required Guid UserId { get; set; }
 
         /// <summary>
-        /// A reason for why the User Address was blocked, if applicable.
+        /// A reason for why the User Address was blocked.
         /// </summary>
-        public string? Reason { get; set; }
+        public string? ReasonForBlock { get; set; }
 
         /// <summary>
         /// Whether the User Block is permanent (i.e. does not expire and has to be manually removed) or temporary (i.e. expires at a certain date and time).
@@ -67,12 +67,15 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// </summary>
         public Guid? UnblockedBy { get; set; }
 
+        /// <summary>
+        /// A reason for why the User was unblocked.
+        /// </summary>
+        public string? ReasonForUnblock { get; set; }
 
 
 
 
-        [NotMapped]
-        public bool IsActive => UnblockedAt == null && (ExpiresAt == null || ExpiresAt > DateTime.UtcNow);
+
         public UserEntityModel? CreatedByUser { get; set; }
         public UserEntityModel? UnblockedByUser { get; set; }
     }

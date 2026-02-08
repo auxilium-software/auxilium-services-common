@@ -95,11 +95,13 @@ public class AuxiliumDbContext : DbContext
             entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)");
             
             entity.Property(e => e.IpAddress)                       .HasColumnName("ip_address")                                .HasColumnType("text")                                                                                                              .IsRequired();
-            entity.Property(e => e.Reason)                          .HasColumnName("reason")                                    .HasColumnType("text")                                                                                                              .IsRequired();
+            entity.Property(e => e.ReasonForBlock)                  .HasColumnName("reason_for_block")                          .HasColumnType("text")                                                                                                              .IsRequired();
             entity.Property(e => e.IsPermanent)                     .HasColumnName("is_permanent")                              .HasColumnType("tinyint(1)")                                                                                                        .IsRequired();
+
             entity.Property(e => e.ExpiresAt)                       .HasColumnName("expires_at")                                .HasColumnType("datetime");
             entity.Property(e => e.UnblockedAt)                     .HasColumnName("unblocked_at")                              .HasColumnType("datetime");
             entity.Property(e => e.UnblockedBy)                     .HasColumnName("unblocked_by")                              .HasColumnType("char(36)");
+            entity.Property(e => e.ReasonForUnblock)                .HasColumnName("reason_for_unblock")                        .HasColumnType("text");
 
 
             
@@ -120,11 +122,13 @@ public class AuxiliumDbContext : DbContext
             entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)");
             
             entity.Property(e => e.UserId)                          .HasColumnName("user_id")                                   .HasColumnType("char(36)")                                                                                                          .IsRequired();
-            entity.Property(e => e.Reason)                          .HasColumnName("reason")                                    .HasColumnType("text")                                                                                                              .IsRequired();
+            entity.Property(e => e.ReasonForBlock)                  .HasColumnName("reason_for_block")                          .HasColumnType("text")                                                                                                              .IsRequired();
             entity.Property(e => e.IsPermanent)                     .HasColumnName("is_permanent")                              .HasColumnType("tinyint(1)")                                                                                                        .IsRequired();
+
             entity.Property(e => e.ExpiresAt)                       .HasColumnName("expires_at")                                .HasColumnType("datetime");
             entity.Property(e => e.UnblockedAt)                     .HasColumnName("unblocked_at")                              .HasColumnType("datetime");
             entity.Property(e => e.UnblockedBy)                     .HasColumnName("unblocked_by")                              .HasColumnType("char(36)");
+            entity.Property(e => e.ReasonForUnblock)                .HasColumnName("reason_for_unblock")                        .HasColumnType("text");
 
 
             
@@ -357,8 +361,6 @@ public class AuxiliumDbContext : DbContext
             entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.SetNull);
             entity.HasOne(e => e.LastUpdatedByUser)                 .WithMany()                                                 .HasForeignKey(e => e.LastUpdatedBy)    .OnDelete(DeleteBehavior.SetNull);
             entity.HasOne(e => e.Case)                              .WithMany(c => c.AdditionalProperties)                      .HasForeignKey(e => e.CaseId);
-
-            entity.HasIndex(e => new { e.CaseId, e.UrlSlug })       .IsUnique();
         });
 
         // user_additional_properties
@@ -382,8 +384,6 @@ public class AuxiliumDbContext : DbContext
             entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.SetNull);
             entity.HasOne(e => e.LastUpdatedByUser)                 .WithMany()                                                 .HasForeignKey(e => e.LastUpdatedBy)    .OnDelete(DeleteBehavior.SetNull);
             entity.HasOne(e => e.User)                              .WithMany(u => u.AdditionalProperties)                      .HasForeignKey(e => e.UserId);
-
-            entity.HasIndex(e => new { e.UserId, e.UrlSlug })          .IsUnique();
         });
 
         // case_messages
