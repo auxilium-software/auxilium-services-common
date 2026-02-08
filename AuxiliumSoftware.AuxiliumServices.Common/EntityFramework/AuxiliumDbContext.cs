@@ -68,7 +68,8 @@ public class AuxiliumDbContext : DbContext
             entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
             entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)");
             
-            entity.Property(e => e.ConfigKey)                       .HasColumnName("config_key")                                .HasColumnType("text")                  .HasConversion(new JsonPropertyNameEnumConverter<SystemSettingKeyEnum>())                         .IsRequired();
+            entity.Property(e => e.ConfigKey)                       .HasColumnName("config_key")                                .HasColumnType("text")                  .HasConversion(new JsonPropertyNameEnumConverter<SystemSettingKeyEnum>())                   .IsRequired();
+            entity.Property(e => e.ValueType)                       .HasColumnName("value_type")                                .HasColumnType("text")                  .HasConversion(new JsonPropertyNameEnumConverter<SystemSettingValueTypeEnum>())             .IsRequired();
             entity.Property(e => e.ConfigValue)                     .HasColumnName("config_value")                              .HasColumnType("text")                                                                                                              .IsRequired();
             entity.Property(e => e.ReasonForModification)           .HasColumnName("reason_for_modification")                   .HasColumnType("text")                                                                                                              .IsRequired();
 
