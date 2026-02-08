@@ -28,6 +28,7 @@ public class AuxiliumDbContext : DbContext
 
     public DbSet<SystemSettingEntityModel> System_Settings { get; set; }
     public DbSet<SystemWafIpBlockEntityModel> System_WafIpBlocks { get; set; }
+    public DbSet<SystemWafUserBlockEntityModel> System_WafUserblocks { get; set; }
     public DbSet<SystemBulletinEntryEntityModel> System_Bulletins { get; set; }
 
     public DbSet<UserEntityModel> Users { get; set; }
@@ -81,10 +82,10 @@ public class AuxiliumDbContext : DbContext
             entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.SetNull);
         });
 
-        // waf_ip_blocks
+        // system__waf__ip_blocks
         modelBuilder.Entity<SystemWafIpBlockEntityModel>(entity =>
         {
-            entity.ToTable("system_waf__ip_blocks");
+            entity.ToTable("system__waf__ip_blocks");
             entity.HasKey(e => e.Id);
 
 
@@ -95,7 +96,7 @@ public class AuxiliumDbContext : DbContext
             
             entity.Property(e => e.IpAddress)                       .HasColumnName("ip_address")                                .HasColumnType("text")                                                                                                              .IsRequired();
             entity.Property(e => e.Reason)                          .HasColumnName("reason")                                    .HasColumnType("text")                                                                                                              .IsRequired();
-            entity.Property(e => e.IsPermanent)                     .HasColumnName("is_permenant")                              .HasColumnType("tinyint(1)")                                                                                                        .IsRequired();
+            entity.Property(e => e.IsPermanent)                     .HasColumnName("is_permanent")                              .HasColumnType("tinyint(1)")                                                                                                        .IsRequired();
             entity.Property(e => e.ExpiresAt)                       .HasColumnName("expires_at")                                .HasColumnType("datetime");
             entity.Property(e => e.UnblockedAt)                     .HasColumnName("unblocked_at")                              .HasColumnType("datetime");
             entity.Property(e => e.UnblockedBy)                     .HasColumnName("unblocked_by")                              .HasColumnType("char(36)");
@@ -103,7 +104,32 @@ public class AuxiliumDbContext : DbContext
 
             
             entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.SetNull);
-            entity.HasOne(e => e.UnblockedByUser)                     .WithMany()                                               .HasForeignKey(e => e.UnblockedBy)      .OnDelete(DeleteBehavior.SetNull);
+            entity.HasOne(e => e.UnblockedByUser)                   .WithMany()                                                 .HasForeignKey(e => e.UnblockedBy)      .OnDelete(DeleteBehavior.SetNull);
+        });
+
+        // system__waf__ip_blocks
+        modelBuilder.Entity<SystemWafUserBlockEntityModel>(entity =>
+        {
+            entity.ToTable("system__waf__ip_blocks");
+            entity.HasKey(e => e.Id);
+
+
+
+            entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
+            entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)");
+            
+            entity.Property(e => e.UserId)                          .HasColumnName("user_id")                                   .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.Reason)                          .HasColumnName("reason")                                    .HasColumnType("text")                                                                                                              .IsRequired();
+            entity.Property(e => e.IsPermanent)                     .HasColumnName("is_permanent")                              .HasColumnType("tinyint(1)")                                                                                                        .IsRequired();
+            entity.Property(e => e.ExpiresAt)                       .HasColumnName("expires_at")                                .HasColumnType("datetime");
+            entity.Property(e => e.UnblockedAt)                     .HasColumnName("unblocked_at")                              .HasColumnType("datetime");
+            entity.Property(e => e.UnblockedBy)                     .HasColumnName("unblocked_by")                              .HasColumnType("char(36)");
+
+
+            
+            entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.SetNull);
+            entity.HasOne(e => e.UnblockedByUser)                   .WithMany()                                                 .HasForeignKey(e => e.UnblockedBy)      .OnDelete(DeleteBehavior.SetNull);
         });
 
         // system_bulletin
@@ -332,7 +358,7 @@ public class AuxiliumDbContext : DbContext
             entity.HasOne(e => e.LastUpdatedByUser)                 .WithMany()                                                 .HasForeignKey(e => e.LastUpdatedBy)    .OnDelete(DeleteBehavior.SetNull);
             entity.HasOne(e => e.Case)                              .WithMany(c => c.AdditionalProperties)                      .HasForeignKey(e => e.CaseId);
 
-            entity.HasIndex(e => new { e.CaseId, e.UrlSlug })          .IsUnique();
+            entity.HasIndex(e => new { e.CaseId, e.UrlSlug })       .IsUnique();
         });
 
         // user_additional_properties

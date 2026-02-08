@@ -6,21 +6,21 @@ using System.Text;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class SystemWafIpBlockEntityModel
+    public class SystemWafUserBlockEntityModel
     {
         /// <summary>
-        /// The unique identifier for the IP Block.
+        /// The unique identifier for the User Block.
         /// </summary>
         [Key]
         public required Guid Id { get; set; }
 
         /// <summary>
-        /// The timestamp of when the IP Block was created.
+        /// The timestamp of when the User Block was created.
         /// </summary>
         public required DateTime CreatedAt { get; set; }
 
         /// <summary>
-        /// The unique identifier of the User who created the IP Block.
+        /// The unique identifier of the User who created the User Block.
         /// </summary>
         public Guid? CreatedBy { get; set; }
 
@@ -29,17 +29,17 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 
 
         /// <summary>
-        /// The IP Address that is blocked.
+        /// The unique identifier for the User that is blocked.
         /// </summary>
-        public required string IpAddress { get; set; }
+        public required Guid UserId { get; set; }
 
         /// <summary>
-        /// A reason for why the IP Address was blocked, if applicable.
+        /// A reason for why the User Address was blocked, if applicable.
         /// </summary>
         public string? Reason { get; set; }
 
         /// <summary>
-        /// Whether the IP Block is permanent (i.e. does not expire and has to be manually removed) or temporary (i.e. expires at a certain date and time).
+        /// Whether the User Block is permanent (i.e. does not expire and has to be manually removed) or temporary (i.e. expires at a certain date and time).
         /// </summary>
         public required bool IsPermanent { get; set; }
 
@@ -48,22 +48,22 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 
 
         /// <summary>
-        /// When the IP Block expires, if it is not permanent.
-        /// This MUST be null if the IP Block is permanent.
+        /// When the User Block expires, if it is not permanent.
+        /// This MUST be null if the User Block is permanent.
         /// </summary>
         public DateTime? ExpiresAt { get; set; }
 
         /// <summary>
-        /// For a temporary block, this denotes when the block was lifted (i.e. when the IP Block became inactive).
-        /// This MUST be null if the IP Block is permanent.
-        /// This MUST be null if the IP Block is temporary and has not yet been lifted.
+        /// For a temporary block, this denotes when the block was lifted (i.e. when the User Block became inactive).
+        /// This MUST be null if the User Block is permanent.
+        /// This MUST be null if the User Block is temporary and has not yet been lifted.
         /// </summary>
         public DateTime? UnblockedAt { get; set; }
 
         /// <summary>
         /// The unique identifier of the User who lifted the block, if applicable.
-        /// This MUST be null if the IP Block is permanent.
-        /// This MUST be null if the IP Block is temporary and has not yet been lifted.
+        /// This MUST be null if the User Block is permanent.
+        /// This MUST be null if the User Block is temporary and has not yet been lifted.
         /// </summary>
         public Guid? UnblockedBy { get; set; }
 
