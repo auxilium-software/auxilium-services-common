@@ -25,6 +25,10 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// </summary>
         public required string AttemptedEmailAddress { get; set; }
         /// <summary>
+        /// The IP Address from which the login attempt was made.
+        /// </summary>
+        public required string ClientIpAddress { get; set; }
+        /// <summary>
         /// Whether the login attempt was successful.
         /// </summary>
         public required bool WasLoginSuccessful { get; set; }
