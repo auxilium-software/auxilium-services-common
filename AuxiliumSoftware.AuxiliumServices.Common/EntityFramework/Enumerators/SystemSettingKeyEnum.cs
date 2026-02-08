@@ -305,7 +305,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators
 
         [JsonPropertyName("policies.logging.security.logIncorrectEmailAddressLoginAttempts")]
         [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.Bool)]
-        [SystemSettingDefaultValueAttribute(true)]
+        [SystemSettingDefaultValueAttribute(false)]
         [SystemSettingDescriptionAttribute("Records when a login fails because the email address does not exist in the system. Useful for detecting enumeration attacks attempting to discover valid accounts.")]
         [SystemSettingRecommendationAttribute("Enable to detect account enumeration attacks. Be aware this may generate significant log volume if attackers probe many addresses.")]
         Policies_Logging_Security_LogIncorrectEmailAddressLoginAttempts,
