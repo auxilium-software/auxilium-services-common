@@ -4,7 +4,7 @@ using System;
 namespace AuxiliumSoftware.AuxiliumServices.Common.Attributes
 {
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
-    internal class SystemSettingDefaultValueAttribute : Attribute
+    public class SystemSettingDefaultValueAttribute : Attribute
     {
         public object DefaultValue { get; }
 
