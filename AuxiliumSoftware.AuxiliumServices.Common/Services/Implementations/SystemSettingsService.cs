@@ -28,7 +28,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             if (typeAttr is null)
                 throw new InvalidOperationException($"No expected value type specified for key '{key}'");
 
-            var setting = await _db.SystemSettings
+            var setting = await _db.System_Settings
                 .AsNoTracking()
                 .Where(s => s.ConfigKey == key)
                 .OrderByDescending(s => s.CreatedAt)
@@ -103,7 +103,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             var jsonValue = JsonSerializer.Serialize(value);
             var valueType = InferValueType(value);
 
-            _db.SystemSettings.Add(new SystemSettingEntityModel
+            _db.System_Settings.Add(new SystemSettingEntityModel
             {
                 Id = Guid.NewGuid(),
                 ConfigKey = key,
