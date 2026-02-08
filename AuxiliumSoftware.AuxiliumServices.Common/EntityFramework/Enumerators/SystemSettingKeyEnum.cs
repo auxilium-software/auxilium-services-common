@@ -305,7 +305,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators
 
         [JsonPropertyName("policies.logging.security.logIncorrectEmailAddressLoginAttempts")]
         [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.Bool)]
-        [SystemSettingDefaultValueAttribute(true)]
+        [SystemSettingDefaultValueAttribute(false)]
         [SystemSettingDescriptionAttribute("Records when a login fails because the email address does not exist in the system. Useful for detecting enumeration attacks attempting to discover valid accounts.")]
         [SystemSettingRecommendationAttribute("Enable to detect account enumeration attacks. Be aware this may generate significant log volume if attackers probe many addresses.")]
         Policies_Logging_Security_LogIncorrectEmailAddressLoginAttempts,
@@ -562,7 +562,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators
         [JsonPropertyName("instance.contacts.firstPointOfContact.phone.number")]
         [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.String)]
         [SystemSettingDescriptionAttribute("The primary support phone number displayed to users. Include the international dialling code for clarity.")]
-        [SystemSettingRecommendationAttribute("Format consistently with country code (for example, +44 20 1234 5678). Consider using a dedicated support line.")]
+        [SystemSettingRecommendationAttribute("Format consistently with country code (for example, +44 1234567890). Consider using a dedicated support line.")]
         Instance_Contacts_FirstPointOfContact_Phone_Number,
 
         [JsonPropertyName("instance.contacts.firstPointOfContact.phone.openingHours")]
