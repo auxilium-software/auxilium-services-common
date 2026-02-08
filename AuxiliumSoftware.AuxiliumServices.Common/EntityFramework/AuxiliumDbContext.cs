@@ -26,8 +26,10 @@ public class AuxiliumDbContext : DbContext
 
 
 
-    public DbSet<SystemSettingEntityModel> SystemSettings { get; set; }
-    public DbSet<SystemBulletinEntryEntityModel> SystemBulletins { get; set; }
+    public DbSet<SystemSettingEntityModel> System_Settings { get; set; }
+    public DbSet<SystemWafIpBlockEntityModel> System_WafIpBlocks { get; set; }
+    public DbSet<SystemBulletinEntryEntityModel> System_Bulletins { get; set; }
+
     public DbSet<UserEntityModel> Users { get; set; }
     public DbSet<CaseEntityModel> Cases { get; set; }
     public DbSet<CaseWorkerEntityModel> CaseWorkers { get; set; }
@@ -41,6 +43,7 @@ public class AuxiliumDbContext : DbContext
     public DbSet<RefreshTokenEntityModel> RefreshTokens { get; set; }
     public DbSet<WemwbsAssessmentEntityModel> WemwbsAssessments { get; set; }
     public DbSet<TotpRecoveryCodeEntityModel> TotpRecoveryCodes { get; set; }
+
     public DbSet<LogCaseMessageReadByEventEntityModel> Log_CaseMessageReadBys { get; set; }
     public DbSet<LogCaseModificationEventEntityModel> Log_CaseModificationEvents { get; set; }
     public DbSet<LogLoginAttemptEventEntityModel> Log_LoginAttempts { get; set; }
@@ -59,7 +62,29 @@ public class AuxiliumDbContext : DbContext
         // system_settings
         modelBuilder.Entity<SystemSettingEntityModel>(entity =>
         {
-            entity.ToTable("system_settings");
+            entity.ToTable("system__settings");
+            entity.HasKey(e => e.Id);
+
+
+
+            entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
+            entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)");
+            
+            entity.Property(e => e.ConfigKey)                       .HasColumnName("config_key")                                .HasColumnType("text")                  .HasConversion(new JsonPropertyNameEnumConverter<SystemSettingKeyEnum>())                   .IsRequired();
+            entity.Property(e => e.ValueType)                       .HasColumnName("value_type")                                .HasColumnType("text")                  .HasConversion(new JsonPropertyNameEnumConverter<SystemSettingValueTypeEnum>())             .IsRequired();
+            entity.Property(e => e.ConfigValue)                     .HasColumnName("config_value")                              .HasColumnType("text")                                                                                                              .IsRequired();
+            entity.Property(e => e.ReasonForModification)           .HasColumnName("reason_for_modification")                   .HasColumnType("text")                                                                                                              .IsRequired();
+
+
+            
+            entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.SetNull);
+        });
+
+        // waf_ip_blocks
+        modelBuilder.Entity<SystemWafIpBlockEntityModel>(entity =>
+        {
+            entity.ToTable("system_waf__ip_blocks");
             entity.HasKey(e => e.Id);
 
 
@@ -81,7 +106,7 @@ public class AuxiliumDbContext : DbContext
         // system_bulletin
         modelBuilder.Entity<SystemBulletinEntryEntityModel>(entity =>
         {
-            entity.ToTable("system_bulletin");
+            entity.ToTable("system__bulletin");
             entity.HasKey(e => e.Id);
 
 
@@ -539,6 +564,8 @@ public class AuxiliumDbContext : DbContext
 
             entity.Property(e => e.AttemptedEmailAddress)           .HasColumnName("attempted_email_address")                   .HasColumnType("text")                                                                                                              .IsRequired();
             entity.Property(e => e.WasLoginSuccessful)              .HasColumnName("was_login_successful")                      .HasColumnType("tinyint(1)")                                                                                                        .IsRequired();
+            entity.Property(e => e.WasBlockedByWaf)                 .HasColumnName("was_blocked_by_waf")                        .HasColumnType("tinyint(1)")                                                                                                        .IsRequired();
+            entity.Property(e => e.FailureReason)                   .HasColumnName("failure_reason")                            .HasColumnType("text")                  .HasConversion(new JsonPropertyNameEnumConverter<LoginAttemptFailureReasonEnum>())          .IsRequired();
         });
 
         // log__system_bulletin_dismissals
