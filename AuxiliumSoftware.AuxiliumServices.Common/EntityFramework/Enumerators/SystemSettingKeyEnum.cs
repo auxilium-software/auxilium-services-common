@@ -102,7 +102,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators
         [SystemSettingDefaultValueAttribute(true)]
         Policies_WebApplicationFirewall_DistributedAttackDetection_Enabled,
 
-        [JsonPropertyName("policies.webApplicationFirewall.distributedAttackDetection.failedLoginsFromDistinctIpsThreshold ")]
+        [JsonPropertyName("policies.webApplicationFirewall.distributedAttackDetection.failedLoginsFromDistinctIpsThreshold")]
         [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.Int)]
         [SystemSettingDefaultValueAttribute(5)]
         Policies_WebApplicationFirewall_DistributedAttackDetection_FailedLoginsFromDistinctIpsThreshold,
@@ -181,6 +181,11 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators
         // ####################################################################################################
         // Policies -> Account Lockout
         // ####################################################################################################
+        [JsonPropertyName("policies.accountLockout.enabled")]
+        [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.Bool)]
+        [SystemSettingDefaultValueAttribute(true)]
+        Policies_AccountLockout_Enabled,
+
         [JsonPropertyName("policies.accountLockout.maximumFailedLoginAttempts")]
         [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.Int)]
         [SystemSettingDefaultValueAttribute(5)]
