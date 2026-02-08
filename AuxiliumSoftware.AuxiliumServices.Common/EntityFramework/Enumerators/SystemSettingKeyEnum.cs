@@ -292,7 +292,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators
         [JsonPropertyName("policies.logging.security.logSuccessfulLogins")]
         [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.Bool)]
         [SystemSettingDefaultValueAttribute(true)]
-        [SystemSettingDescriptionAttribute("Records an audit log entry every time a user successfully logs in. Includes timestamp, user ID, IP address, and user agent information.")]
+        [SystemSettingDescriptionAttribute("Records an audit log entry every time a user successfully logs in.")]
         [SystemSettingRecommendationAttribute("Enable for security auditing and compliance requirements. Essential for investigating account compromises and unusual access patterns.")]
         Policies_Logging_Security_LogSuccessfulLogins,
 
@@ -623,19 +623,19 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators
         [JsonPropertyName("instance.defaults.timeZone")]
         [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.String)]
         [SystemSettingDescriptionAttribute("The default time zone for displaying dates and times when a user has not set their personal preference. Uses IANA time zone database identifiers.")]
-        [SystemSettingRecommendationAttribute("Set to your primary user base's time zone (for example, 'Europe/London' or 'America/New_York'). Users can override in their preferences.")]
+        [SystemSettingRecommendationAttribute("Set to your primary user base's time zone (for example, 'Europe/London'). Users can override in their preferences.")]
         Instance_Defaults_TimeZone,
 
         [JsonPropertyName("instance.defaults.language")]
         [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.String)]
-        [SystemSettingDescriptionAttribute("The default interface language for new users and unauthenticated pages. Uses ISO 639-1 language codes (for example, 'en', 'cy', 'fr').")]
+        [SystemSettingDescriptionAttribute("The default interface language for new users and unauthenticated pages. Use locale (for example, 'en-GB', 'cy-GB').")]
         [SystemSettingRecommendationAttribute("Set to your primary user base's language. Users can override in their personal preferences if multilingual support is enabled.")]
         Instance_Defaults_Language,
 
         // navigation
         [JsonPropertyName("instance.navigation.aboutPageRelativePath")]
         [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.String)]
-        [SystemSettingDescriptionAttribute("The relative path to the 'About' or information page for this instance. Typically linked from the footer or help menu.")]
+        [SystemSettingDescriptionAttribute("The relative path to the 'About' or information page for this instance.")]
         [SystemSettingRecommendationAttribute("Create a page explaining your organisation and the purpose of this system. Important for transparency and trust.")]
         Instance_Navigation_AboutPageRelativePath,
     }
