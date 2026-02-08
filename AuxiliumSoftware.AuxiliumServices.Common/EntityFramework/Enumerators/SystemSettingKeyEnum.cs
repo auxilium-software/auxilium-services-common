@@ -25,38 +25,38 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators
 
         [JsonPropertyName("policies.webApplicationFirewall.user.userLockoutWindowInMinutes")]
         [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.Int)]
-        [SystemSettingDefaultValueAttribute()]
+        [SystemSettingDefaultValueAttribute(15)]
         Policies_WebApplicationFirewall_User_UserLockoutWindowInMinutes,
 
         [JsonPropertyName("policies.webApplicationFirewall.user.userLockoutDurationInMinutes")]
         [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.Int)]
-        [SystemSettingDefaultValueAttribute()]
+        [SystemSettingDefaultValueAttribute(30)]
         Policies_WebApplicationFirewall_User_UserLockoutDurationInMinutes,
 
         // Web Application Firewall - IP
         [JsonPropertyName("policies.webApplicationFirewall.ip.maximumFailedLoginsPerIp")]
         [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.Int)]
-        [SystemSettingDefaultValueAttribute()]
+        [SystemSettingDefaultValueAttribute(10)]
         Policies_WebApplicationFirewall_Ip_MaximumFailedLoginsPerIp,
 
         [JsonPropertyName("policies.webApplicationFirewall.ip.ipBlockWindowInMinutes")]
         [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.Int)]
-        [SystemSettingDefaultValueAttribute()]
+        [SystemSettingDefaultValueAttribute(10)]
         Policies_WebApplicationFirewall_Ip_IpBlockWindowInMinutes,
 
         [JsonPropertyName("policies.webApplicationFirewall.ip.ipTemporaryBlockDurationInMinutes")]
         [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.Int)]
-        [SystemSettingDefaultValueAttribute()]
+        [SystemSettingDefaultValueAttribute(15)]
         Policies_WebApplicationFirewall_Ip_IpTemporaryBlockDurationInMinutes,
 
         [JsonPropertyName("policies.webApplicationFirewall.ip.temporaryBlocksBeforePermanentBan")]
         [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.Int)]
-        [SystemSettingDefaultValueAttribute()]
+        [SystemSettingDefaultValueAttribute(3)]
         Policies_WebApplicationFirewall_Ip_TemporaryBlocksBeforePermanentBan,
 
         [JsonPropertyName("policies.webApplicationFirewall.ip.permanentBanWindowHours")]
         [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.Int)]
-        [SystemSettingDefaultValueAttribute()]
+        [SystemSettingDefaultValueAttribute(24)]
         Policies_WebApplicationFirewall_Ip_PermanentBanWindowHours,
 
         // Web Application Firewall - Rate Limiting
@@ -65,43 +65,51 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators
         [SystemSettingDefaultValueAttribute(true)]
         Policies_WebApplicationFirewall_RateLimiting_Enabled,
 
-        [JsonPropertyName("policies.webApplicationFirewall.rateLimiting.enabled.rateLimitBasedUponIpAddress")]
+        [JsonPropertyName("policies.webApplicationFirewall.rateLimiting.rateLimitBasedUponIpAddress")]
         [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.Int)]
-        [SystemSettingDefaultValueAttribute()]
+        [SystemSettingDefaultValueAttribute(true)]
         Policies_WebApplicationFirewall_RateLimiting_RateLimitBasedUponIpAddress,
 
-        [JsonPropertyName("policies.webApplicationFirewall.rateLimiting.enabled.rateLimitBasedUponUserAccount")]
+        [JsonPropertyName("policies.webApplicationFirewall.rateLimiting.rateLimitBasedUponUserAccount")]
         [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.Int)]
-        [SystemSettingDefaultValueAttribute()]
+        [SystemSettingDefaultValueAttribute(false)]
         Policies_WebApplicationFirewall_RateLimiting_RateLimitBasedUponUserAccount,
 
         [JsonPropertyName("policies.webApplicationFirewall.rateLimiting.maximumLoginRequestsPerMinute")]
         [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.Int)]
-        [SystemSettingDefaultValueAttribute()]
+        [SystemSettingDefaultValueAttribute(10)]
         Policies_WebApplicationFirewall_RateLimiting_MaximumLoginRequestsPerMinute,
 
         [JsonPropertyName("policies.webApplicationFirewall.rateLimiting.failureDelayBaseMilliseconds")]
         [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.Int)]
-        [SystemSettingDefaultValueAttribute()]
+        [SystemSettingDefaultValueAttribute(500)]
         Policies_WebApplicationFirewall_RateLimiting_FailureDelayBaseMilliseconds,
 
         [JsonPropertyName("policies.webApplicationFirewall.rateLimiting.failureDelayMaximumMilliseconds")]
         [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.Int)]
-        [SystemSettingDefaultValueAttribute()]
+        [SystemSettingDefaultValueAttribute(5000)]
         Policies_WebApplicationFirewall_RateLimiting_FailureDelayMaximumMilliseconds,
 
         // Web Application Firewall - Whitelisting
         [JsonPropertyName("policies.webApplicationFirewall.whitelisting.whitelistedIps")]
         [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.StringArray)]
+        [SystemSettingDefaultValueAttribute(new string[] { "::1", "127.0.0.1" })]
         Policies_WebApplicationFirewall_Whitelisting_WhitelistedIps,
 
         // Web Application Firewall - Distributed Attack Detection
-        // [JsonPropertyName("policies.webApplicationFirewall.distributedAttackDetection.ipThreshold")]
-        // Policies_WebApplicationFirewall_DistributedAttackDetection_IpThreshold,
+        [JsonPropertyName("policies.webApplicationFirewall.distributedAttackDetection.enabled")]
+        [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.Bool)]
+        [SystemSettingDefaultValueAttribute(true)]
+        Policies_WebApplicationFirewall_DistributedAttackDetection_Enabled,
+
+        [JsonPropertyName("policies.webApplicationFirewall.distributedAttackDetection.failedLoginsFromDistinctIpsThreshold ")]
+        [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.Int)]
+        [SystemSettingDefaultValueAttribute(5)]
+        Policies_WebApplicationFirewall_DistributedAttackDetection_FailedLoginsFromDistinctIpsThreshold,
 
         [JsonPropertyName("policies.webApplicationFirewall.distributedAttackDetection.windowInMinutes")]
         [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.Int)]
-        [SystemSettingDefaultValueAttribute()]
+        [SystemSettingDefaultValueAttribute(10)]
         Policies_WebApplicationFirewall_DistributedAttackDetection_WindowInMinutes,
 
         // ####################################################################################################
@@ -175,23 +183,28 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators
         // ####################################################################################################
         [JsonPropertyName("policies.accountLockout.maximumFailedLoginAttempts")]
         [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.Int)]
-        [SystemSettingDefaultValueAttribute()]
+        [SystemSettingDefaultValueAttribute(5)]
         Policies_AccountLockout_MaximumFailedLoginAttempts,
 
         [JsonPropertyName("policies.accountLockout.lockoutDurationInMinutes")]
         [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.Int)]
-        [SystemSettingDefaultValueAttribute()]
+        [SystemSettingDefaultValueAttribute(30)]
         Policies_AccountLockout_LockoutDurationInMinutes,
 
         [JsonPropertyName("policies.accountLockout.resetFailedAttemptsAfterInMinutes")]
         [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.Int)]
-        [SystemSettingDefaultValueAttribute()]
+        [SystemSettingDefaultValueAttribute(15)]
         Policies_AccountLockout_ResetFailedAttemptsAfterInMinutes,
 
         [JsonPropertyName("policies.accountLockout.notifyUserUponLockout")]
-        [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.Int)]
-        [SystemSettingDefaultValueAttribute()]
+        [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.Bool)]
+        [SystemSettingDefaultValueAttribute(true)]
         Policies_AccountLockout_NotifyUserUponLockout,
+
+        [JsonPropertyName("policies.accountLockout.notifyAdministratorsUponLockout")]
+        [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.Bool)]
+        [SystemSettingDefaultValueAttribute(false)]
+        Policies_AccountLockout_NotifyAdministratorsUponLockout,
 
         // ####################################################################################################
         // Policies -> Logging
