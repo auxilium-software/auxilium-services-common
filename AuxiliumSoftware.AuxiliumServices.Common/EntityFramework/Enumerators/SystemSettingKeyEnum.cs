@@ -123,7 +123,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators
         // Web Application Firewall - Whitelisting
         [JsonPropertyName("policies.webApplicationFirewall.whitelisting.whitelistedIps")]
         [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.StringArray)]
-        [SystemSettingDefaultValueAttribute("::1,127.0.0.1")]
+        [SystemSettingDefaultValueAttribute(new string[] { "::1", "127.0.0.1" })]
         [SystemSettingDescriptionAttribute("IP addresses that bypass WAF restrictions. These IPs will never be blocked or rate-limited, regardless of their activity. Supports IPv4 and IPv6 addresses.")]
         [SystemSettingRecommendationAttribute("Only whitelist trusted, static IPs such as office networks, monitoring services, or load balancer health checks. Never whitelist dynamic or shared IPs.")]
         Policies_WebApplicationFirewall_Whitelisting_WhitelistedIps,
@@ -229,7 +229,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators
         [JsonPropertyName("policies.totp.totpIssuer")]
         [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.String)]
         [SystemSettingDefaultValueAttribute("Auxilium")]
-        [SystemSettingDescriptionAttribute("The name displayed in authenticator apps (such as Google Authenticator, Microsoft Authenticator, or Authy) to identify this application. Helps users distinguish between multiple TOTP entries.")]
+        [SystemSettingDescriptionAttribute("The name displayed in authenticator apps to identify this application. Helps users distinguish between multiple TOTP entries.")]
         [SystemSettingRecommendationAttribute("Use your organisation or application name. Keep it short and recognisable.")]
         Policies_Totp_TotpIssuer,
 
