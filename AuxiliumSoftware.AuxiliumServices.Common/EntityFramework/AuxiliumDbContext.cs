@@ -109,10 +109,10 @@ public class AuxiliumDbContext : DbContext
             entity.HasOne(e => e.UnblockedByUser)                   .WithMany()                                                 .HasForeignKey(e => e.UnblockedBy)      .OnDelete(DeleteBehavior.SetNull);
         });
 
-        // system__waf__ip_blocks
+        // system__waf__user_blocks
         modelBuilder.Entity<SystemWafUserBlockEntityModel>(entity =>
         {
-            entity.ToTable("system__waf__ip_blocks");
+            entity.ToTable("system__waf__user_blocks");
             entity.HasKey(e => e.Id);
 
 
