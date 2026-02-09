@@ -25,6 +25,10 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// </summary>
         public required string AttemptedEmailAddress { get; set; }
         /// <summary>
+        /// If the Email Address belongs to an existing User, the unique identifier of that User. Otherwise, null.
+        /// </summary>
+        public Guid? TargetUserId{ get; set; }
+        /// <summary>
         /// The IP Address from which the login attempt was made.
         /// </summary>
         public required string ClientIpAddress { get; set; }
@@ -40,5 +44,14 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// Reason for failure
         /// </summary>
         public LoginAttemptFailureReasonEnum? FailureReason { get; set; }
+
+
+
+
+
+        /// <summary>
+        /// If the Email Address belongs to an existing User, this will be that User. Otherwise, null.
+        /// </summary>
+        public UserEntityModel? TargetUser { get; set; }
     }
 }
