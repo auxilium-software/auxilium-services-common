@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Interfaces
+namespace AuxiliumSoftware.AuxiliumServices.Common.Services
 {
     public interface ISystemSettingsService
     {
