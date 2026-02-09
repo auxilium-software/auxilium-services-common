@@ -593,9 +593,12 @@ public class AuxiliumDbContext : DbContext
             entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
 
             entity.Property(e => e.AttemptedEmailAddress)           .HasColumnName("attempted_email_address")                   .HasColumnType("text")                                                                                                              .IsRequired();
+            entity.Property(e => e.TargetUserId)                    .HasColumnName("target_user_id")                            .HasColumnType("char(36)");
             entity.Property(e => e.WasLoginSuccessful)              .HasColumnName("was_login_successful")                      .HasColumnType("tinyint(1)")                                                                                                        .IsRequired();
             entity.Property(e => e.WasBlockedByWaf)                 .HasColumnName("was_blocked_by_waf")                        .HasColumnType("tinyint(1)")                                                                                                        .IsRequired();
             entity.Property(e => e.FailureReason)                   .HasColumnName("failure_reason")                            .HasColumnType("text")                  .HasConversion(new JsonPropertyNameEnumConverter<LoginAttemptFailureReasonEnum>())          .IsRequired();
+            
+            entity.HasOne(e => e.TargetUser)                        .WithMany()                                                 .HasForeignKey(e => e.TargetUserId)     .OnDelete(DeleteBehavior.SetNull);
         });
 
         // log__system_bulletin_dismissals
