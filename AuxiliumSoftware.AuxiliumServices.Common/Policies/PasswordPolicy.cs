@@ -1,6 +1,6 @@
 ﻿using AuxiliumSoftware.AuxiliumServices.Common.Configuration;
 using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators;
-using AuxiliumSoftware.AuxiliumServices.Common.Services.Interfaces;
+using AuxiliumSoftware.AuxiliumServices.Common.Services;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
