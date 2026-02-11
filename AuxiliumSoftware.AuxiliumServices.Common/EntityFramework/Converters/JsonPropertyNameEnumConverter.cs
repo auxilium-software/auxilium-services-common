@@ -4,12 +4,12 @@ using System.Text.Json.Serialization;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Converters
 {
-    public class JsonPropertyNameEnumConverter<TEnum> : ValueConverter<TEnum, string>
-        where TEnum : struct, Enum
+    public class JsonPropertyNameEnumConverter<TEnum> : ValueConverter<TEnum?, string?>
+            where TEnum : struct, Enum
     {
         public JsonPropertyNameEnumConverter() : base(
-            v => EnumToString(v),
-            v => StringToEnum(v),
+            v => v.HasValue ? EnumToString(v.Value) : null,
+            v => v != null ? StringToEnum(v) : null,
             new ConverterMappingHints(unicode: true))
         {
         }
