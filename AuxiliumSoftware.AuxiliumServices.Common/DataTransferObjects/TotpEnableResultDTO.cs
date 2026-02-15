@@ -1,5 +1,5 @@
 ﻿
-namespace AuxiliumSoftware.AuxiliumServices.Common.DataStructures
+namespace AuxiliumSoftware.AuxiliumServices.Common.DataTransferObjects
 {
     public class TotpEnableResult
     {

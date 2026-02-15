@@ -1,5 +1,5 @@
 ﻿using AuxiliumSoftware.AuxiliumServices.Common.Configuration;
-using AuxiliumSoftware.AuxiliumServices.Common.DataStructures;
+using AuxiliumSoftware.AuxiliumServices.Common.DataTransferObjects;
 using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework;
 using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels;
 using Microsoft.EntityFrameworkCore;
@@ -38,7 +38,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
         }
 
         #region Enrolment Lifecycle
-        public async Task<TotpSetupResult> CreateSetupAsync(Guid userId, string userEmail)
+        public async Task<TotpSetupResultDTO> CreateSetupAsync(Guid userId, string userEmail)
         {
             var user = await _db.Users.FirstOrDefaultAsync(u => u.Id == userId);
             if (user == null) throw new InvalidOperationException($"User {userId} not found");
@@ -62,14 +62,14 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
 
             _logger.LogInformation("TOTP setup created for user {UserId}", userId);
 
-            return new TotpSetupResult
+            return new TotpSetupResultDTO
             {
                 Secret = secret,
                 ProvisioningUri = provisioningUri
             };
         }
 
-        public async Task<TotpEnableResult?> EnablePendingAsync(Guid userId, string code)
+        public async Task<TotpEnableResultDTO?> EnablePendingAsync(Guid userId, string code)
         {
             var user = await _db.Users.FirstOrDefaultAsync(u => u.Id == userId);
             if (user == null) return null;
@@ -93,7 +93,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                 userId, plaintextCodes.Count
             );
 
-            return new TotpEnableResult { RecoveryCodes = plaintextCodes };
+            return new TotpEnableResultDTO { RecoveryCodes = plaintextCodes };
         }
 
         public async Task<bool> DisableAsync(Guid userId, string code)

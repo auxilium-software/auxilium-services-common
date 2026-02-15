@@ -1,4 +1,4 @@
-﻿namespace AuxiliumSoftware.AuxiliumServices.Common.DataStructures
+﻿namespace AuxiliumSoftware.AuxiliumServices.Common.DataTransferObjects
 {
     /// <summary>
     /// Represents the response from a reCAPTCHA verification request.
