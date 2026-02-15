@@ -2,7 +2,7 @@
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.DataTransferObjects
 {
-    public class AdditionalPropertySubStructure
+    public class AdditionalPropertySubStructureDTO
     {
         [JsonPropertyName("id")]
         public required Guid Id { get; set; }

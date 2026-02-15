@@ -1,6 +1,6 @@
 ﻿namespace AuxiliumSoftware.AuxiliumServices.Common.DataTransferObjects
 {
-    public class TotpSetupResult
+    public class TotpSetupResultDTO
     {
         /// <summary>
         /// Raw base32 secret for manual entry into authenticator app.

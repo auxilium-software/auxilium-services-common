@@ -3,7 +3,7 @@
     /// <summary>
     /// Represents the response from a reCAPTCHA verification request.
     /// </summary>
-    internal class RecaptchaResponse
+    internal class RecaptchaResponseDTO
     {
         /// <summary>
         /// Whether the reCAPTCHA verification was successful.

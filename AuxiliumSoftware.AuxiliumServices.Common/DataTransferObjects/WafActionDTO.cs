@@ -4,7 +4,7 @@ using System.Text;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.DataTransferObjects
 {
-    public class WafAction
+    public class WafActionDTO
     {
         public bool IsUserLocked { get; set; }
         public bool IsIpTemporarilyBlocked { get; set; }
