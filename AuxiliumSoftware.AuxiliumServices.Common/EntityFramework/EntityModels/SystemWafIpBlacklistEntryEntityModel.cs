@@ -29,14 +29,14 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 
 
         /// <summary>
-        /// The IP Address that is blocked.
+        /// The IP Address that is blacklisted.
         /// </summary>
         public required string IpAddress { get; set; }
 
         /// <summary>
-        /// A reason for why the IP Address was blocked.
+        /// A reason for why the IP Address was blacklisted.
         /// </summary>
-        public string? ReasonForBlock { get; set; }
+        public string? Justification { get; set; }
 
         /// <summary>
         /// Whether the IP Block is permanent (i.e. does not expire and has to be manually removed) or temporary (i.e. expires at a certain date and time).
@@ -58,19 +58,19 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// This MUST be null if the IP Block is permanent.
         /// This MUST be null if the IP Block is temporary and has not yet been lifted.
         /// </summary>
-        public DateTime? UnblockedAt { get; set; }
+        public DateTime? UnblacklistedAt { get; set; }
 
         /// <summary>
         /// The unique identifier of the User who lifted the block, if applicable.
         /// This MUST be null if the IP Block is permanent.
         /// This MUST be null if the IP Block is temporary and has not yet been lifted.
         /// </summary>
-        public Guid? UnblockedBy { get; set; }
+        public Guid? UnblacklistedBy { get; set; }
 
         /// <summary>
-        /// A reason for why the IP Address was unblocked.
+        /// A reason for why the IP Address was blacklisted.
         /// </summary>
-        public string? ReasonForUnblock { get; set; }
+        public string? JustificationForUnblacklist { get; set; }
 
 
 
