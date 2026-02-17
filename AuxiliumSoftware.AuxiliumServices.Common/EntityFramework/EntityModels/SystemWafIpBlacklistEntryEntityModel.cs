@@ -6,7 +6,7 @@ using System.Text;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class SystemWafIpBlockEntityModel
+    public class SystemWafIpBlacklistEntryEntityModel
     {
         /// <summary>
         /// The unique identifier for the IP Block.

@@ -4,6 +4,7 @@ using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels;
 using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators;
 using Microsoft.EntityFrameworkCore;
 using System.IO;
+using System.Net;
 using System.Reflection.Emit;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -27,8 +28,10 @@ public class AuxiliumDbContext : DbContext
 
 
     public DbSet<SystemSettingEntityModel> System_Settings { get; set; }
-    public DbSet<SystemWafIpBlockEntityModel> System_Waf_IpBlocks { get; set; }
-    public DbSet<SystemWafUserBlockEntityModel> System_Waf_UserBlocks { get; set; }
+    public DbSet<SystemWafIpWhitelistEntryEntityModel> System_Waf_IpWhitelist{ get; set; }
+    public DbSet<SystemWafUserWhitelistEntryEntityModel> System_Waf_UserWhitelist { get; set; }
+    public DbSet<SystemWafIpBlacklistEntryEntityModel> System_Waf_IpBlacklist { get; set; }
+    public DbSet<SystemWafUserBlacklistEntryEntityModel> System_Waf_UserBlacklist { get; set; }
     public DbSet<SystemBulletinEntryEntityModel> System_Bulletins { get; set; }
 
     public DbSet<UserEntityModel> Users { get; set; }
@@ -82,10 +85,48 @@ public class AuxiliumDbContext : DbContext
             entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.SetNull);
         });
 
-        // system__waf__ip_blocks
-        modelBuilder.Entity<SystemWafIpBlockEntityModel>(entity =>
+        // system__waf__ip_whitelist
+        modelBuilder.Entity<SystemWafIpWhitelistEntryEntityModel>(entity =>
         {
-            entity.ToTable("system__waf__ip_blocks");
+            entity.ToTable("system__waf__ip_whitelist");
+            entity.HasKey(e => e.Id);
+
+
+
+            entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
+            entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)");
+            
+            entity.Property(e => e.IpAddress)                       .HasColumnName("ip_address")                                .HasColumnType("text")                  .HasConversion(new IpAddressConverter())                                                    .IsRequired();
+
+
+            
+            entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.SetNull);
+        });
+
+        // system__waf__user_whitelist
+        modelBuilder.Entity<SystemWafUserWhitelistEntryEntityModel>(entity =>
+        {
+            entity.ToTable("system__waf__user_whitelist");
+            entity.HasKey(e => e.Id);
+
+
+
+            entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
+            entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)");
+            
+            entity.Property(e => e.UserId)                          .HasColumnName("user_id")                                   .HasColumnType("char(36)")                                                                                                          .IsRequired();
+
+
+            
+            entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.SetNull);
+        });
+
+        // system__waf__ip_blacklist
+        modelBuilder.Entity<SystemWafIpBlacklistEntryEntityModel>(entity =>
+        {
+            entity.ToTable("system__waf__ip_blacklist");
             entity.HasKey(e => e.Id);
 
 
@@ -109,10 +150,10 @@ public class AuxiliumDbContext : DbContext
             entity.HasOne(e => e.UnblockedByUser)                   .WithMany()                                                 .HasForeignKey(e => e.UnblockedBy)      .OnDelete(DeleteBehavior.SetNull);
         });
 
-        // system__waf__user_blocks
-        modelBuilder.Entity<SystemWafUserBlockEntityModel>(entity =>
+        // system__waf__user_blacklist
+        modelBuilder.Entity<SystemWafUserBlacklistEntryEntityModel>(entity =>
         {
-            entity.ToTable("system__waf__user_blocks");
+            entity.ToTable("system__waf__user_blacklist");
             entity.HasKey(e => e.Id);
 
 
@@ -200,6 +241,7 @@ public class AuxiliumDbContext : DbContext
             entity.Property(e => e.AllowLogin)                      .HasColumnName("allow_login")                               .HasColumnType("tinyint(1)")                                                    .HasDefaultValue(false)                             .IsRequired();
             entity.Property(e => e.IsAdmin)                         .HasColumnName("is_admin")                                  .HasColumnType("tinyint(1)")                                                    .HasDefaultValue(false)                             .IsRequired();
             entity.Property(e => e.IsCaseWorker)                    .HasColumnName("is_case_worker")                            .HasColumnType("tinyint(1)")                                                    .HasDefaultValue(false)                             .IsRequired();
+            entity.Property(e => e.IsCaseWorkerManager)             .HasColumnName("is_case_worker_manager")                    .HasColumnType("tinyint(1)")                                                    .HasDefaultValue(false)                             .IsRequired();
 
 
 
@@ -362,6 +404,8 @@ public class AuxiliumDbContext : DbContext
             entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.SetNull);
             entity.HasOne(e => e.LastUpdatedByUser)                 .WithMany()                                                 .HasForeignKey(e => e.LastUpdatedBy)    .OnDelete(DeleteBehavior.SetNull);
             entity.HasOne(e => e.Case)                              .WithMany(c => c.AdditionalProperties)                      .HasForeignKey(e => e.CaseId);
+
+            entity.HasIndex(e => new { e.CaseId, e.UrlSlug })       .IsUnique();
         });
 
         // user_additional_properties
@@ -385,6 +429,8 @@ public class AuxiliumDbContext : DbContext
             entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.SetNull);
             entity.HasOne(e => e.LastUpdatedByUser)                 .WithMany()                                                 .HasForeignKey(e => e.LastUpdatedBy)    .OnDelete(DeleteBehavior.SetNull);
             entity.HasOne(e => e.User)                              .WithMany(u => u.AdditionalProperties)                      .HasForeignKey(e => e.UserId);
+
+            entity.HasIndex(e => new { e.UserId, e.UrlSlug })          .IsUnique();
         });
 
         // case_messages
