@@ -120,14 +120,6 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators
         [SystemSettingRecommendationAttribute("5000-10000ms (5-10 seconds) is typical. This significantly slows automated attacks while remaining tolerable for humans.")]
         Policies_WebApplicationFirewall_RateLimiting_FailureDelayMaximumMilliseconds,
 
-        // Web Application Firewall - Whitelisting
-        [JsonPropertyName("policies.webApplicationFirewall.whitelisting.whitelistedIps")]
-        [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.StringArray)]
-        [SystemSettingDefaultValueAttribute(new string[] { "::1", "127.0.0.1" })]
-        [SystemSettingDescriptionAttribute("IP addresses that bypass WAF restrictions. These IPs will never be blocked or rate-limited, regardless of their activity. Supports IPv4 and IPv6 addresses.")]
-        [SystemSettingRecommendationAttribute("Only whitelist trusted, static IPs such as office networks, monitoring services, or load balancer health checks. Never whitelist dynamic or shared IPs.")]
-        Policies_WebApplicationFirewall_Whitelisting_WhitelistedIps,
-
         // Web Application Firewall - Distributed Attack Detection
         [JsonPropertyName("policies.webApplicationFirewall.distributedAttackDetection.enabled")]
         [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.Bool)]
