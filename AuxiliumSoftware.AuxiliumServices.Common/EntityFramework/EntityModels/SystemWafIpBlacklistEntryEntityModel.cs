@@ -36,10 +36,10 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// <summary>
         /// A reason for why the IP Address was blacklisted.
         /// </summary>
-        public string? Justification { get; set; }
+        public string? JustificationForBlacklist { get; set; }
 
         /// <summary>
-        /// Whether the IP Block is permanent (i.e. does not expire and has to be manually removed) or temporary (i.e. expires at a certain date and time).
+        /// Whether the IP Address Block is permanent (i.e. does not expire and has to be manually removed) or temporary (i.e. expires at a certain date and time).
         /// </summary>
         public required bool IsPermanent { get; set; }
 
@@ -54,16 +54,16 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         public DateTime? ExpiresAt { get; set; }
 
         /// <summary>
-        /// For a temporary block, this denotes when the block was lifted (i.e. when the IP Block became inactive).
-        /// This MUST be null if the IP Block is permanent.
-        /// This MUST be null if the IP Block is temporary and has not yet been lifted.
+        /// For a temporary block, this denotes when the Blacklist Entry was lifted (i.e. when the IP Address Blacklist Entry became inactive).
+        /// This MUST be null if the IP Address Blacklist is permanent.
+        /// This MUST be null if the IP Address Blacklist is temporary and has not yet been lifted.
         /// </summary>
         public DateTime? UnblacklistedAt { get; set; }
 
         /// <summary>
         /// The unique identifier of the User who lifted the block, if applicable.
-        /// This MUST be null if the IP Block is permanent.
-        /// This MUST be null if the IP Block is temporary and has not yet been lifted.
+        /// This MUST be null if the IP Address Block is permanent.
+        /// This MUST be null if the IP Address Block is temporary and has not yet been lifted.
         /// </summary>
         public Guid? UnblacklistedBy { get; set; }
 

@@ -36,7 +36,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// <summary>
         /// A reason for why the User Address was blocked.
         /// </summary>
-        public string? Justification { get; set; }
+        public string? JustificationForBlacklist { get; set; }
 
         /// <summary>
         /// Whether the User Block is permanent (i.e. does not expire and has to be manually removed) or temporary (i.e. expires at a certain date and time).

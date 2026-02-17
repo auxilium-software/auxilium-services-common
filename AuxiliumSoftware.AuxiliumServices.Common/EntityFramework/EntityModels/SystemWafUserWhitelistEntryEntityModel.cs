@@ -33,7 +33,41 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// <summary>
         /// A reason for this User to be Whitelisted.
         /// </summary>
-        public required string Justification { get; set; }
+        public required string JustificationForWhitelist { get; set; }
+
+        /// <summary>
+        /// Whether the User Whitelist is permanent (i.e. does not expire and has to be manually removed) or temporary (i.e. expires at a certain date and time).
+        /// </summary>
+        public required bool IsPermanent { get; set; }
+
+
+
+
+
+        /// <summary>
+        /// When the User Whitelist expires, if it is not permanent.
+        /// This MUST be null if the User Whitelist is permanent.
+        /// </summary>
+        public DateTime? ExpiresAt { get; set; }
+
+        /// <summary>
+        /// For a temporary Whitelist, this denotes when the whitelist was lifted (i.e. when the User Whitelist became inactive).
+        /// This MUST be null if the User Whitelist is permanent.
+        /// This MUST be null if the User Whitelist is temporary and has not yet been lifted.
+        /// </summary>
+        public DateTime? UnwhitelistedAt { get; set; }
+
+        /// <summary>
+        /// The unique identifier of the User who lifted the Whitelist, if applicable.
+        /// This MUST be null if the User Whitelist is permanent.
+        /// This MUST be null if the User Whitelist is temporary and has not yet been lifted.
+        /// </summary>
+        public Guid? UnwhitelistedBy { get; set; }
+
+        /// <summary>
+        /// A reason for why the User was Whitelisted.
+        /// </summary>
+        public string? JustificationForUnwhitelist { get; set; }
 
 
 
