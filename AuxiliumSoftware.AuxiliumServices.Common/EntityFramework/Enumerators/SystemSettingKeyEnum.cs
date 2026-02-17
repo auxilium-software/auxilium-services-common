@@ -15,7 +15,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators
         [JsonPropertyName("policies.webApplicationFirewall.enabled")]
         [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.Bool)]
         [SystemSettingDefaultValueAttribute(true)]
-        [SystemSettingDescriptionAttribute("Acts as a master switch for the Web Application Firewall. When enabled, the system monitors login attempts, detects brute-force attacks, and automatically blocks suspicious IP addresses.")]
+        [SystemSettingDescriptionAttribute("Acts as a master switch for the Web Application Firewall. When enabled, the system monitors login attempts, detects brute-force attacks, and automatically blacklists suspicious IP addresses.")]
         [SystemSettingRecommendationAttribute("Should always be set to true in production environments.")]
         Policies_WebApplicationFirewall_Enabled,
 
@@ -45,37 +45,66 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators
         [JsonPropertyName("policies.webApplicationFirewall.ip.maximumFailedLoginsPerIp")]
         [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.Int)]
         [SystemSettingDefaultValueAttribute(10)]
-        [SystemSettingDescriptionAttribute("The number of failed login attempts allowed from a single IP address before that IP is temporarily blocked. This protects against attackers trying multiple usernames from the same location.")]
-        [SystemSettingRecommendationAttribute("10-20 attempts. Set higher than per-user limit to avoid blocking shared networks such as offices, universities, or NAT gateways.")]
+        [SystemSettingDescriptionAttribute("The number of failed login attempts allowed from a single IP address before that IP is temporarily blacklisted. This protects against attackers trying multiple usernames from the same location.")]
+        [SystemSettingRecommendationAttribute("10-20 attempts. Set higher than per-user limit to avoid blacklisting shared networks such as offices, universities, or NAT gateways.")]
         Policies_WebApplicationFirewall_Ip_MaximumFailedLoginsPerIp,
 
-        [JsonPropertyName("policies.webApplicationFirewall.ip.ipBlockWindowInMinutes")]
+        [JsonPropertyName("policies.webApplicationFirewall.ip.ipBlacklistWindowInMinutes")]
         [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.Int)]
         [SystemSettingDefaultValueAttribute(10)]
-        [SystemSettingDescriptionAttribute("The time window in which failed login attempts from an IP address are counted. If the maximum failed attempts from one IP occur within this window, the IP is blocked.")]
+        [SystemSettingDescriptionAttribute("The time window in which failed login attempts from an IP address are counted. If the maximum failed attempts from one IP occur within this window, the IP is blacklisted.")]
         [SystemSettingRecommendationAttribute("10-15 minutes is typical. Shorter windows may allow slow-and-steady attacks to evade detection.")]
-        Policies_WebApplicationFirewall_Ip_IpBlockWindowInMinutes,
+        Policies_WebApplicationFirewall_Ip_IpBlacklistWindowInMinutes,
 
-        [JsonPropertyName("policies.webApplicationFirewall.ip.ipTemporaryBlockDurationInMinutes")]
-        [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.Int)]
-        [SystemSettingDefaultValueAttribute(15)]
-        [SystemSettingDescriptionAttribute("How long an IP address remains blocked after exceeding the failed login threshold. All login attempts from this IP will be rejected during the block period.")]
-        [SystemSettingRecommendationAttribute("15-60 minutes for temporary blocks. Shorter durations are more forgiving for shared IPs; longer durations deter persistent attackers.")]
-        Policies_WebApplicationFirewall_Ip_IpTemporaryBlockDurationInMinutes,
-
-        [JsonPropertyName("policies.webApplicationFirewall.ip.temporaryBlocksBeforePermanentBan")]
+        [JsonPropertyName("policies.webApplicationFirewall.ip.temporaryBlacklistsBeforePermanentBlacklist")]
         [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.Int)]
         [SystemSettingDefaultValueAttribute(3)]
-        [SystemSettingDescriptionAttribute("The number of times an IP can be temporarily blocked before it receives a permanent ban. This escalates punishment for persistent attackers who return after temporary blocks expire.")]
-        [SystemSettingRecommendationAttribute("3-5 temporary blocks before permanent ban. Lower values may catch legitimate users on shared IPs; higher values give attackers more attempts.")]
-        Policies_WebApplicationFirewall_Ip_TemporaryBlocksBeforePermanentBan,
+        [SystemSettingDescriptionAttribute("The number of times blacklists IP can be temporarily blacklisted before it receives a permanent ban. This escalates punishment for persistent attackers who return after temporary blacklists expire.")]
+        [SystemSettingRecommendationAttribute("3-5 temporary blacklists before permanent ban. Lower values may catch legitimate users on shared IPs; higher values give attackers more attempts.")]
+        Policies_WebApplicationFirewall_Ip_TemporaryBlacklistsBeforePermanentBlacklist,
 
         [JsonPropertyName("policies.webApplicationFirewall.ip.permanentBanWindowHours")]
         [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.Int)]
         [SystemSettingDefaultValueAttribute(24)]
-        [SystemSettingDescriptionAttribute("The time window in which repeated temporary blocks are counted toward a permanent ban. If an IP receives the threshold number of temporary blocks within this window, it is permanently banned.")]
+        [SystemSettingDescriptionAttribute("The time window in which repeated temporary blacklists are counted toward a permanent ban. If an IP receives the threshold number of temporary blacklists within this window, it is permanently banned.")]
         [SystemSettingRecommendationAttribute("24 hours is typical. Shorter windows may allow attackers to evade permanent bans by waiting; longer windows may catch users who have legitimate issues over time.")]
         Policies_WebApplicationFirewall_Ip_PermanentBanWindowHours,
+
+        // Web Application Firewall - Listing
+        [JsonPropertyName("policies.webApplicationFirewall.listing.temporaryIpWhitelistDurationInMinutes.default")]
+        [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.Int)]
+        [SystemSettingDefaultValueAttribute(1440)] // 24 hours
+        [SystemSettingDescriptionAttribute("The default duration for temporary IP whitelist entries. Used when an administrator adds an IP to the whitelist without specifying a custom duration.")]
+        [SystemSettingRecommendationAttribute("1440 minutes (24 hours) to 10080 minutes (7 days). Temporary whitelists are useful for contractors, testing, or temporary office locations.")]
+        Policies_WebApplicationFirewall_Listing_TemporaryIpWhitelistDurationInMinutes_Default,
+
+        [JsonPropertyName("policies.webApplicationFirewall.listing.temporaryUserWhitelistDurationInMinutes.default")]
+        [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.Int)]
+        [SystemSettingDefaultValueAttribute(1440)] // 24 hours
+        [SystemSettingDescriptionAttribute("The default duration for temporary user whitelist entries. Whitelisted users bypass WAF lockout checks during this period.")]
+        [SystemSettingRecommendationAttribute("1440 minutes (24 hours) to 10080 minutes (7 days). Useful for users experiencing repeated lockouts due to legitimate issues.")]
+        Policies_WebApplicationFirewall_Listing_TemporaryUserWhitelistDurationInMinutes_Default,
+
+        [JsonPropertyName("policies.webApplicationFirewall.listing.temporaryIpBlacklistDurationInMinutes.default")]
+        [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.Int)]
+        [SystemSettingDefaultValueAttribute(60)] // 1 hour
+        [SystemSettingDescriptionAttribute("The default duration for temporary IP blacklist entries created manually by administrators. Distinct from automatic temporary blacklists triggered by failed login thresholds.")]
+        [SystemSettingRecommendationAttribute("60-1440 minutes. Manual blacklists are typically for known bad actors, so longer durations than automatic blacklists are appropriate.")]
+        Policies_WebApplicationFirewall_Listing_TemporaryIpBlacklistDurationInMinutes_Default,
+
+        [JsonPropertyName("policies.webApplicationFirewall.listing.temporaryUserBlacklistDurationInMinutes.default")]
+        [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.Int)]
+        [SystemSettingDefaultValueAttribute(60)] // 1 hour
+        [SystemSettingDescriptionAttribute("The default duration for temporary user blacklist entries created manually by administrators. The user cannot log in during this period.")]
+        [SystemSettingRecommendationAttribute("60-1440 minutes. Use for suspected compromised accounts pending investigation, or as a disciplinary measure.")]
+        Policies_WebApplicationFirewall_Listing_TemporaryUserBlacklistDurationInMinutes_Default,
+
+        [JsonPropertyName("policies.webApplicationFirewall.listing.temporaryIpBlacklistDurationInMinutes.failedLoginAttempts")]
+        [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.Int)]
+        [SystemSettingDefaultValueAttribute(15)]
+        [SystemSettingDescriptionAttribute("How long an IP address remains blacklisted after exceeding the failed login threshold. All login attempts from this IP will be rejected during the blacklist period.")]
+        [SystemSettingRecommendationAttribute("15-60 minutes for temporary blacklists. Shorter durations are more forgiving for shared IPs; longer durations deter persistent attackers.")]
+        Policies_WebApplicationFirewall_Listing_TemporaryIpBlacklistDurationInMinutes_FailedLoginAttempts,
 
         // Web Application Firewall - Rate Limiting
         [JsonPropertyName("policies.webApplicationFirewall.rateLimiting.enabled")]
@@ -85,14 +114,14 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators
         [SystemSettingRecommendationAttribute("Should be enabled to prevent rapid-fire automated attacks and credential stuffing.")]
         Policies_WebApplicationFirewall_RateLimiting_Enabled,
 
-        [JsonPropertyName("policies.webApplicationFirewall.rateLimiting.rateLimitBasedUponIpAddress")]
+        [JsonPropertyName("policies.webApplicationFirewall.rateLimiting.enableRateLimitingBasedUponIpAddress")]
         [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.Bool)]
         [SystemSettingDefaultValueAttribute(true)]
         [SystemSettingDescriptionAttribute("When enabled, rate limits are applied per IP address. This limits how quickly any single IP can attempt logins, regardless of which accounts they target.")]
         [SystemSettingRecommendationAttribute("Should generally be enabled. This is the primary defence against distributed password spraying attacks.")]
         Policies_WebApplicationFirewall_RateLimiting_RateLimitBasedUponIpAddress,
 
-        [JsonPropertyName("policies.webApplicationFirewall.rateLimiting.rateLimitBasedUponUserAccount")]
+        [JsonPropertyName("policies.webApplicationFirewall.rateLimiting.enableRateLimitingBasedUponUserAccount")]
         [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.Bool)]
         [SystemSettingDefaultValueAttribute(false)]
         [SystemSettingDescriptionAttribute("When enabled, rate limits are also applied per user account. This limits how quickly login attempts can be made against a specific account, even from multiple IPs.")]
@@ -238,7 +267,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators
         [JsonPropertyName("policies.accountLockout.enabled")]
         [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.Bool)]
         [SystemSettingDefaultValueAttribute(true)]
-        [SystemSettingDescriptionAttribute("Master switch for the account lockout system. When enabled, accounts are automatically locked after too many failed login attempts, independent of WAF IP-based blocking.")]
+        [SystemSettingDescriptionAttribute("Master switch for the account lockout system. When enabled, accounts are automatically locked after too many failed login attempts, independent of WAF IP-based blacklisting.")]
         [SystemSettingRecommendationAttribute("Should be enabled to protect against brute-force attacks. Works in conjunction with WAF for layered defence.")]
         Policies_AccountLockout_Enabled,
 
