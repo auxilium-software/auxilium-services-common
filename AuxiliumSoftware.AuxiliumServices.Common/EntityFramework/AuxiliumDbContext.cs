@@ -98,7 +98,13 @@ public class AuxiliumDbContext : DbContext
             entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)");
             
             entity.Property(e => e.IpAddress)                       .HasColumnName("ip_address")                                .HasColumnType("text")                  .HasConversion(new IpAddressConverter())                                                    .IsRequired();
-            entity.Property(e => e.Justification)                   .HasColumnName("justification")                             .HasColumnType("text")                                                                                                              .IsRequired();
+            entity.Property(e => e.JustificationForWhitelist)       .HasColumnName("justification_for_whitelist")               .HasColumnType("text")                                                                                                              .IsRequired();
+            entity.Property(e => e.IsPermanent)                     .HasColumnName("is_permanent")                              .HasColumnType("tinyint(1)")                                                                                                        .IsRequired();
+            
+            entity.Property(e => e.ExpiresAt)                       .HasColumnName("expires_at")                                .HasColumnType("datetime");
+            entity.Property(e => e.UnwhitelistedAt)                 .HasColumnName("unwhitelisted_at")                          .HasColumnType("datetime");
+            entity.Property(e => e.UnwhitelistedBy)                 .HasColumnName("unwhitelisted_by")                          .HasColumnType("char(36)");
+            entity.Property(e => e.JustificationForUnwhitelist)     .HasColumnName("justification_for_unwhitelist")             .HasColumnType("text");
 
 
             
@@ -118,7 +124,13 @@ public class AuxiliumDbContext : DbContext
             entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)");
             
             entity.Property(e => e.UserId)                          .HasColumnName("user_id")                                   .HasColumnType("char(36)")                                                                                                          .IsRequired();
-            entity.Property(e => e.Justification)                   .HasColumnName("justification")                             .HasColumnType("text")                                                                                                              .IsRequired();
+            entity.Property(e => e.JustificationForWhitelist)       .HasColumnName("justification_for_whitelist")               .HasColumnType("text")                                                                                                              .IsRequired();
+            entity.Property(e => e.IsPermanent)                     .HasColumnName("is_permanent")                              .HasColumnType("tinyint(1)")                                                                                                        .IsRequired();
+            
+            entity.Property(e => e.ExpiresAt)                       .HasColumnName("expires_at")                                .HasColumnType("datetime");
+            entity.Property(e => e.UnwhitelistedAt)                 .HasColumnName("unwhitelisted_at")                          .HasColumnType("datetime");
+            entity.Property(e => e.UnwhitelistedBy)                 .HasColumnName("unwhitelisted_by")                          .HasColumnType("char(36)");
+            entity.Property(e => e.JustificationForUnwhitelist)     .HasColumnName("justification_for_unwhitelist")             .HasColumnType("text");
 
 
             
@@ -138,9 +150,9 @@ public class AuxiliumDbContext : DbContext
             entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)");
             
             entity.Property(e => e.IpAddress)                       .HasColumnName("ip_address")                                .HasColumnType("text")                                                                                                              .IsRequired();
-            entity.Property(e => e.Justification)                   .HasColumnName("justification")                             .HasColumnType("text")                                                                                                              .IsRequired();
+            entity.Property(e => e.JustificationForBlacklist)       .HasColumnName("justification_for_blacklist")               .HasColumnType("text")                                                                                                              .IsRequired();
             entity.Property(e => e.IsPermanent)                     .HasColumnName("is_permanent")                              .HasColumnType("tinyint(1)")                                                                                                        .IsRequired();
-
+            
             entity.Property(e => e.ExpiresAt)                       .HasColumnName("expires_at")                                .HasColumnType("datetime");
             entity.Property(e => e.UnblacklistedAt)                 .HasColumnName("unblacklisted_at")                          .HasColumnType("datetime");
             entity.Property(e => e.UnblacklistedBy)                 .HasColumnName("unblacklisted_by")                          .HasColumnType("char(36)");
@@ -165,7 +177,7 @@ public class AuxiliumDbContext : DbContext
             entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)");
             
             entity.Property(e => e.UserId)                          .HasColumnName("user_id")                                   .HasColumnType("char(36)")                                                                                                          .IsRequired();
-            entity.Property(e => e.Justification)                   .HasColumnName("justification")                             .HasColumnType("text")                                                                                                              .IsRequired();
+            entity.Property(e => e.JustificationForBlacklist)       .HasColumnName("justification_for_blacklist")               .HasColumnType("text")                                                                                                              .IsRequired();
             entity.Property(e => e.IsPermanent)                     .HasColumnName("is_permanent")                              .HasColumnType("tinyint(1)")                                                                                                        .IsRequired();
             
             entity.Property(e => e.ExpiresAt)                       .HasColumnName("expires_at")                                .HasColumnType("datetime");
