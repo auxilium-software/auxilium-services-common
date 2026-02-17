@@ -30,6 +30,10 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// The User to be Whitelisted.
         /// </summary>
         public required Guid UserId { get; set; }
+        /// <summary>
+        /// A reason for this User to be Whitelisted.
+        /// </summary>
+        public required string Justification { get; set; }
 
 
 

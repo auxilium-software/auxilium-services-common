@@ -98,6 +98,7 @@ public class AuxiliumDbContext : DbContext
             entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)");
             
             entity.Property(e => e.IpAddress)                       .HasColumnName("ip_address")                                .HasColumnType("text")                  .HasConversion(new IpAddressConverter())                                                    .IsRequired();
+            entity.Property(e => e.Justification)                   .HasColumnName("justification")                             .HasColumnType("text")                                                                                                              .IsRequired();
 
 
             
@@ -117,6 +118,7 @@ public class AuxiliumDbContext : DbContext
             entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)");
             
             entity.Property(e => e.UserId)                          .HasColumnName("user_id")                                   .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.Justification)                   .HasColumnName("justification")                             .HasColumnType("text")                                                                                                              .IsRequired();
 
 
             
@@ -136,18 +138,18 @@ public class AuxiliumDbContext : DbContext
             entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)");
             
             entity.Property(e => e.IpAddress)                       .HasColumnName("ip_address")                                .HasColumnType("text")                                                                                                              .IsRequired();
-            entity.Property(e => e.ReasonForBlock)                  .HasColumnName("reason_for_block")                          .HasColumnType("text")                                                                                                              .IsRequired();
+            entity.Property(e => e.Justification)                   .HasColumnName("justification")                             .HasColumnType("text")                                                                                                              .IsRequired();
             entity.Property(e => e.IsPermanent)                     .HasColumnName("is_permanent")                              .HasColumnType("tinyint(1)")                                                                                                        .IsRequired();
 
             entity.Property(e => e.ExpiresAt)                       .HasColumnName("expires_at")                                .HasColumnType("datetime");
-            entity.Property(e => e.UnblockedAt)                     .HasColumnName("unblocked_at")                              .HasColumnType("datetime");
-            entity.Property(e => e.UnblockedBy)                     .HasColumnName("unblocked_by")                              .HasColumnType("char(36)");
-            entity.Property(e => e.ReasonForUnblock)                .HasColumnName("reason_for_unblock")                        .HasColumnType("text");
+            entity.Property(e => e.UnblacklistedAt)                 .HasColumnName("unblacklisted_at")                          .HasColumnType("datetime");
+            entity.Property(e => e.UnblacklistedBy)                 .HasColumnName("unblacklisted_by")                          .HasColumnType("char(36)");
+            entity.Property(e => e.JustificationForUnblacklist)     .HasColumnName("justification_for_unblacklist")             .HasColumnType("text");
 
 
             
             entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.SetNull);
-            entity.HasOne(e => e.UnblockedByUser)                   .WithMany()                                                 .HasForeignKey(e => e.UnblockedBy)      .OnDelete(DeleteBehavior.SetNull);
+            entity.HasOne(e => e.UnblockedByUser)                   .WithMany()                                                 .HasForeignKey(e => e.UnblacklistedBy)      .OnDelete(DeleteBehavior.SetNull);
         });
 
         // system__waf__user_blacklist
@@ -163,19 +165,19 @@ public class AuxiliumDbContext : DbContext
             entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)");
             
             entity.Property(e => e.UserId)                          .HasColumnName("user_id")                                   .HasColumnType("char(36)")                                                                                                          .IsRequired();
-            entity.Property(e => e.ReasonForBlock)                  .HasColumnName("reason_for_block")                          .HasColumnType("text")                                                                                                              .IsRequired();
+            entity.Property(e => e.Justification)                   .HasColumnName("justification")                             .HasColumnType("text")                                                                                                              .IsRequired();
             entity.Property(e => e.IsPermanent)                     .HasColumnName("is_permanent")                              .HasColumnType("tinyint(1)")                                                                                                        .IsRequired();
-
+            
             entity.Property(e => e.ExpiresAt)                       .HasColumnName("expires_at")                                .HasColumnType("datetime");
-            entity.Property(e => e.UnblockedAt)                     .HasColumnName("unblocked_at")                              .HasColumnType("datetime");
-            entity.Property(e => e.UnblockedBy)                     .HasColumnName("unblocked_by")                              .HasColumnType("char(36)");
-            entity.Property(e => e.ReasonForUnblock)                .HasColumnName("reason_for_unblock")                        .HasColumnType("text");
+            entity.Property(e => e.UnblacklistedAt)                 .HasColumnName("unblacklisted_at")                          .HasColumnType("datetime");
+            entity.Property(e => e.UnblacklistedBy)                 .HasColumnName("unblacklisted_by")                          .HasColumnType("char(36)");
+            entity.Property(e => e.JustificationForUnblacklist)     .HasColumnName("justification_for_unblacklist")             .HasColumnType("text");
 
 
             
             entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.SetNull);
             entity.HasOne(e => e.BlockedUser)                       .WithMany()                                                 .HasForeignKey(e => e.UserId)           .OnDelete(DeleteBehavior.Cascade);
-            entity.HasOne(e => e.UnblockedByUser)                   .WithMany()                                                 .HasForeignKey(e => e.UnblockedBy)      .OnDelete(DeleteBehavior.SetNull);
+            entity.HasOne(e => e.UnblockedByUser)                   .WithMany()                                                 .HasForeignKey(e => e.UnblacklistedBy)      .OnDelete(DeleteBehavior.SetNull);
         });
 
         // system_bulletin

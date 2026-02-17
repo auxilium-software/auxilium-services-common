@@ -30,6 +30,10 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// The IP Address to be Whitelisted.
         /// </summary>
         public required IPAddress IpAddress { get; set; }
+        /// <summary>
+        /// A reason for this IP Address to be Whitelisted.
+        /// </summary>
+        public required string Justification { get; set; }
 
 
 
