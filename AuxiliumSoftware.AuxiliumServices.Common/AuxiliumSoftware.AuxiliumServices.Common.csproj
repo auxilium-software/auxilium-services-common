@@ -57,7 +57,7 @@
     <PackageReference Include="BCrypt.Net-Next" />
     <PackageReference Include="Konscious.Security.Cryptography.Argon2" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" />
-    
+
     <PackageReference Include="Otp.NET" />
   </ItemGroup>
 
