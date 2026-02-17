@@ -1,8 +1,8 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace AuxiliumSoftware.AuxiliumServices.Common.DataStructures
+namespace AuxiliumSoftware.AuxiliumServices.Common.DataTransferObjects
 {
-    public class AdditionalPropertySubStructure
+    public class AdditionalPropertySubStructureDTO
     {
         [JsonPropertyName("id")]
         public required Guid Id { get; set; }

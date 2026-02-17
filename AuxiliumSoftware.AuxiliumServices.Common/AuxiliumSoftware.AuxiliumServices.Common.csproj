@@ -7,7 +7,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     
-    <Version>3.0.15.17</Version>
+    <Version>3.0.15.18</Version>
     <Company>Auxilium Software</Company>
     <Product>AuxiliumSoftware.AuxiliumServices.Common</Product>
     <Copyright>Copyright © 2026</Copyright>
@@ -42,18 +42,22 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="BCrypt.Net-Next" />
-    <PackageReference Include="Dapper" />
-    <PackageReference Include="Konscious.Security.Cryptography.Argon2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" />
     <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" />
     <PackageReference Include="NetEscapades.Configuration.Yaml" />
+
+    <PackageReference Include="Microsoft.EntityFrameworkCore" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" />
+    <PackageReference Include="Dapper" />
+    <PackageReference Include="MySqlConnector" />
+
+    <PackageReference Include="BCrypt.Net-Next" />
+    <PackageReference Include="Konscious.Security.Cryptography.Argon2" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" />
+
     <PackageReference Include="Otp.NET" />
   </ItemGroup>
 

@@ -1,5 +1,5 @@
 ﻿using AuxiliumSoftware.AuxiliumServices.Common.Configuration;
-using AuxiliumSoftware.AuxiliumServices.Common.DataStructures;
+using AuxiliumSoftware.AuxiliumServices.Common.DataTransferObjects;
 using AuxiliumSoftware.AuxiliumServices.Common.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -51,7 +51,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
 
                 response.EnsureSuccessStatusCode();
 
-                var jsonResponse = await response.Content.ReadFromJsonAsync<RecaptchaResponse>();
+                var jsonResponse = await response.Content.ReadFromJsonAsync<RecaptchaResponseDTO>();
 
                 if (jsonResponse == null)
                 {

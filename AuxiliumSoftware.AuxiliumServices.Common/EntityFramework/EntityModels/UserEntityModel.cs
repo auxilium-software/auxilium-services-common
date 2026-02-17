@@ -74,19 +74,23 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// <summary>
         /// Whether the User has confirmed their Email Address.
         /// </summary>
-        public required bool HasEmailAddressBeenVerified { get; set; }
+        public required bool HasEmailAddressBeenVerified { get; set; } = false;
         /// <summary>
         /// Whether the User is allowed to log in.
         /// </summary>
-        public required bool AllowLogin { get; set; }
-        /// <summary>
-        /// Whether the User has the "Administrator" Role.
-        /// </summary>
-        public required bool IsAdmin { get; set; } = false;
+        public required bool AllowLogin { get; set; } = false;
         /// <summary>
         /// Whether the User has the "Case Worker" Role.
         /// </summary>
         public required bool IsCaseWorker { get; set; } = false;
+        /// <summary>
+        /// Whether the User has the "Case Worker Manager" Role.
+        /// </summary>
+        public required bool IsCaseWorkerManager { get; set; } = false;
+        /// <summary>
+        /// Whether the User has the "Administrator" Role.
+        /// </summary>
+        public required bool IsAdmin { get; set; } = false;
 
 
 

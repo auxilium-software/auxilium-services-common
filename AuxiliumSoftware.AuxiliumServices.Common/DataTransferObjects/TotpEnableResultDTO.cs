@@ -1,7 +1,7 @@
 ﻿
-namespace AuxiliumSoftware.AuxiliumServices.Common.DataStructures
+namespace AuxiliumSoftware.AuxiliumServices.Common.DataTransferObjects
 {
-    public class TotpEnableResult
+    public class TotpEnableResultDTO
     {
         /// <summary>
         /// Plaintext Recovery Codes.
