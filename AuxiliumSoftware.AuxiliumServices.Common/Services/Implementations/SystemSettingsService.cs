@@ -21,7 +21,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             _db = db;
         }
 
-        public async Task<dynamic> GetValueAsync(SystemSettingKeyEnum key)
+        public async Task<dynamic> GetValueAsync(SystemSettingKeyEnum key, CancellationToken ct)
         {
             var typeAttr = GetAttribute<SystemSettingExpectedValueTypeAttribute>(key);
             if (typeAttr is null)
@@ -31,7 +31,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                 .AsNoTracking()
                 .Where(s => s.ConfigKey == key)
                 .OrderByDescending(s => s.CreatedAt)
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(ct);
 
             if (setting is not null)
             {
@@ -54,33 +54,27 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
         }
 
 
-        public async Task<string> GetStringAsync(SystemSettingKeyEnum key)
+        public async Task<string> GetStringAsync(SystemSettingKeyEnum key, CancellationToken ct)
         {
-            var value = await GetValueAsync(key);
+            var value = await GetValueAsync(key, ct);
             return (string)value;
         }
 
-        public async Task<int> GetIntAsync(SystemSettingKeyEnum key)
+        public async Task<int> GetIntAsync(SystemSettingKeyEnum key, CancellationToken ct)
         {
-            var value = await GetValueAsync(key);
+            var value = await GetValueAsync(key, ct);
             return Convert.ToInt32(value);
         }
 
-        public async Task<bool> GetBoolAsync(SystemSettingKeyEnum key)
+        public async Task<bool> GetBoolAsync(SystemSettingKeyEnum key, CancellationToken ct)
         {
-            var value = await GetValueAsync(key);
+            var value = await GetValueAsync(key, ct);
             return (bool)value;
         }
 
-        public async Task<List<string>> GetStringArrayAsync(SystemSettingKeyEnum key)
+        internal async Task<T?> GetAsync<T>(SystemSettingKeyEnum key, CancellationToken ct)
         {
-            var value = await GetValueAsync(key);
-            return (List<string>)value;
-        }
-
-        public async Task<T?> GetAsync<T>(SystemSettingKeyEnum key)
-        {
-            var value = await GetValueAsync(key);
+            var value = await GetValueAsync(key, ct);
 
             if (value is T typedValue)
                 return typedValue;
@@ -96,7 +90,8 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             SystemSettingKeyEnum key,
             T value,
             Guid? modifiedBy,
-            string reasonForModification
+            string reasonForModification,
+            CancellationToken ct
         )
         {
             var jsonValue = JsonSerializer.Serialize(value);
@@ -113,7 +108,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                 ReasonForModification = reasonForModification
             });
 
-            await _db.SaveChangesAsync();
+            await _db.SaveChangesAsync(ct);
         }
 
 
