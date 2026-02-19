@@ -7,17 +7,17 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services
 {
     public interface ISystemSettingsService
     {
-        public Task<string> GetStringAsync(SystemSettingKeyEnum key);
-        public Task<int> GetIntAsync(SystemSettingKeyEnum key);
-        public Task<bool> GetBoolAsync(SystemSettingKeyEnum key);
-        public Task<List<string>> GetStringArrayAsync(SystemSettingKeyEnum key);
-        public Task<T?> GetAsync<T>(SystemSettingKeyEnum key);
+        public Task<string> GetStringAsync(SystemSettingKeyEnum key, CancellationToken ct);
+        public Task<int> GetIntAsync(SystemSettingKeyEnum key, CancellationToken ct);
+        public Task<bool> GetBoolAsync(SystemSettingKeyEnum key, CancellationToken ct);
+        // public Task<T?> GetAsync<T>(SystemSettingKeyEnum key, CancellationToken ct);
 
         public Task SetAsync<T>(
             SystemSettingKeyEnum key,
             T value,
             Guid? modifiedBy,
-            string reasonForModification
+            string reasonForModification,
+            CancellationToken ct
         );
     }
 }
