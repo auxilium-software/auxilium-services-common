@@ -27,6 +27,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="casbin_model.conf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="..\LICENSE">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
