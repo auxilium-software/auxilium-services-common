@@ -21,7 +21,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             _db = db;
         }
 
-        public async Task<dynamic> GetValueAsync(SystemSettingKeyEnum key, CancellationToken ct)
+        public async Task<dynamic> GetValueAsync(SystemSettingKeyEnum key, CancellationToken ct = default)
         {
             var typeAttr = GetAttribute<SystemSettingExpectedValueTypeAttribute>(key);
             if (typeAttr is null)
@@ -54,25 +54,25 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
         }
 
 
-        public async Task<string> GetStringAsync(SystemSettingKeyEnum key, CancellationToken ct)
+        public async Task<string> GetStringAsync(SystemSettingKeyEnum key, CancellationToken ct = default)
         {
             var value = await GetValueAsync(key, ct);
             return (string)value;
         }
 
-        public async Task<int> GetIntAsync(SystemSettingKeyEnum key, CancellationToken ct)
+        public async Task<int> GetIntAsync(SystemSettingKeyEnum key, CancellationToken ct = default)
         {
             var value = await GetValueAsync(key, ct);
             return Convert.ToInt32(value);
         }
 
-        public async Task<bool> GetBoolAsync(SystemSettingKeyEnum key, CancellationToken ct)
+        public async Task<bool> GetBoolAsync(SystemSettingKeyEnum key, CancellationToken ct = default)
         {
             var value = await GetValueAsync(key, ct);
             return (bool)value;
         }
 
-        internal async Task<T?> GetAsync<T>(SystemSettingKeyEnum key, CancellationToken ct)
+        internal async Task<T?> GetAsync<T>(SystemSettingKeyEnum key, CancellationToken ct = default)
         {
             var value = await GetValueAsync(key, ct);
 
@@ -91,7 +91,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             T value,
             Guid? modifiedBy,
             string reasonForModification,
-            CancellationToken ct
+            CancellationToken ct = default
         )
         {
             var jsonValue = JsonSerializer.Serialize(value);

@@ -105,7 +105,7 @@ public class UserDocumentService : IUserDocumentService
 
             var newProperty = new UserAdditionalPropertyEntityModel
             {
-                Id = UUIDUtilities.GenerateV5(DatabaseObjectType.UserAdditionalProperty),
+                Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.User_AdditionalProperty),
                 UserId = userId,
                 ContentType = contentType ?? "text/plain",
                 CreatedBy = currentUser.Id,
@@ -201,37 +201,38 @@ public class UserDocumentService : IUserDocumentService
     /// <param name="propertyName">This value is MANDATORY when actionType is set to `Modification` - it specifies the target Property that has been Modified.</param>
     /// <param name="oldValue">This value is MANDATORY when actionType is set to `Modification` - it specifies the old value of the Property that has been Modified.</param>
     /// <param name="newValue">This value is MANDATORY when actionType is set to `Modification` - it specifies the new value of the Property that has been Modified.</param>
-    public async void WriteToAuditLog(
+    public async Task WriteToAuditLog(
         UserEntityModel currentUser,
         UserEntityModel targetUser, UserEntityTypeEnum entityType, Guid entityId,
         AuditLogActionTypeEnum actionType,
-        string? propertyName = null, string? oldValue = null, string? newValue = null
+        string? propertyName = null, string? oldValue = null, string? newValue = null,
+        CancellationToken ct = default
     )
     {
         // verification
         switch (entityType)
         {
             case UserEntityTypeEnum.User:
-                if (actionType == AuditLogActionTypeEnum.Creation       && !await this._systemSettings.GetBoolAsync(SystemSettingKeyEnum.Policies_Logging_EntityActions_Users_LogCreations)) return;
-                if (actionType == AuditLogActionTypeEnum.Modification   && !await this._systemSettings.GetBoolAsync(SystemSettingKeyEnum.Policies_Logging_EntityActions_Users_LogModifications)) return;
-                if (actionType == AuditLogActionTypeEnum.Deletion       && !await this._systemSettings.GetBoolAsync(SystemSettingKeyEnum.Policies_Logging_EntityActions_Users_LogDeletions)) return;
+                if (actionType == AuditLogActionTypeEnum.Creation       && !await this._systemSettings.GetBoolAsync(SystemSettingKeyEnum.Policies_Logging_EntityActions_Users_LogCreations, ct)) return;
+                if (actionType == AuditLogActionTypeEnum.Modification   && !await this._systemSettings.GetBoolAsync(SystemSettingKeyEnum.Policies_Logging_EntityActions_Users_LogModifications, ct)) return;
+                if (actionType == AuditLogActionTypeEnum.Deletion       && !await this._systemSettings.GetBoolAsync(SystemSettingKeyEnum.Policies_Logging_EntityActions_Users_LogDeletions, ct)) return;
                 break;
             case UserEntityTypeEnum.User_AdditionalProperty:
-                if (actionType == AuditLogActionTypeEnum.Creation       && !await this._systemSettings.GetBoolAsync(SystemSettingKeyEnum.Policies_Logging_EntityActions_UserAdditionalProperties_LogCreations)) return;
-                if (actionType == AuditLogActionTypeEnum.Modification   && !await this._systemSettings.GetBoolAsync(SystemSettingKeyEnum.Policies_Logging_EntityActions_UserAdditionalProperties_LogModifications)) return;
-                if (actionType == AuditLogActionTypeEnum.Deletion       && !await this._systemSettings.GetBoolAsync(SystemSettingKeyEnum.Policies_Logging_EntityActions_UserAdditionalProperties_LogDeletions)) return;
+                if (actionType == AuditLogActionTypeEnum.Creation       && !await this._systemSettings.GetBoolAsync(SystemSettingKeyEnum.Policies_Logging_EntityActions_UserAdditionalProperties_LogCreations, ct)) return;
+                if (actionType == AuditLogActionTypeEnum.Modification   && !await this._systemSettings.GetBoolAsync(SystemSettingKeyEnum.Policies_Logging_EntityActions_UserAdditionalProperties_LogModifications, ct)) return;
+                if (actionType == AuditLogActionTypeEnum.Deletion       && !await this._systemSettings.GetBoolAsync(SystemSettingKeyEnum.Policies_Logging_EntityActions_UserAdditionalProperties_LogDeletions, ct)) return;
                 break;
             case UserEntityTypeEnum.User_File:
-                if (actionType == AuditLogActionTypeEnum.Upload         && !await this._systemSettings.GetBoolAsync(SystemSettingKeyEnum.Policies_Logging_EntityActions_UserFiles_LogUploads)) return;
-                if (actionType == AuditLogActionTypeEnum.View           && !await this._systemSettings.GetBoolAsync(SystemSettingKeyEnum.Policies_Logging_EntityActions_UserFiles_LogViews)) return;
-                if (actionType == AuditLogActionTypeEnum.Deletion       && !await this._systemSettings.GetBoolAsync(SystemSettingKeyEnum.Policies_Logging_EntityActions_UserFiles_LogDeletions)) return;
+                if (actionType == AuditLogActionTypeEnum.Upload         && !await this._systemSettings.GetBoolAsync(SystemSettingKeyEnum.Policies_Logging_EntityActions_UserFiles_LogUploads, ct)) return;
+                if (actionType == AuditLogActionTypeEnum.View           && !await this._systemSettings.GetBoolAsync(SystemSettingKeyEnum.Policies_Logging_EntityActions_UserFiles_LogViews, ct)) return;
+                if (actionType == AuditLogActionTypeEnum.Deletion       && !await this._systemSettings.GetBoolAsync(SystemSettingKeyEnum.Policies_Logging_EntityActions_UserFiles_LogDeletions, ct)) return;
                 break;
         }
 
         // actually logging
         var logEntry = new LogUserModificationEventEntityModel
         {
-            Id = UUIDUtilities.GenerateV5(DatabaseObjectType.LogUserModificationEvent),
+            Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.Log_UserModificationEventEntry),
             CreatedAt = DateTime.UtcNow,
             CreatedBy = currentUser.Id,
             UserId = targetUser.Id,
