@@ -12,40 +12,51 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Utilities
         /// <summary>
         /// Takes in a DatabaseObjectType and generates a Version 5 UUID
         /// </summary>
-        private static readonly Dictionary<DatabaseObjectType, string> NamespacePaths = new()
+        private static readonly Dictionary<DatabaseObjectTypeEnum, string> NamespacePaths = new()
         {
-            [DatabaseObjectType.RefreshToken]                           = "/auxilium/3/database-object/refresh_token",
+            [DatabaseObjectTypeEnum.System_SettingEntry]                        = "/auxilium/3/database-object/mariadb/system/setting-entry",
             
-            [DatabaseObjectType.User]                                   = "/auxilium/3/database-object/mariadb/user",
-            [DatabaseObjectType.UserAdditionalProperty]                 = "/auxilium/3/database-object/mariadb/user/additional-property",
-            [DatabaseObjectType.UserFile]                               = "/auxilium/3/database-object/mariadb/user/file",
+            [DatabaseObjectTypeEnum.System_Waf_IpWhitelistEntry]                = "/auxilium/3/database-object/mariadb/system/waf/ip-whitelist-entry",
+            [DatabaseObjectTypeEnum.System_Waf_IpBlacklistEntry]                = "/auxilium/3/database-object/mariadb/system/waf/ip-blacklist-entry",
+            [DatabaseObjectTypeEnum.System_Waf_UserWhitelistEntry]              = "/auxilium/3/database-object/mariadb/system/waf/user-whitelist-entry",
+            [DatabaseObjectTypeEnum.System_Waf_UserBlacklistEntry]              = "/auxilium/3/database-object/mariadb/system/waf/user-blacklist-entry",
+            
+            [DatabaseObjectTypeEnum.System_BulletinEntry]                       = "/auxilium/3/database-object/mariadb/system/bulletin-entry",
+            
 
-            [DatabaseObjectType.Case]                                   = "/auxilium/3/database-object/mariadb/case",
-            [DatabaseObjectType.CaseTimelineItem]                       = "/auxilium/3/database-object/mariadb/case/timeline-item",
-            [DatabaseObjectType.CaseTodoItem]                           = "/auxilium/3/database-object/mariadb/case/todo-item",
-            [DatabaseObjectType.CaseAdditionalProperty]                 = "/auxilium/3/database-object/mariadb/case/additional-property",
-            [DatabaseObjectType.CaseWorker]                             = "/auxilium/3/database-object/mariadb/case/worker",
-            [DatabaseObjectType.CaseClient]                             = "/auxilium/3/database-object/mariadb/case/client",
-            [DatabaseObjectType.CaseMessage]                            = "/auxilium/3/database-object/mariadb/case/message",
-            [DatabaseObjectType.CaseFile]                               = "/auxilium/3/database-object/mariadb/case/file",
-            
-            [DatabaseObjectType.LogCaseModificationEvent]               = "/auxilium/3/database-object/mariadb/log/case-modification-event",
-            [DatabaseObjectType.LogCaseMessageReadByEvent]              = "/auxilium/3/database-object/mariadb/log/case-message-read-by-event",
-            [DatabaseObjectType.LogLoginAttemptEvent]                   = "/auxilium/3/database-object/mariadb/log/login-attempt-event",
-            [DatabaseObjectType.LogSystemBulletinEntryDismissalEvent]   = "/auxilium/3/database-object/mariadb/log/system-bulletin-entry-dismissal-event",
-            [DatabaseObjectType.LogSystemBulletinEntryViewEvent]        = "/auxilium/3/database-object/mariadb/log/system-bulletin-entry-view-event",
-            [DatabaseObjectType.LogUserModificationEvent]               = "/auxilium/3/database-object/mariadb/log/user-modification-event",
-            
-            [DatabaseObjectType.SystemBulletinEntry]                    = "/auxilium/3/database-object/mariadb/system-bulletin-entry",
 
-            [DatabaseObjectType.WemwbsAssessment]                       = "/auxilium/3/database-object/mariadb/assessments/wemwbs",
+            [DatabaseObjectTypeEnum.User]                                       = "/auxilium/3/database-object/mariadb/user",
+            [DatabaseObjectTypeEnum.User_AdditionalProperty]                    = "/auxilium/3/database-object/mariadb/user/additional-property",
+            [DatabaseObjectTypeEnum.User_File]                                  = "/auxilium/3/database-object/mariadb/user/file",
+            [DatabaseObjectTypeEnum.User_RefreshToken]                          = "/auxilium/3/database-object/mariadb/user/refresh-token",
+            [DatabaseObjectTypeEnum.User_TotpRecoveryCode]                      = "/auxilium/3/database-object/mariadb/user/totp-recovery-code",
+            [DatabaseObjectTypeEnum.User_WemwbsAssessment]                      = "/auxilium/3/database-object/mariadb/user/wemwbs-assessment",
+            
+
+
+            [DatabaseObjectTypeEnum.Case]                                       = "/auxilium/3/database-object/mariadb/case",
+            [DatabaseObjectTypeEnum.Case_AdditionalProperty]                    = "/auxilium/3/database-object/mariadb/case/additional-property",
+            [DatabaseObjectTypeEnum.Case_Worker]                                = "/auxilium/3/database-object/mariadb/case/worker",
+            [DatabaseObjectTypeEnum.Case_Client]                                = "/auxilium/3/database-object/mariadb/case/client",
+            [DatabaseObjectTypeEnum.Case_Message]                               = "/auxilium/3/database-object/mariadb/case/message",
+            [DatabaseObjectTypeEnum.Case_File]                                  = "/auxilium/3/database-object/mariadb/case/file",
+            [DatabaseObjectTypeEnum.Case_Todo]                                  = "/auxilium/3/database-object/mariadb/case/todo",
+
+
+
+            [DatabaseObjectTypeEnum.Log_CaseModificationEventEntry]             = "/auxilium/3/database-object/mariadb/log/case-modification-event",
+            [DatabaseObjectTypeEnum.Log_CaseMessageReadByEventEntry]            = "/auxilium/3/database-object/mariadb/log/case-message-read-by-event",
+            [DatabaseObjectTypeEnum.Log_LoginAttemptEventEntry]                 = "/auxilium/3/database-object/mariadb/log/login-attempt-event",
+            [DatabaseObjectTypeEnum.Log_SystemBulletinEntryDismissalEventEntry] = "/auxilium/3/database-object/mariadb/log/system-bulletin-entry-dismissal-event",
+            [DatabaseObjectTypeEnum.Log_SystemBulletinEntryViewEventEntry]      = "/auxilium/3/database-object/mariadb/log/system-bulletin-entry-view-event",
+            [DatabaseObjectTypeEnum.Log_UserModificationEventEntry]             = "/auxilium/3/database-object/mariadb/log/user-modification-event",
         };
 
 
         /// <summary>
         /// Takes in a DatabaseObjectType and gets the precomputed Namespace UUID for it.
         /// </summary>
-        private static readonly Dictionary<DatabaseObjectType, Guid> NamespaceUuids =
+        private static readonly Dictionary<DatabaseObjectTypeEnum, Guid> NamespaceUuids =
             NamespacePaths.ToDictionary(
                 kvp => kvp.Key,
                 kvp => PathToUuid(kvp.Value)
@@ -56,7 +67,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Utilities
         /// </summary>
         /// <param name="objectType">The DatabaseObjectType to use</param>
         /// <returns>A UUID (Guid).</returns>
-        public static Guid GenerateV5(DatabaseObjectType objectType)
+        public static Guid GenerateV5(DatabaseObjectTypeEnum objectType)
         {
             var namespaceId = NamespaceUuids[objectType];
             var name = $"{objectType}_{DateTime.UtcNow.Ticks}_{Guid.NewGuid()}";

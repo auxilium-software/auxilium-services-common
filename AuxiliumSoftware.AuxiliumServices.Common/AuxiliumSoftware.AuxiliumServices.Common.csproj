@@ -27,6 +27,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="casbin_model.conf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="..\LICENSE">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
@@ -57,6 +63,9 @@
     <PackageReference Include="BCrypt.Net-Next" />
     <PackageReference Include="Konscious.Security.Cryptography.Argon2" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" />
+
+    <PackageReference Include="Casbin.NET" />
+    <PackageReference Include="Casbin.NET.Adapter.EFCore" />
 
     <PackageReference Include="Otp.NET" />
   </ItemGroup>

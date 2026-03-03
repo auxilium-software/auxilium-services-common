@@ -20,11 +20,12 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services
 
 
 
-        void WriteToAuditLog(
+        Task WriteToAuditLog(
             UserEntityModel currentUser,
             UserEntityModel targetUser, UserEntityTypeEnum entityType, Guid entityId,
             AuditLogActionTypeEnum actionType,
-            string? propertyName = null, string? oldValue = null, string? newValue = null
+            string? propertyName = null, string? oldValue = null, string? newValue = null,
+            CancellationToken ct = default
         );
     }
 }
