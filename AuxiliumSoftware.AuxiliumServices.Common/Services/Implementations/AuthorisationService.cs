@@ -7,18 +7,18 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
     {
         public bool IsAdmin(UserEntityModel user)
         {
-            return user.IsAdmin;
+            return user.IsAdministrator;
         }
 
         public bool IsCaseWorker(UserEntityModel user)
         {
-            return user.IsCaseWorker || user.IsAdmin;
+            return user.IsCaseWorker || user.IsAdministrator;
         }
 
         public bool CanViewCase(UserEntityModel user, CaseEntityModel caseDoc)
         {
             // admins can very everything
-            if (user.IsAdmin) return true;
+            if (user.IsAdministrator) return true;
 
             // workers and clients can view their assigned cases
             var isWorker = caseDoc.Workers?.Any(w => w.UserId == user.Id) ?? false;
@@ -30,7 +30,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
         public bool CanModifyCase(UserEntityModel user, CaseEntityModel caseDoc)
         {
             // admins can modify anything
-            if (user.IsAdmin) return true;
+            if (user.IsAdministrator) return true;
 
             // workers can modify their cases
             return caseDoc.Workers?.Any(w => w.UserId == user.Id) ?? false;
@@ -57,7 +57,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
         public bool CanViewUser(UserEntityModel currentUser, Guid targetUserId)
         {
             // admins can view anyone
-            if (currentUser.IsAdmin) return true;
+            if (currentUser.IsAdministrator) return true;
 
             // users can view themselves
             return currentUser.Id == targetUserId;
@@ -66,7 +66,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
         public bool CanModifyUser(UserEntityModel currentUser, Guid targetUserId)
         {
             // only admins can modify other users
-            if (currentUser.IsAdmin) return true;
+            if (currentUser.IsAdministrator) return true;
 
             // users can modify themselves
             return currentUser.Id == targetUserId;
