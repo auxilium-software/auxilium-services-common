@@ -519,7 +519,7 @@ public class CaseDocumentService : ICaseDocumentService
         try
         {
             // admins have access to everything
-            if (currentUser.IsAdmin) return true;
+            if (currentUser.IsAdministrator) return true;
 
             // check whether user is client or worker
             var hasAccess = await _db.Cases

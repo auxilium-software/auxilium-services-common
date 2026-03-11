@@ -329,7 +329,7 @@ public class FileDocumentService : IFileDocumentService
                 .FirstOrDefaultAsync(f => f.Id == fileId);
 
             if (file == null) return false;
-            if (currentUser.IsAdmin) return true;
+            if (currentUser.IsAdministrator) return true;
 
             return (file?.Case?.Workers ?? []).Any(w => w.UserId == currentUser.Id) ||
                    (file?.Case?.Clients ?? []).Any(c => c.UserId == currentUser.Id);
@@ -349,7 +349,7 @@ public class FileDocumentService : IFileDocumentService
             if (file == null) return false;
 
             // only admins or file owner
-            return currentUser.IsAdmin || file.UserId == currentUser.Id;
+            return currentUser.IsAdministrator || file.UserId == currentUser.Id;
         }
         catch (Exception ex)
         {

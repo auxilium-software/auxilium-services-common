@@ -90,7 +90,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// <summary>
         /// Whether the User has the "Administrator" Role.
         /// </summary>
-        public required bool IsAdmin { get; set; } = false;
+        public required bool IsAdministrator { get; set; } = false;
 
 
 

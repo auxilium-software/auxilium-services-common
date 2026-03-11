@@ -171,7 +171,7 @@ public class UserDocumentService : IUserDocumentService
         try
         {
             // admins can access absolutely everything
-            if (currentUser.IsAdmin) return true;
+            if (currentUser.IsAdministrator) return true;
 
             // users can access their own data
             if (currentUser.Id == userId) return true;

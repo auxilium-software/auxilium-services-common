@@ -245,7 +245,7 @@ public class MessageDocumentService : IMessageDocumentService
             if (message == null) return false;
 
             // admins have access to everything
-            if (currentUser.IsAdmin) return true;
+            if (currentUser.IsAdministrator) return true;
 
             // check if user is worker or client on the case
             var hasAccess = (message.Case?.Workers ?? []).Any(w => w.UserId == currentUser.Id) ||
