@@ -240,7 +240,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                 var formatted = FormatRecoveryCode(raw);
                 plaintextCodes.Add(formatted);
 
-                // hash the formatted code — what the user sees is what they must enter
+                // hash the formatted code - what the user sees is what they must enter
                 _db.TotpRecoveryCodes.Add(new TotpRecoveryCodeEntityModel
                 {
                     Id = Guid.NewGuid(),
