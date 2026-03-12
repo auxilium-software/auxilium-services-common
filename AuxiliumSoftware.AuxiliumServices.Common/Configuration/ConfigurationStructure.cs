@@ -8,14 +8,42 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Configuration
 {
     public class ConfigurationStructure
     {
-        public required DatabasesConfigurationSection Databases { get; set; }
-        public required ReCAPTCHAConfigurationSection ReCAPTCHA { get; set; }
-        public required JWTConfigurationSection JWT { get; set; }
-        public required APIConfigurationSection API { get; set; }
-        public required FileSystemConfigurationSection FileSystem { get; set; }
-        public required Argon2ConfigurationSection Argon2 { get; set; }
-        public required MfaConfigurationSection MFA { get; set; }
-        public required NewRelicConfigurationSection NewRelic { get; set; }
-        public required DevelopmentConfigurationSection Development { get; set; }
+        public DatabasesConfigurationSection Databases { get; set; } = null!;
+        public ReCAPTCHAConfigurationSection ReCAPTCHA { get; set; } = null!;
+        public JWTConfigurationSection JWT { get; set; } = null!;
+        public APIConfigurationSection API { get; set; } = null!;
+        public FileSystemConfigurationSection FileSystem { get; set; } = null!;
+        public Argon2ConfigurationSection Argon2 { get; set; } = null!;
+        public MfaConfigurationSection MFA { get; set; } = null!;
+        // instance config
+        public NewRelicConfigurationSection NewRelic { get; set; } = null!;
+        public DevelopmentConfigurationSection Development { get; set; } = null!;
+
+
+
+        public void Validate()
+        {
+            if (Databases is null)      throw new InvalidOperationException("Configuration section 'Databases' is missing.");
+            if (ReCAPTCHA is null)      throw new InvalidOperationException("Configuration section 'ReCAPTCHA' is missing.");
+            if (JWT is null)            throw new InvalidOperationException("Configuration section 'JWT' is missing.");
+            if (API is null)            throw new InvalidOperationException("Configuration section 'API' is missing.");
+            if (FileSystem is null)     throw new InvalidOperationException("Configuration section 'FileSystem' is missing.");
+            if (Argon2 is null)         throw new InvalidOperationException("Configuration section 'Argon2' is missing.");
+            if (MFA is null)            throw new InvalidOperationException("Configuration section 'MFA' is missing.");
+            // instance config
+            if (NewRelic is null)       throw new InvalidOperationException("Configuration section 'NewRelic' is missing.");
+            if (Development is null)    throw new InvalidOperationException("Configuration section 'Development' is missing.");
+
+            Databases.Validate();
+            ReCAPTCHA.Validate();
+            JWT.Validate();
+            API.Validate();
+            FileSystem.Validate();
+            Argon2.Validate();
+            MFA.Validate();
+            // instance config
+            NewRelic.Validate();
+            Development.Validate();
+        }
     }
 }

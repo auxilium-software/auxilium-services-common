@@ -6,6 +6,13 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Configuration.Sections.FileSy
 {
     public class RootStorageDirectoriesConfigurationSection
     {
-        public required string AuxLFS { get; set; }
+        public string AuxLFS { get; set; } = null!;
+        
+
+
+        public void Validate()
+        {
+            if (string.IsNullOrWhiteSpace(AuxLFS))  throw new InvalidOperationException("Configuration value 'RootStorageDirectories->AuxLFS' is missing.");
+        }
     }
 }

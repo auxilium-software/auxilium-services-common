@@ -6,7 +6,15 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Configuration.Sections.MFA.To
 {
     public class RecoveryCode
     {
-        public required int GroupSize { get; set; }
-        public required int GroupCount { get; set; }
+        public int GroupSize { get; set; } = 0;
+        public int GroupCount { get; set; } = 0;
+        
+
+
+        public void Validate()
+        {
+            if (GroupSize <= 0)     throw new InvalidOperationException("Configuration section 'MFA->TOTP->RecoveryCode->GroupSize' is missing or invalid.");
+            if (GroupCount <= 0)    throw new InvalidOperationException("Configuration section 'MFA->TOTP->RecoveryCode->GroupCount' is missing or invalid.");
+        }
     }
 }

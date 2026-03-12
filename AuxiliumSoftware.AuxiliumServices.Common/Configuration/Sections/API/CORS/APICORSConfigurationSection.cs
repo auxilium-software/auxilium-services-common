@@ -7,7 +7,15 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Configuration.Sections.API.CO
 {
     public class APICORSConfigurationSection
     {
-        public required List<string> AllowedOrigins { get; set; }
-        public required List<string> AllowedHosts { get; set; }
+        public List<string> AllowedOrigins { get; set; } = null!;
+        public List<string> AllowedHosts { get; set; } = null!;
+        
+
+
+        public void Validate()
+        {
+            if (AllowedOrigins == null || AllowedOrigins.Count == 0)    throw new InvalidOperationException("Configuration value 'API->CORS->AllowedOrigins' is missing or empty.");
+            if (AllowedHosts == null || AllowedHosts.Count == 0)        throw new InvalidOperationException("Configuration value 'API->CORS->AllowedHosts' is missing or empty.");
+        }
     }
 }
