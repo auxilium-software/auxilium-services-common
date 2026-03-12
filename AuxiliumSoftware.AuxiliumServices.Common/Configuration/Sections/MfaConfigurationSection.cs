@@ -7,6 +7,15 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Configuration.Sections
 {
     public class MfaConfigurationSection
     {
-        public required TotpConfigurationSection TOTP { get; set; }
+        public TotpConfigurationSection TOTP { get; set; } = null!;
+        
+
+
+        public void Validate()
+        {
+            if (TOTP == null)   throw new InvalidOperationException("Configuration section 'MFA->TOTP' is missing.");
+
+            TOTP.Validate();
+        }
     }
 }

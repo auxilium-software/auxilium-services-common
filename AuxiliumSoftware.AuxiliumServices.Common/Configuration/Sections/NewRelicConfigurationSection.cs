@@ -6,7 +6,15 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Configuration.Sections
 {
     public class NewRelicConfigurationSection
     {
-        public required bool UseNewRelic { get; set; }
-        public required string Key { get; set; }
+        public bool UseNewRelic { get; set; } = false;
+        public string Key { get; set; } = null!;
+        
+
+
+        public void Validate()
+        {
+            // UseNewRelic
+            if (string.IsNullOrWhiteSpace(Key))     throw new InvalidOperationException("Configuration value 'NewRelic->Key' is missing.");
+        }
     }
 }

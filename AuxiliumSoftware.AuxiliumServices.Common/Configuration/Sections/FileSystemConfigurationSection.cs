@@ -7,6 +7,13 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Configuration.Sections
 {
     public class FileSystemConfigurationSection
     {
-        public required RootStorageDirectoriesConfigurationSection RootStorageDirectories { get; set; }
+        public RootStorageDirectoriesConfigurationSection RootStorageDirectories { get; set; } = null!;
+
+
+
+        public void Validate()
+        {
+            RootStorageDirectories.Validate();
+        }
     }
 }
