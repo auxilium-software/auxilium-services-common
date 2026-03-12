@@ -25,7 +25,8 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
         public WebApplicationFirewallService(
             AuxiliumDbContext db,
             ISystemSettingsService settings,
-            ILogger<WebApplicationFirewallService> logger)
+            ILogger<WebApplicationFirewallService> logger
+        )
         {
             _db = db;
             _settings = settings;
