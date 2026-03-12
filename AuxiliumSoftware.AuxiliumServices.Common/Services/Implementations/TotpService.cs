@@ -27,12 +27,14 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
         private const int ToleranceSteps = 1; // +-1 step = +-30s clock drift
 
         public TotpService(
-                IConfiguration configuration,
-                AuxiliumDbContext db,
-                ILogger<TotpService> logger
-            )
+            IConfiguration configuration,
+            AuxiliumDbContext db,
+            ILogger<TotpService> logger
+        )
         {
-            _configuration = configuration.Get<ConfigurationStructure>()!;
+            _configuration = new ConfigurationStructure();
+            configuration.Bind(_configuration);
+
             _db = db;
             _logger = logger;
         }

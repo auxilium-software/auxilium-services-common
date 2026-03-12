@@ -12,7 +12,8 @@ public class TokenService : ITokenService
 
     public TokenService(IConfiguration configuration)
     {
-        _configuration = configuration.Get<ConfigurationStructure>()!;
+        _configuration = new ConfigurationStructure();
+        configuration.Bind(_configuration);
     }
 
     public string CreateMfaToken(Dictionary<string, object> userData)

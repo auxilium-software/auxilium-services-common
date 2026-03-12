@@ -19,7 +19,9 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             HttpClient httpClient
             )
         {
-            _configuration = configuration.Get<ConfigurationStructure>()!;
+            _configuration = new ConfigurationStructure();
+            configuration.Bind(_configuration);
+
             _logger = logger;
 
             _httpClient = httpClient;

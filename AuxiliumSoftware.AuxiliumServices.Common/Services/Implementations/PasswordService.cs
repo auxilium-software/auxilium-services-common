@@ -17,7 +17,8 @@ public class PasswordService : IPasswordService
         IConfiguration configuration
         )
     {
-        _configuration = configuration.Get<ConfigurationStructure>()!;
+        _configuration = new ConfigurationStructure();
+        configuration.Bind(_configuration);
     }
 
 
