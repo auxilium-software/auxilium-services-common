@@ -54,6 +54,21 @@ public class PasswordService : IPasswordService
             return false;
         }
     }
+    public static string NormalizePassword(string? rawPassword, string? passwordSha512)
+    {
+        if (!string.IsNullOrEmpty(passwordSha512))
+        {
+            return passwordSha512;
+        }
+
+        if (!string.IsNullOrEmpty(rawPassword))
+        {
+            var bytes = SHA512.HashData(Encoding.UTF8.GetBytes(rawPassword));
+            return Convert.ToHexString(bytes).ToLowerInvariant();
+        }
+
+        throw new ArgumentException("Either rawPassword or passwordSha512 must be provided");
+    }
 
     private string HashPasswordArgon2(string password)
     {
