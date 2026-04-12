@@ -34,12 +34,25 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
         }
 
         #region Utilities
-        public string NormalizeIpAddress(IPAddress ipAddress)
+        public string NormaliseIpAddress(IPAddress ipAddress)
         {
             if (ipAddress.IsIPv4MappedToIPv6)
                 return ipAddress.MapToIPv4().ToString();
 
             return ipAddress.ToString();
+        }
+
+        /// <summary>
+        /// Returns a normalised IPAddress object (mapping IPv4-mapped-IPv6 to plain IPv4).
+        /// Use this for comparisons against entity properties that use IpAddressConverter,
+        /// rather than calling NormaliseIpAddress() inside a LINQ expression tree.
+        /// </summary>
+        private IPAddress NormaliseIpAddressObject(IPAddress ipAddress)
+        {
+            if (ipAddress.IsIPv4MappedToIPv6)
+                return ipAddress.MapToIPv4();
+
+            return ipAddress;
         }
 
         private bool IsInCidrRange(IPAddress ipAddress, string cidr)
@@ -126,8 +139,12 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             if (await IsWhitelistedAsync(ipAddress, ct))
                 return null;
 
+            // normalise once on the C# side; the IpAddressConverter handles the
+            // DB-side string comparison so EF can translate this to a simple WHERE
+            IPAddress normalizedIp = NormaliseIpAddressObject(ipAddress);
+
             SystemWafIpBlacklistEntryEntityModel? block = await _db.System_Waf_IpBlacklist
-                .Where(b => NormalizeIpAddress(b.IpAddress) == NormalizeIpAddress(ipAddress))
+                .Where(b => b.IpAddress == normalizedIp)
                 .Where(b => b.UnblacklistedAt == null && (b.ExpiresAt == null || b.ExpiresAt > DateTime.UtcNow))
                 .OrderBy(b => b.CreatedAt)
                 .FirstOrDefaultAsync(ct);
@@ -149,11 +166,12 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             if (await IsWhitelistedAsync(ipAddress, ct))
                 return false;
 
+            string normalizedIp = NormaliseIpAddress(ipAddress);
             DateTime windowStart = DateTime.UtcNow.AddMinutes(-1);
 
             int numberOfRecentAttempts = await _db.Log_LoginAttempts
                 .CountAsync(
-                    a => a.ClientIpAddress == NormalizeIpAddress(ipAddress)
+                    a => a.ClientIpAddress == normalizedIp
                     && a.CreatedAt >= windowStart,
                     ct
                 );
@@ -279,7 +297,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             {
                 Id = Guid.NewGuid(),
                 CreatedAt = DateTime.UtcNow,
-                ClientIpAddress = NormalizeIpAddress(ipAddress),
+                ClientIpAddress = NormaliseIpAddress(ipAddress),
                 AttemptedEmailAddress = attemptedEmail,
                 TargetUserId = user?.Id,
                 WasLoginSuccessful = false,
@@ -322,7 +340,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             CancellationToken ct = default
         )
         {
-            string normalizedIp = NormalizeIpAddress(ipAddress);
+            string normalizedIp = NormaliseIpAddress(ipAddress);
 
             if (await _settings.GetBoolAsync(SystemSettingKeyEnum.Policies_Logging_Security_LogSuccessfulLogins))
             {
@@ -360,10 +378,11 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             if (baseDelay == 0)
                 return 0;
 
+            string normalizedIp = NormaliseIpAddress(ipAddress);
             int ipBlockWindow = await _settings.GetIntAsync(SystemSettingKeyEnum.Policies_WebApplicationFirewall_Ip_IpBlacklistWindowInMinutes);
             int recentFailures = await _db.Log_LoginAttempts
                 .CountAsync(
-                    a => a.ClientIpAddress == NormalizeIpAddress(ipAddress)
+                    a => a.ClientIpAddress == normalizedIp
                     && !a.WasLoginSuccessful
                     && a.CreatedAt >= DateTime.UtcNow.AddMinutes(-ipBlockWindow),
                     ct
@@ -385,7 +404,8 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             CancellationToken ct
         )
         {
-            string normalizedIp = NormalizeIpAddress(ipAddress);
+            string normalizedIp = NormaliseIpAddress(ipAddress);
+            IPAddress normalizedIpObj = NormaliseIpAddressObject(ipAddress);
             DateTime now = DateTime.UtcNow;
             DateTime windowStart = now.AddMinutes(-(await _settings.GetIntAsync(SystemSettingKeyEnum.Policies_WebApplicationFirewall_Ip_IpBlacklistWindowInMinutes)));
 
@@ -405,7 +425,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             int temporaryBlockDuration = await _settings.GetIntAsync(SystemSettingKeyEnum.Policies_WebApplicationFirewall_Listing_TemporaryIpBlacklistDurationInMinutes_Default);
 
             List<SystemWafIpBlacklistEntryEntityModel>? blockHistory = await _db.System_Waf_IpBlacklist
-                .Where(b => NormalizeIpAddress(b.IpAddress) == normalizedIp)
+                .Where(b => b.IpAddress == normalizedIpObj)
                 .ToListAsync(ct);
 
             int previousBlockCount = blockHistory.Count;
@@ -555,10 +575,11 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
         )
         {
             var now = DateTime.UtcNow;
+            IPAddress normalizedIpObj = NormaliseIpAddressObject(ipAddress);
 
             await _db.System_Waf_IpBlacklist
                 .Where(
-                    b => NormalizeIpAddress(b.IpAddress) == NormalizeIpAddress(ipAddress)
+                    b => b.IpAddress == normalizedIpObj
                     && b.UnblacklistedAt == null
                     && (b.ExpiresAt == null || b.ExpiresAt > now)
                 )
@@ -583,7 +604,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
 
             _logger.LogWarning(
                 "{Prefix}: IP `{IpAddress}` manually blacklisted by admin {AdminId}. Reason: {Reason}. Permanent: {Permanent}",
-                WafLogPrefix, NormalizeIpAddress(ipAddress), adminUser.Id, reason.Replace("\n", "").Replace("\r", "").Trim(), permanent
+                WafLogPrefix, NormaliseIpAddress(ipAddress), adminUser.Id, reason.Replace("\n", "").Replace("\r", "").Trim(), permanent
             );
         }
 
@@ -594,10 +615,11 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
         )
         {
             DateTime now = DateTime.UtcNow;
+            IPAddress normalizedIpObj = NormaliseIpAddressObject(ipAddress);
 
             int affected = await _db.System_Waf_IpBlacklist
                 .Where(
-                    b => NormalizeIpAddress(b.IpAddress) == NormalizeIpAddress(ipAddress)
+                    b => b.IpAddress == normalizedIpObj
                     && b.UnblacklistedAt == null
                     && (
                         b.ExpiresAt == null
@@ -614,7 +636,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
 
             _logger.LogInformation(
                 "{Prefix}: IP {IpAddress} removed from blacklist by admin {AdminId}",
-                WafLogPrefix, NormalizeIpAddress(ipAddress), adminUser.Id
+                WafLogPrefix, NormaliseIpAddress(ipAddress), adminUser.Id
             );
 
             return true;
@@ -748,7 +770,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
         )
         {
             DateTime now = DateTime.UtcNow;
-            string normalizedIp = NormalizeIpAddress(ipAddress);
+            string normalizedIp = NormaliseIpAddress(ipAddress);
 
             int affected = await _db.System_Waf_IpWhitelist
                 .Where(
@@ -883,7 +905,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             if (whitelistedIps == null || whitelistedIps.Count == 0)
                 return false;
 
-            string normalizedIp = NormalizeIpAddress(ipAddress);
+            string normalizedIp = NormaliseIpAddress(ipAddress);
 
             foreach (SystemWafIpWhitelistEntryEntityModel entry in whitelistedIps)
             {
@@ -901,7 +923,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                     // direct IP comparison
                     if (IPAddress.TryParse(entry.IpAddress.ToString(), out var whitelistIp))
                     {
-                        if (NormalizeIpAddress(whitelistIp) == normalizedIp)
+                        if (NormaliseIpAddress(whitelistIp) == normalizedIp)
                             return true;
                     }
                 }
