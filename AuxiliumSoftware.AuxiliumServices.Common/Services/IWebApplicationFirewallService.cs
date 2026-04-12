@@ -10,7 +10,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services
 {
     public interface IWebApplicationFirewallService
     {
-        public string NormalizeIpAddress(IPAddress ipAddress);
+        public string NormaliseIpAddress(IPAddress ipAddress);
 
 
 

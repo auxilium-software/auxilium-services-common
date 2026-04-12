@@ -1,17 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using System;
-using System.Collections.Generic;
 using System.Net;
-using System.Text;
 
-namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Converters
+namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Converters;
+
+public class IpAddressConverter : ValueConverter<IPAddress, string>
 {
-    public class IpAddressConverter : ValueConverter<IPAddress, string>
-    {
-        public IpAddressConverter()
-            : base(
-                ip => ip.ToString(),
-                str => IPAddress.Parse(str))
-        { }
-    }
+    public IpAddressConverter() : base(
+        ip => (ip.IsIPv4MappedToIPv6 ? ip.MapToIPv4() : ip).ToString(),
+        str => IPAddress.Parse(str)
+    )
+    { }
 }
