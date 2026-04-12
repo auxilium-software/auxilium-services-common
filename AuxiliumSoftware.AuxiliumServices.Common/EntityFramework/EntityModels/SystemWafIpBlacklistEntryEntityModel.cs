@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Net;
 using System.Text;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
@@ -31,12 +32,12 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// <summary>
         /// The IP Address that is blacklisted.
         /// </summary>
-        public required string IpAddress { get; set; }
+        public required IPAddress IpAddress { get; set; }
 
         /// <summary>
         /// A reason for why the IP Address was blacklisted.
         /// </summary>
-        public string? JustificationForBlacklist { get; set; }
+        public required string JustificationForBlacklist { get; set; }
 
         /// <summary>
         /// Whether the IP Address Block is permanent (i.e. does not expire and has to be manually removed) or temporary (i.e. expires at a certain date and time).
