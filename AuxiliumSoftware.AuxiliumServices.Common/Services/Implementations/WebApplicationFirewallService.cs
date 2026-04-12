@@ -127,7 +127,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                 return null;
 
             SystemWafIpBlacklistEntryEntityModel? block = await _db.System_Waf_IpBlacklist
-                .Where(b => b.IpAddress == NormalizeIpAddress(ipAddress))
+                .Where(b => NormalizeIpAddress(b.IpAddress) == NormalizeIpAddress(ipAddress))
                 .Where(b => b.UnblacklistedAt == null && (b.ExpiresAt == null || b.ExpiresAt > DateTime.UtcNow))
                 .OrderBy(b => b.CreatedAt)
                 .FirstOrDefaultAsync(ct);
@@ -405,7 +405,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             int temporaryBlockDuration = await _settings.GetIntAsync(SystemSettingKeyEnum.Policies_WebApplicationFirewall_Listing_TemporaryIpBlacklistDurationInMinutes_Default);
 
             List<SystemWafIpBlacklistEntryEntityModel>? blockHistory = await _db.System_Waf_IpBlacklist
-                .Where(b => b.IpAddress == normalizedIp)
+                .Where(b => NormalizeIpAddress(b.IpAddress) == normalizedIp)
                 .ToListAsync(ct);
 
             int previousBlockCount = blockHistory.Count;
@@ -437,7 +437,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                 {
                     Id = Guid.NewGuid(),
                     CreatedAt = now,
-                    IpAddress = normalizedIp,
+                    IpAddress = ipAddress,
                     IsPermanent = true,
                     JustificationForBlacklist = $"{WafLogPrefix}: Automatic permanent ban: {previousBlockCount + 1} blocks within {permananetBandWindow} hours"
                 });
@@ -460,7 +460,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                 {
                     Id = Guid.NewGuid(),
                     CreatedAt = now,
-                    IpAddress = normalizedIp,
+                    IpAddress = ipAddress,
                     IsPermanent = false,
                     JustificationForBlacklist = $"{WafLogPrefix}: Automatic temp block: {recentFailures} failed logins in {await _settings.GetIntAsync(SystemSettingKeyEnum.Policies_WebApplicationFirewall_Ip_IpBlacklistWindowInMinutes)} minutes",
                     ExpiresAt = now.AddMinutes(temporaryBlockDuration)
@@ -558,7 +558,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
 
             await _db.System_Waf_IpBlacklist
                 .Where(
-                    b => b.IpAddress == NormalizeIpAddress(ipAddress)
+                    b => NormalizeIpAddress(b.IpAddress) == NormalizeIpAddress(ipAddress)
                     && b.UnblacklistedAt == null
                     && (b.ExpiresAt == null || b.ExpiresAt > now)
                 )
@@ -573,7 +573,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                 Id = Guid.NewGuid(),
                 CreatedAt = now,
                 CreatedBy = adminUser.Id,
-                IpAddress = NormalizeIpAddress(ipAddress),
+                IpAddress = ipAddress,
                 IsPermanent = permanent,
                 JustificationForBlacklist = reason,
                 ExpiresAt = permanent ? null : now.AddMinutes(tempBlockDuration)
@@ -597,7 +597,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
 
             int affected = await _db.System_Waf_IpBlacklist
                 .Where(
-                    b => b.IpAddress == NormalizeIpAddress(ipAddress)
+                    b => NormalizeIpAddress(b.IpAddress) == NormalizeIpAddress(ipAddress)
                     && b.UnblacklistedAt == null
                     && (
                         b.ExpiresAt == null
