@@ -44,8 +44,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
 
         /// <summary>
         /// Returns a normalised IPAddress object (mapping IPv4-mapped-IPv6 to plain IPv4).
-        /// Use this for comparisons against entity properties that use IpAddressConverter,
-        /// rather than calling NormaliseIpAddress() inside a LINQ expression tree.
+        /// Use this for comparisons against entity properties that use IpAddressConverter, rather than calling NormaliseIpAddress() inside a LINQ expression tree.
         /// </summary>
         private IPAddress NormaliseIpAddressObject(IPAddress ipAddress)
         {
@@ -54,6 +53,10 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
 
             return ipAddress;
         }
+
+
+
+
 
         private bool IsInCidrRange(IPAddress ipAddress, string cidr)
         {
