@@ -54,7 +54,7 @@ public class PasswordService : IPasswordService
             return false;
         }
     }
-    public static string NormalisePassword(string? rawPassword, string? passwordSha512)
+    public string NormalisePassword(string? rawPassword, string? passwordSha512)
     {
         if (!string.IsNullOrEmpty(passwordSha512))
         {
