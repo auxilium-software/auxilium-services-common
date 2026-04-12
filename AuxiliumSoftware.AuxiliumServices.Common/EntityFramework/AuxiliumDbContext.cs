@@ -1,11 +1,7 @@
-﻿using AuxiliumSoftware.AuxiliumServices.Common.DataTransferObjects;
-using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Converters;
+﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Converters;
 using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels;
 using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators;
 using Microsoft.EntityFrameworkCore;
-using System.IO;
-using System.Net;
-using System.Reflection.Emit;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -17,11 +13,6 @@ public class AuxiliumDbContext : DbContext
         : base(options)
     {
     }
-
-    private static readonly JsonSerializerOptions _jsonOptions = new()
-    {
-        Converters = { new JsonStringEnumConverter() }
-    };
 
 
 
@@ -149,7 +140,7 @@ public class AuxiliumDbContext : DbContext
             entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
             entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)");
             
-            entity.Property(e => e.IpAddress)                       .HasColumnName("ip_address")                                .HasColumnType("text")                                                                                                              .IsRequired();
+            entity.Property(e => e.IpAddress)                       .HasColumnName("ip_address")                                .HasColumnType("text")                  .HasConversion(new IpAddressConverter())                                                    .IsRequired();
             entity.Property(e => e.JustificationForBlacklist)       .HasColumnName("justification_for_blacklist")               .HasColumnType("text")                                                                                                              .IsRequired();
             entity.Property(e => e.IsPermanent)                     .HasColumnName("is_permanent")                              .HasColumnType("tinyint(1)")                                                                                                        .IsRequired();
             
@@ -207,8 +198,8 @@ public class AuxiliumDbContext : DbContext
             entity.Property(e => e.Severity)                        .HasColumnName("severity")                                  .HasColumnType("text")                  .HasConversion(new JsonPropertyNameEnumConverter<SystemBulletinMessageSeverityEnum>())      .IsRequired();
             entity.Property(e => e.Title)                           .HasColumnName("title")                                     .HasColumnType("text")                                                                                                              .IsRequired();
             entity.Property(e => e.Content)                         .HasColumnName("content")                                   .HasColumnType("text")                                                                                                              .IsRequired();
-            entity.Property(e => e.IsActive)                        .HasColumnName("is_active")                                 .HasColumnType("tinyint(1)")                                                    .HasDefaultValueSql("false")                        .IsRequired();
-            entity.Property(e => e.IsDismissible)                   .HasColumnName("is_dismissable")                            .HasColumnType("tinyint(1)")                                                                                                        .IsRequired();
+            entity.Property(e => e.IsActive)                        .HasColumnName("is_active")                                 .HasColumnType("tinyint(1)")                                                    .HasDefaultValue(false)                             .IsRequired();
+            entity.Property(e => e.IsDismissible)                   .HasColumnName("is_dismissible")                            .HasColumnType("tinyint(1)")                                                                                                        .IsRequired();
             entity.Property(e => e.StartsAt)                        .HasColumnName("starts_at")                                 .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
             entity.Property(e => e.EndsAt)                          .HasColumnName("ends_at")                                   .HasColumnType("datetime");
             entity.Property(e => e.TargetAudience)                  .HasColumnName("target_audience")                           .HasColumnType("text")                  .HasConversion(new JsonPropertyNameEnumConverter<SystemBulletinMessageTargetAudienceEnum>()).IsRequired();
@@ -280,7 +271,7 @@ public class AuxiliumDbContext : DbContext
             entity.HasMany(e => e.CompletedTodos)                   .WithOne(t => t.CompletedByUser)                            .HasForeignKey(t => t.CompletedBy)      .OnDelete(DeleteBehavior.Restrict);
 
             // assessment collections
-            entity.HasMany(e => e.WEMWBSAssessments)                .WithOne(w => w.CreatedByUser)                              .HasForeignKey(w => w.CreatedBy)        .OnDelete(DeleteBehavior.SetNull);
+            entity.HasMany(e => e.WEMWBSAssessments)                .WithOne(w => w.CreatedByUser)                              .HasForeignKey(w => w.CreatedBy)        .OnDelete(DeleteBehavior.Cascade);
 
             // system bulletin collections
             entity.HasMany(e => e.TargetedBulletins)                .WithOne(b => b.SpecificUser)                               .HasForeignKey(b => b.SpecificUserId)   .OnDelete(DeleteBehavior.SetNull);
@@ -375,8 +366,10 @@ public class AuxiliumDbContext : DbContext
 
             
             entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.SetNull);
-            entity.HasOne(e => e.Case)                              .WithMany(c => c.Workers)                                   .HasForeignKey(e => e.CaseId);
-            entity.HasOne(e => e.User)                              .WithMany(u => u.WorkerOnCases)                             .HasForeignKey(e => e.UserId);
+            entity.HasOne(e => e.Case)                              .WithMany(c => c.Workers)                                   .HasForeignKey(e => e.CaseId)           .OnDelete(DeleteBehavior.Cascade);
+            entity.HasOne(e => e.User)                              .WithMany(u => u.WorkerOnCases)                             .HasForeignKey(e => e.UserId)           .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasIndex(e => new { e.CaseId, e.UserId })        .IsUnique();
         });
 
         // case_clients
@@ -393,8 +386,10 @@ public class AuxiliumDbContext : DbContext
             entity.Property(e => e.UserId)                          .HasColumnName("user_id")                                   .HasColumnType("char(36)")                                                                                                          .IsRequired();
             
             entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.SetNull);
-            entity.HasOne(e => e.Case)                              .WithMany(c => c.Clients)                                   .HasForeignKey(e => e.CaseId);
-            entity.HasOne(e => e.User)                              .WithMany(u => u.ClientOnCases)                             .HasForeignKey(e => e.UserId);
+            entity.HasOne(e => e.Case)                              .WithMany(c => c.Clients)                                   .HasForeignKey(e => e.CaseId)           .OnDelete(DeleteBehavior.Cascade);
+            entity.HasOne(e => e.User)                              .WithMany(u => u.ClientOnCases)                             .HasForeignKey(e => e.UserId)           .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasIndex(e => new { e.CaseId, e.UserId })        .IsUnique();
         });
 
         // case_additional_properties
@@ -418,6 +413,8 @@ public class AuxiliumDbContext : DbContext
             entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.SetNull);
             entity.HasOne(e => e.LastUpdatedByUser)                 .WithMany()                                                 .HasForeignKey(e => e.LastUpdatedBy)    .OnDelete(DeleteBehavior.SetNull);
             entity.HasOne(e => e.Case)                              .WithMany(c => c.AdditionalProperties)                      .HasForeignKey(e => e.CaseId);
+
+            entity.HasIndex(e => new { e.CaseId, e.UrlSlug })       .IsUnique();
         });
 
         // user_additional_properties
@@ -441,6 +438,8 @@ public class AuxiliumDbContext : DbContext
             entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.SetNull);
             entity.HasOne(e => e.LastUpdatedByUser)                 .WithMany()                                                 .HasForeignKey(e => e.LastUpdatedBy)    .OnDelete(DeleteBehavior.SetNull);
             entity.HasOne(e => e.User)                              .WithMany(u => u.AdditionalProperties)                      .HasForeignKey(e => e.UserId);
+
+            entity.HasIndex(e => new { e.UserId, e.UrlSlug })          .IsUnique();
         });
 
         // case_messages
