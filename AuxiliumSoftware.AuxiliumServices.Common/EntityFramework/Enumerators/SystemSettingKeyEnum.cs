@@ -572,24 +572,30 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators
         // Instance
         // ####################################################################################################
         [JsonPropertyName("instance.fqdn")]
+        [SystemSettingVisibilityAttribute(SystemSettingVisibilityEnum.Public)]
         [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.String)]
         [SystemSettingDescriptionAttribute("The fully qualified domain name for this instance (for example, 'app.example.com'). Used for generating URLs in emails, API responses, and other external communications.")]
         [SystemSettingRecommendationAttribute("Set to your production domain. Ensure this matches your SSL certificate and DNS configuration.")]
         Instance_Fqdn,
 
         [JsonPropertyName("instance.branding.logoRelativePath")]
+        [SystemSettingVisibilityAttribute(SystemSettingVisibilityEnum.Public)]
         [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.String)]
+        [SystemSettingDefaultValueAttribute("AuxiliumLogo.png")]
         [SystemSettingDescriptionAttribute("The relative path to the organisation's logo image, used in the header and emails. Should be an image optimised for web display on light backgrounds.")]
         [SystemSettingRecommendationAttribute("Use a PNG or SVG format for best quality. Recommended dimensions are approximately 200x50 pixels.")]
         Instance_Branding_LogoRelativePath,
 
         [JsonPropertyName("instance.branding.logoContrastRelativePath")]
+        [SystemSettingVisibilityAttribute(SystemSettingVisibilityEnum.Public)]
         [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.String)]
+        [SystemSettingDefaultValueAttribute("AuxiliumLogo-White.png")]
         [SystemSettingDescriptionAttribute("The relative path to a contrast version of the logo, used on dark backgrounds or in contexts where the primary logo would not be visible.")]
         [SystemSettingRecommendationAttribute("Provide a white or light-coloured version of your logo for use on dark navigation bars or footers.")]
         Instance_Branding_LogoContrastRelativePath,
 
         [JsonPropertyName("instance.branding.name")]
+        [SystemSettingVisibilityAttribute(SystemSettingVisibilityEnum.Public)]
         [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.String)]
         [SystemSettingDescriptionAttribute("The display name for this instance, shown in the header, browser title, emails, and other user-facing locations. This is your organisation or application name.")]
         [SystemSettingRecommendationAttribute("Use your organisation name or a clear application identifier. Keep it concise for display in constrained spaces.")]
@@ -597,66 +603,77 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators
 
         // contacts
         [JsonPropertyName("instance.contacts.firstPointOfContact.emailAddress")]
+        [SystemSettingVisibilityAttribute(SystemSettingVisibilityEnum.Public)]
         [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.String)]
         [SystemSettingDescriptionAttribute("The primary support email address displayed to users for general enquiries and assistance. This is the first contact point users see when they need help.")]
         [SystemSettingRecommendationAttribute("Use a monitored support mailbox rather than an individual's email address for continuity and coverage.")]
         Instance_Contacts_FirstPointOfContact_EmailAddress,
 
         [JsonPropertyName("instance.contacts.firstPointOfContact.phone.number")]
+        [SystemSettingVisibilityAttribute(SystemSettingVisibilityEnum.Public)]
         [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.String)]
         [SystemSettingDescriptionAttribute("The primary support phone number displayed to users. Include the international dialling code for clarity.")]
         [SystemSettingRecommendationAttribute("Format consistently with country code (for example, +44 1234567890). Consider using a dedicated support line.")]
         Instance_Contacts_FirstPointOfContact_Phone_Number,
 
         [JsonPropertyName("instance.contacts.firstPointOfContact.phone.openingHours")]
+        [SystemSettingVisibilityAttribute(SystemSettingVisibilityEnum.Public)]
         [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.String)]
         [SystemSettingDescriptionAttribute("The hours during which the phone support line is staffed. Displayed alongside the phone number to set user expectations.")]
         [SystemSettingRecommendationAttribute("Be specific about time zones (for example, 'Monday-Friday, 09:00-17:00 GMT'). Update for bank holidays as needed.")]
         Instance_Contacts_FirstPointOfContact_Phone_OpeningHours,
 
         [JsonPropertyName("instance.contacts.firstPointOfContact.text.number")]
+        [SystemSettingVisibilityAttribute(SystemSettingVisibilityEnum.Public)]
         [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.String)]
         [SystemSettingDescriptionAttribute("A phone number that accepts SMS text messages for support. Useful for users who prefer text-based communication.")]
         [SystemSettingRecommendationAttribute("Only configure if you have the capability to monitor and respond to SMS messages. Leave blank if not supported.")]
         Instance_Contacts_FirstPointOfContact_Text_Number,
 
         [JsonPropertyName("instance.contacts.firstPointOfContact.text.openingHours")]
+        [SystemSettingVisibilityAttribute(SystemSettingVisibilityEnum.Public)]
         [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.String)]
         [SystemSettingDescriptionAttribute("The hours during which SMS support is available. Displayed alongside the text number.")]
         [SystemSettingRecommendationAttribute("Be clear about response time expectations for text-based support.")]
         Instance_Contacts_FirstPointOfContact_Text_OpeningHours,
 
         [JsonPropertyName("instance.contacts.maintainer.name")]
+        [SystemSettingVisibilityAttribute(SystemSettingVisibilityEnum.Public)]
         [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.String)]
         [SystemSettingDescriptionAttribute("The name of the organisation or team responsible for technical maintenance of this system. Displayed in technical notices and system information pages.")]
         [SystemSettingRecommendationAttribute("Use the IT team or department name, or the name of your managed service provider if applicable.")]
         Instance_Contacts_Maintainer_Name,
 
         [JsonPropertyName("instance.contacts.maintainer.emailAddress")]
+        [SystemSettingVisibilityAttribute(SystemSettingVisibilityEnum.Public)]
         [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.String)]
         [SystemSettingDescriptionAttribute("Email address for technical and maintenance enquiries. Used for system-related issues rather than general support.")]
         [SystemSettingRecommendationAttribute("Use a technical team mailbox. This may be different from general support to ensure proper routing of technical issues.")]
         Instance_Contacts_Maintainer_EmailAddress,
 
         [JsonPropertyName("instance.contacts.operator.name")]
+        [SystemSettingVisibilityAttribute(SystemSettingVisibilityEnum.Public)]
         [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.String)]
         [SystemSettingDescriptionAttribute("The name of the organisation operating this system. This may be different from the maintainer if the system is operated on behalf of another organisation.")]
         [SystemSettingRecommendationAttribute("Use the legal name of the organisation responsible for data processing under GDPR or similar regulations.")]
         Instance_Contacts_Operator_Name,
 
         [JsonPropertyName("instance.contacts.operator.emailAddress")]
+        [SystemSettingVisibilityAttribute(SystemSettingVisibilityEnum.Public)]
         [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.String)]
         [SystemSettingDescriptionAttribute("Official contact email for the operating organisation. May be used for formal enquiries, data protection requests, and official correspondence.")]
         [SystemSettingRecommendationAttribute("Use an official organisational email address that is monitored for compliance and legal correspondence.")]
         Instance_Contacts_Operator_EmailAddress,
 
         [JsonPropertyName("instance.contacts.generalEnquiries.name")]
+        [SystemSettingVisibilityAttribute(SystemSettingVisibilityEnum.Public)]
         [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.String)]
         [SystemSettingDescriptionAttribute("Display name for general enquiries contact information. May be shown as an alternative to support for non-technical questions.")]
         [SystemSettingRecommendationAttribute("Use a department or team name appropriate for general public or client enquiries.")]
         Instance_Contacts_GeneralEnquiries_Name,
 
         [JsonPropertyName("instance.contacts.generalEnquiries.emailAddress")]
+        [SystemSettingVisibilityAttribute(SystemSettingVisibilityEnum.Public)]
         [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.String)]
         [SystemSettingDescriptionAttribute("Email address for general enquiries not related to technical support. Appropriate for business, partnership, or general information requests.")]
         [SystemSettingRecommendationAttribute("Use a monitored general enquiries mailbox that routes to appropriate teams.")]
@@ -664,12 +681,14 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators
 
         // defaults
         [JsonPropertyName("instance.defaults.timeZone")]
+        [SystemSettingVisibilityAttribute(SystemSettingVisibilityEnum.Public)]
         [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.String)]
         [SystemSettingDescriptionAttribute("The default time zone for displaying dates and times when a user has not set their personal preference. Uses IANA time zone database identifiers.")]
         [SystemSettingRecommendationAttribute("Set to your primary user base's time zone (for example, 'Europe/London'). Users can override in their preferences.")]
         Instance_Defaults_TimeZone,
 
         [JsonPropertyName("instance.defaults.language")]
+        [SystemSettingVisibilityAttribute(SystemSettingVisibilityEnum.Public)]
         [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.String)]
         [SystemSettingDescriptionAttribute("The default interface language for new users and unauthenticated pages. Use locale (for example, 'en-GB', 'cy-GB').")]
         [SystemSettingRecommendationAttribute("Set to your primary user base's language. Users can override in their personal preferences if multilingual support is enabled.")]
@@ -677,6 +696,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators
 
         // navigation
         [JsonPropertyName("instance.navigation.aboutPageRelativePath")]
+        [SystemSettingVisibilityAttribute(SystemSettingVisibilityEnum.Public)]
         [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.String)]
         [SystemSettingDescriptionAttribute("The relative path to the 'About' or information page for this instance.")]
         [SystemSettingRecommendationAttribute("Create a page explaining your organisation and the purpose of this system. Important for transparency and trust.")]
