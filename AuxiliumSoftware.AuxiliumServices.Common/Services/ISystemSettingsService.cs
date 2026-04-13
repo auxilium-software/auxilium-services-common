@@ -1,4 +1,5 @@
-﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators;
+﻿using AuxiliumSoftware.AuxiliumServices.Common.DataTransferObjects;
+using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -17,6 +18,18 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services
             T value,
             Guid? modifiedBy,
             string reasonForModification,
+            CancellationToken ct = default
+        );
+
+
+        Task<IEnumerable<SystemSettingDTO>> GetVisibleSettingsAsync(
+            SystemSettingVisibilityEnum callerVisibility,
+            CancellationToken ct = default
+        );
+
+        Task<SystemSettingDTO?> GetVisibleSettingByKeyAsync(
+            string jsonKey,
+            SystemSettingVisibilityEnum callerVisibility,
             CancellationToken ct = default
         );
     }
