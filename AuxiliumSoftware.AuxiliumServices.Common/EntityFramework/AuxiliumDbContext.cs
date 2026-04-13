@@ -38,6 +38,7 @@ public class AuxiliumDbContext : DbContext
     public DbSet<RefreshTokenEntityModel> RefreshTokens { get; set; }
     public DbSet<WemwbsAssessmentEntityModel> WemwbsAssessments { get; set; }
     public DbSet<TotpRecoveryCodeEntityModel> TotpRecoveryCodes { get; set; }
+    public DbSet<PasswordSetTokenEntityModel> PasswordSetTokens { get; set; }
 
     public DbSet<LogCaseMessageReadByEventEntityModel> Log_CaseMessageReadBys { get; set; }
     public DbSet<LogCaseModificationEventEntityModel> Log_CaseModificationEvents { get; set; }
