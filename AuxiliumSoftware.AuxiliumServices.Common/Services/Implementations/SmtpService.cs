@@ -33,8 +33,8 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
         {
             var message = new MimeMessage();
             message.From.Add(new MailboxAddress(
-                await _systemSettings.GetStringAsync(SystemSettingKeyEnum.Instance_Contacts_Portal_EmailAddress),
-                await _systemSettings.GetStringAsync(SystemSettingKeyEnum.Instance_Contacts_Portal_EmailAddress)
+                _configuration.SMTP.SenderName,
+                _configuration.SMTP.SenderAddress
             ));
             message.To.Add(MailboxAddress.Parse(toAddress));
             message.Subject = subject;
