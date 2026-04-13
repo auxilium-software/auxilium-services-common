@@ -11,7 +11,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Configuration.Sections.Databa
         public string Username { get; set; } = null!;
         public string Password { get; set; } = null!;
         public string VirtualHost { get; set; } = null!;
-        public int HeartbeatInSeconds { get; set; } = 0;
+        public int HeartbeatIntervalInSeconds { get; set; } = 0;
         public int BlockedConnectionTimeoutInSeconds { get; set; } = 0;
         public string ExchangeName { get; set; } = null!;
         public Dictionary<string, string> Queues { get; set; } = null!;
@@ -25,7 +25,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Configuration.Sections.Databa
             if (string.IsNullOrWhiteSpace(Username))        throw new InvalidOperationException("Configuration value 'Databases->RabbitMQ->Username' is missing.");
             if (string.IsNullOrWhiteSpace(Password))        throw new InvalidOperationException("Configuration value 'Databases->RabbitMQ->Password' is missing.");
             if (string.IsNullOrWhiteSpace(VirtualHost))     throw new InvalidOperationException("Configuration value 'Databases->RabbitMQ->VirtualHost' is missing.");
-            if (HeartbeatInSeconds <= 0)                    throw new InvalidOperationException("Configuration value 'Databases->RabbitMQ->HeartbeatInSeconds' is missing or invalid.");
+            if (HeartbeatIntervalInSeconds <= 0)            throw new InvalidOperationException("Configuration value 'Databases->RabbitMQ->HeartbeatInSeconds' is missing or invalid.");
             if (BlockedConnectionTimeoutInSeconds <= 0)     throw new InvalidOperationException("Configuration value 'Databases->RabbitMQ->BlockedConnectionTimeoutInSeconds' is missing or invalid.");
             if (string.IsNullOrWhiteSpace(ExchangeName))    throw new InvalidOperationException("Configuration value 'Databases->RabbitMQ->ExchangeName' is missing.");
             if (Queues is null || Queues.Count == 0)        throw new InvalidOperationException("Configuration value 'Databases->RabbitMQ->Queues' is missing.");
