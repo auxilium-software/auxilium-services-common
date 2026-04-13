@@ -1,14 +1,17 @@
 ﻿using AuxiliumSoftware.AuxiliumServices.Common.Attributes;
+using AuxiliumSoftware.AuxiliumServices.Common.DataTransferObjects;
 using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework;
 using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels;
 using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
 {
@@ -16,16 +19,76 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
     {
         private readonly AuxiliumDbContext _db;
 
+        /// <summary>
+        /// Static metadata cache built from SystemSettingKeyEnum reflection.
+        /// Keyed by JSON key for easy lookup when serving API requests.
+        /// Does NOT store runtime DB values, so it never goes stale.
+        /// </summary>
+        private static readonly Lazy<Dictionary<string, SettingMetadata>> _metadataByJsonKey = new(() => BuildMetadataCache());
+
         public SystemSettingsService(AuxiliumDbContext db)
         {
             _db = db;
         }
 
+        public async Task<IEnumerable<SystemSettingDTO>> GetVisibleSettingsAsync(
+            SystemSettingVisibilityEnum callerVisibility,
+            CancellationToken ct = default)
+        {
+            var visibleKeys = _metadataByJsonKey.Value
+                .Where(kvp => kvp.Value.Visibility <= callerVisibility)
+                .ToList();
+
+            // batch-fetch all DB overrides in one query rather than N+1
+            var enumKeys = visibleKeys
+                .Select(kvp => kvp.Value.EnumValue)
+                .ToList();
+
+            var dbOverrides = await _db.System_Settings
+                .AsNoTracking()
+                .Where(s => enumKeys.Contains(s.ConfigKey))
+                .GroupBy(s => s.ConfigKey)
+                .Select(g => g.OrderByDescending(s => s.CreatedAt).First())
+                .ToDictionaryAsync(s => s.ConfigKey, s => s, ct);
+
+            return visibleKeys.Select(kvp =>
+            {
+                var meta = kvp.Value;
+                object? value;
+
+                if (dbOverrides.TryGetValue(meta.EnumValue, out var dbSetting))
+                {
+                    value = DeserializeValue(dbSetting.ConfigValue, meta.ValueType);
+                }
+                else
+                {
+                    value = ResolveDefaultValue(meta);
+                }
+
+                return BuildDto(kvp.Key, meta, value, callerVisibility);
+            });
+        }
+
+        public async Task<SystemSettingDTO?> GetVisibleSettingByKeyAsync(
+            string jsonKey,
+            SystemSettingVisibilityEnum callerVisibility,
+            CancellationToken ct = default)
+        {
+            if (!_metadataByJsonKey.Value.TryGetValue(jsonKey, out var meta))
+                return null;
+
+            // return null rather than 403 to avoid confirming key existence
+            if (meta.Visibility > callerVisibility)
+                return null;
+
+            var value = await GetValueAsync(meta.EnumValue, ct);
+
+            return BuildDto(jsonKey, meta, value, callerVisibility);
+        }
+
         public async Task<dynamic> GetValueAsync(SystemSettingKeyEnum key, CancellationToken ct = default)
         {
-            var typeAttr = GetAttribute<SystemSettingExpectedValueTypeAttribute>(key);
-            if (typeAttr is null)
-                throw new InvalidOperationException($"No expected value type specified for key '{key}'");
+            var typeAttr = GetAttribute<SystemSettingExpectedValueTypeAttribute>(key) ?? throw new InvalidOperationException($"No expected value type specified for key '{key}'");
 
             var setting = await _db.System_Settings
                 .AsNoTracking()
@@ -40,7 +103,8 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
 
             var defaultAttr = GetAttribute<SystemSettingDefaultValueAttribute>(key);
             if (defaultAttr is null)
-                throw new InvalidOperationException($"No value found in database for key '{key}' and no default attribute specified");
+                throw new InvalidOperationException(
+                    $"No value found in database for key '{key}' and no default attribute specified");
 
             if (typeAttr.ValueType == SystemSettingValueTypeEnum.StringArray)
             {
@@ -52,7 +116,6 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
 
             return defaultAttr.DefaultValue!;
         }
-
 
         public async Task<string> GetStringAsync(SystemSettingKeyEnum key, CancellationToken ct = default)
         {
@@ -85,14 +148,12 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             return (T)Convert.ChangeType(value, typeof(T));
         }
 
-
         public async Task SetAsync<T>(
             SystemSettingKeyEnum key,
             T value,
             Guid? modifiedBy,
             string reasonForModification,
-            CancellationToken ct = default
-        )
+            CancellationToken ct = default)
         {
             var jsonValue = JsonSerializer.Serialize(value);
             var valueType = InferValueType(value);
@@ -111,6 +172,44 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             await _db.SaveChangesAsync(ct);
         }
 
+        private static SystemSettingDTO BuildDto(
+            string jsonKey,
+            SettingMetadata meta,
+            object? value,
+            SystemSettingVisibilityEnum callerVisibility)
+        {
+            var dto = new SystemSettingDTO
+            {
+                Key = jsonKey,
+                Value = value,
+                ValueType = meta.ValueType
+            };
+
+            // only expose description/recommendation to admins - public/authenticated callers just need the values
+            if (callerVisibility == SystemSettingVisibilityEnum.Administrator)
+            {
+                dto.Description = meta.Description;
+                dto.Recommendation = meta.Recommendation;
+            }
+
+            return dto;
+        }
+
+        private static object? ResolveDefaultValue(SettingMetadata meta)
+        {
+            if (meta.DefaultValue is null)
+                return null;
+
+            if (meta.ValueType == SystemSettingValueTypeEnum.StringArray)
+            {
+                var stringValue = meta.DefaultValue.ToString() ?? "";
+                return string.IsNullOrEmpty(stringValue)
+                    ? new List<string>()
+                    : stringValue.Split(',').Select(s => s.Trim()).ToList();
+            }
+
+            return meta.DefaultValue;
+        }
 
         private static dynamic DeserializeValue(string json, SystemSettingValueTypeEnum valueType)
         {
@@ -122,15 +221,14 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                 SystemSettingValueTypeEnum.Decimal => JsonSerializer.Deserialize<decimal>(json),
                 SystemSettingValueTypeEnum.StringArray => JsonSerializer.Deserialize<List<string>>(json)!,
                 SystemSettingValueTypeEnum.Json => JsonSerializer.Deserialize<JsonElement>(json),
-                _ => throw new ArgumentOutOfRangeException(nameof(valueType), $"Unsupported value type: {valueType}")
+                _ => throw new ArgumentOutOfRangeException(
+                    nameof(valueType), $"Unsupported value type: {valueType}")
             };
         }
 
         private static T? GetAttribute<T>(SystemSettingKeyEnum key) where T : Attribute
         {
-            var memberInfo = typeof(SystemSettingKeyEnum)
-                .GetField(key.ToString());
-
+            var memberInfo = typeof(SystemSettingKeyEnum).GetField(key.ToString());
             return memberInfo?.GetCustomAttribute<T>();
         }
 
@@ -146,5 +244,42 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                 _ => SystemSettingValueTypeEnum.Json
             };
         }
+
+        private static Dictionary<string, SettingMetadata> BuildMetadataCache()
+        {
+            var result = new Dictionary<string, SettingMetadata>();
+
+            foreach (var enumValue in Enum.GetValues<SystemSettingKeyEnum>())
+            {
+                var field = typeof(SystemSettingKeyEnum).GetField(enumValue.ToString())!;
+
+                var jsonKey = field.GetCustomAttribute<JsonPropertyNameAttribute>()?.Name
+                    ?? enumValue.ToString();
+
+                result[jsonKey] = new SettingMetadata
+                {
+                    EnumValue = enumValue,
+                    Visibility = field.GetCustomAttribute<SystemSettingVisibilityAttribute>()?.Visibility
+                        ?? SystemSettingVisibilityEnum.Administrator,
+                    ValueType = field.GetCustomAttribute<SystemSettingExpectedValueTypeAttribute>()?.ValueType
+                        ?? SystemSettingValueTypeEnum.String,
+                    DefaultValue = field.GetCustomAttribute<SystemSettingDefaultValueAttribute>()?.DefaultValue,
+                    Description = field.GetCustomAttribute<SystemSettingDescriptionAttribute>()?.Description,
+                    Recommendation = field.GetCustomAttribute<SystemSettingRecommendationAttribute>()?.Recommendation
+                };
+            }
+
+            return result;
+        }
+    }
+
+    internal class SettingMetadata
+    {
+        public SystemSettingKeyEnum EnumValue { get; set; }
+        public SystemSettingVisibilityEnum Visibility { get; set; }
+        public SystemSettingValueTypeEnum ValueType { get; set; }
+        public object? DefaultValue { get; set; }
+        public string? Description { get; set; }
+        public string? Recommendation { get; set; }
     }
 }
