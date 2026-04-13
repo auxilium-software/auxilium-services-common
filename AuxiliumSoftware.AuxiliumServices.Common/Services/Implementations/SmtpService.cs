@@ -50,6 +50,14 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                     MailKit.Security.SecureSocketOptions.None
                 );
 
+                if (_configuration.SMTP.Authentication.UseAuthentication)
+                {
+                    await client.AuthenticateAsync(
+                        _configuration.SMTP.Authentication.Username,
+                        _configuration.SMTP.Authentication.Password
+                    );
+                }
+
                 await client.SendAsync(message);
                 await client.DisconnectAsync(true);
 
