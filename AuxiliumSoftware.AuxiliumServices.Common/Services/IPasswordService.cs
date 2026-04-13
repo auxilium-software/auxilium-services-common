@@ -5,7 +5,7 @@
         string HashPassword(string password);
         bool VerifyPassword(string password, string passwordHash);
         string NormalisePassword(string? rawPassword, string? passwordSha512);
-        Task<(string rawToken, string tokenHash)> GeneratePasswordSetToken();
+        (string rawToken, string tokenHash) GeneratePasswordSetToken();
         string HashToken(string rawToken);
     }
 }

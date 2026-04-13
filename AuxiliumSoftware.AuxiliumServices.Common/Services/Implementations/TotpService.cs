@@ -2,6 +2,7 @@
 using AuxiliumSoftware.AuxiliumServices.Common.DataTransferObjects;
 using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework;
 using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels;
+using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -15,8 +16,8 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
 {
     public class TotpService : ITotpService
     {
-        private readonly ConfigurationStructure _configuration;
         private readonly AuxiliumDbContext _db;
+        private readonly SystemSettingsService _systemSettings;
         private readonly ILogger<TotpService> _logger;
 
         // rfc 6238 defaults
@@ -27,13 +28,12 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
         private const int ToleranceSteps = 1; // +-1 step = +-30s clock drift
 
         public TotpService(
-            IConfiguration configuration,
             AuxiliumDbContext db,
+            ISystemSettingsService systemSettingsService,
             ILogger<TotpService> logger
         )
         {
-            _configuration = new ConfigurationStructure();
-            configuration.Bind(_configuration);
+            _systemSettings = new SystemSettingsService(db);
 
             _db = db;
             _logger = logger;
@@ -52,7 +52,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
 
             var secretBytes = KeyGeneration.GenerateRandomKey(20);
             var secret = Base32Encoding.ToString(secretBytes);
-            var provisioningUri = GetProvisioningUri(secret, userEmail);
+            var provisioningUri = await GetProvisioningUri(secret, userEmail);
 
             // store secret as pending
             // (TotpEnabled remains false until the user proves they've set up their authenticator app by submitting a valid code)
@@ -86,7 +86,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             user.TotpEnabled = true;
             user.TotpEnabledAt = DateTime.UtcNow;
 
-            var plaintextCodes = GenerateRecoveryCodesForUser(userId);
+            var plaintextCodes = await GenerateRecoveryCodesForUser(userId);
 
             await _db.SaveChangesAsync();
 
@@ -200,7 +200,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                 _db.TotpRecoveryCodes.RemoveRange(existing);
             }
 
-            var plaintextCodes = GenerateRecoveryCodesForUser(userId);
+            var plaintextCodes = await GenerateRecoveryCodesForUser(userId);
 
             await _db.SaveChangesAsync();
 
@@ -231,15 +231,15 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
         }
         #endregion
         #region Recovery Code Generation
-        private List<string> GenerateRecoveryCodesForUser(Guid userId)
+        private async Task<List<string>> GenerateRecoveryCodesForUser(Guid userId)
         {
             var plaintextCodes = new List<string>();
             var now = DateTime.UtcNow;
 
-            for (int i = 0; i < _configuration.MFA.TOTP.RecoveryCode.GroupCount; i++)
+            for (int i = 0; i < await _systemSettings.GetIntAsync(SystemSettingKeyEnum.Policies_Totp_RecoveryCodeFormatting_NumberOfGroupsInARecoveryCode); i++)
             {
-                var raw = GenerateRecoveryCode();
-                var formatted = FormatRecoveryCode(raw);
+                var raw = await GenerateRecoveryCode();
+                var formatted = await FormatRecoveryCode(raw);
                 plaintextCodes.Add(formatted);
 
                 // hash the formatted code - what the user sees is what they must enter
@@ -257,10 +257,10 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             return plaintextCodes;
         }
 
-        private string GenerateRecoveryCode()
+        private async Task<string> GenerateRecoveryCode()
         {
             var chars = "abcdefghijklmnopqrstuvwxyz0123456789";
-            var length = _configuration.MFA.TOTP.RecoveryCode.GroupSize * _configuration.MFA.TOTP.RecoveryCode.GroupCount;
+            var length = await _systemSettings.GetIntAsync(SystemSettingKeyEnum.Policies_Totp_RecoveryCodeFormatting_NumberOfCharactersInAGroup) * await _systemSettings.GetIntAsync(SystemSettingKeyEnum.Policies_Totp_RecoveryCodeFormatting_NumberOfGroupsInARecoveryCode);
 
             var bytes = new byte[length];
             RandomNumberGenerator.Fill(bytes);
@@ -274,9 +274,9 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             return new string(result);
         }
 
-        private string FormatRecoveryCode(string raw)
+        private async Task<string> FormatRecoveryCode(string raw)
         {
-            var groupSize = _configuration.MFA.TOTP.RecoveryCode.GroupSize;
+            var groupSize = await _systemSettings.GetIntAsync(SystemSettingKeyEnum.Policies_Totp_RecoveryCodeFormatting_NumberOfCharactersInAGroup);
             var sb = new StringBuilder();
 
             for (int i = 0; i < raw.Length; i++)
@@ -312,9 +312,9 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                 future: ToleranceSteps
             ));
         }
-        private string GetProvisioningUri(string base32Secret, string userEmail)
+        private async Task<string> GetProvisioningUri(string base32Secret, string userEmail)
         {
-            var encodedIssuer = Uri.EscapeDataString(_configuration.MFA.TOTP.Issuer);
+            var encodedIssuer = Uri.EscapeDataString(await _systemSettings.GetStringAsync(SystemSettingKeyEnum.Policies_Totp_TotpIssuer));
             var encodedEmail = Uri.EscapeDataString(userEmail);
 
             return $"otpauth://totp/{encodedIssuer}:{encodedEmail}" +

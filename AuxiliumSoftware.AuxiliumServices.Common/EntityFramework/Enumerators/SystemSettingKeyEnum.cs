@@ -269,6 +269,20 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators
         [SystemSettingRecommendationAttribute("8-10 codes provides a good balance between recovery options and security. Users should store these securely offline.")]
         Policies_Totp_NumberOfRecoveryCodesToGenerate,
 
+        [JsonPropertyName("policies.totp.recoveryCodeFormatting.numberOfCharactersInAGroup")]
+        [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.Int)]
+        [SystemSettingDefaultValueAttribute(5)]
+        [SystemSettingDescriptionAttribute("The number of characters in each group of the recovery codes.")]
+        [SystemSettingRecommendationAttribute("5 characters per group is recommended for readability.")]
+        Policies_Totp_RecoveryCodeFormatting_NumberOfCharactersInAGroup,
+
+        [JsonPropertyName("policies.totp.recoveryCodeFormatting.numberOfGroupsInARecoveryCode")]
+        [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.Int)]
+        [SystemSettingDefaultValueAttribute(5)]
+        [SystemSettingDescriptionAttribute("The number of groups in the recovery codes.")]
+        [SystemSettingRecommendationAttribute("5 groups is recommended for readability.")]
+        Policies_Totp_RecoveryCodeFormatting_NumberOfGroupsInARecoveryCode,
+
         // ####################################################################################################
         // Policies -> Account Lockout
         // ####################################################################################################
@@ -611,6 +625,12 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators
         [SystemSettingDescriptionAttribute("The hours during which SMS support is available. Displayed alongside the text number.")]
         [SystemSettingRecommendationAttribute("Be clear about response time expectations for text-based support.")]
         Instance_Contacts_FirstPointOfContact_Text_OpeningHours,
+
+        [JsonPropertyName("instance.contacts.portal.emailAddress")]
+        [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.String)]
+        [SystemSettingDescriptionAttribute("The email address for the portal.")]
+        [SystemSettingRecommendationAttribute("Use this as a no-reply portal-only email address.")]
+        Instance_Contacts_Portal_EmailAddress,
 
         [JsonPropertyName("instance.contacts.maintainer.name")]
         [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.String)]
