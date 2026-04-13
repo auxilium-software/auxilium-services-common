@@ -24,5 +24,6 @@
     
     <!-- Utility packages -->
     <PackageVersion Include="Otp.NET" Version="1.4.1" />
+    <PackageVersion Include="MailKit" Version="4.15.1" />
   </ItemGroup>
 </Project>

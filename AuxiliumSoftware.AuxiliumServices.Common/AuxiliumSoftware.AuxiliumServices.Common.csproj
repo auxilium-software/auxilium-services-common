@@ -7,7 +7,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     
-    <Version>3.0.20.1</Version>
+    <Version>3.0.21.0</Version>
     <Company>Auxilium Software</Company>
     <Product>AuxiliumSoftware.AuxiliumServices.Common</Product>
     <Copyright>Copyright © 2026</Copyright>
@@ -59,6 +59,7 @@
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" />
 
     <PackageReference Include="Otp.NET" />
+    <PackageReference Include="MailKit" />
   </ItemGroup>
 
 </Project>
