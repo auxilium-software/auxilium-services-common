@@ -49,7 +49,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Messaging
                     UserName = _configuration.Username,
                     Password = _configuration.Password,
                     VirtualHost = _configuration.VirtualHost,
-                    RequestedHeartbeat = TimeSpan.FromSeconds(_configuration.HeartbeatInSeconds),
+                    RequestedHeartbeat = TimeSpan.FromSeconds(_configuration.HeartbeatIntervalInSeconds),
                     RequestedConnectionTimeout = TimeSpan.FromSeconds(_configuration.BlockedConnectionTimeoutInSeconds),
                     AutomaticRecoveryEnabled = true,
                     NetworkRecoveryInterval = TimeSpan.FromSeconds(10)
