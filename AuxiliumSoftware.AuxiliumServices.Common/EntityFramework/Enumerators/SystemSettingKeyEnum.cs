@@ -231,6 +231,13 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators
         [SystemSettingRecommendationAttribute("Enable to prevent users cycling back to old, potentially compromised passwords. Typically combined with a password history count.")]
         Policies_Password_PreventPasswordReuse,
 
+        [JsonPropertyName("policies.password.resetTokenLength")]
+        [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.Int)]
+        [SystemSettingDefaultValueAttribute(32)]
+        [SystemSettingDescriptionAttribute("The length of the password reset token in bytes.")]
+        [SystemSettingRecommendationAttribute("Set to a minimum of 32 bytes for security.")]
+        Policies_Password_PasswordResetTokenLength,
+
         // ####################################################################################################
         // Policies -> TOTP
         // ####################################################################################################

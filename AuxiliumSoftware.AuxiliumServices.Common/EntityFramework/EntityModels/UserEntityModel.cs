@@ -216,5 +216,8 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// A list of TOTP Recovery Codes belonging to the User.
         /// </summary>
         public ICollection<TotpRecoveryCodeEntityModel>? TotpRecoveryCodes { get; set; }
+        /// <summary>
+        /// </summary>
+        public ICollection<PasswordSetTokenEntityModel>? PasswordSetTokens { get; set; }
     }
 }

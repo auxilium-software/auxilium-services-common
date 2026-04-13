@@ -11,12 +11,16 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations;
 
 public class PasswordService : IPasswordService
 {
+    private readonly SystemSettingsService _systemSettingsService;
     private readonly ConfigurationStructure _configuration;
 
     public PasswordService(
+        AuxiliumDbContext db,
+        ISystemSettingsService systemSettingsService,
         IConfiguration configuration
         )
     {
+        _systemSettingsService = new SystemSettingsService(db);
         _configuration = new ConfigurationStructure();
         configuration.Bind(_configuration);
     }
@@ -159,5 +163,21 @@ public class PasswordService : IPasswordService
         {
             return false;
         }
+    }
+
+
+
+
+
+    async public Task<(string rawToken, string tokenHash)> GeneratePasswordSetToken()
+    {
+        var rawToken = Convert.ToBase64String(RandomNumberGenerator.GetBytes(await this._systemSettingsService.GetIntAsync(EntityFramework.Enumerators.SystemSettingKeyEnum.Policies_Password_PasswordResetTokenLength)));
+        var tokenHash = HashToken(rawToken);
+        return (rawToken, tokenHash);
+    }
+
+    public string HashToken(string rawToken)
+    {
+        return Convert.ToHexString(SHA512.HashData(Encoding.UTF8.GetBytes(rawToken))).ToLowerInvariant();
     }
 }
