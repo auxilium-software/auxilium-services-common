@@ -33,8 +33,8 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
         {
             var message = new MimeMessage();
             message.From.Add(new MailboxAddress(
-                await _systemSettings.GetStringAsync(SystemSettingKeyEnum.Instance_Contacts_Portal_EmailAddress),
-                await _systemSettings.GetStringAsync(SystemSettingKeyEnum.Instance_Contacts_Portal_EmailAddress)
+                _configuration.SMTP.SenderName,
+                _configuration.SMTP.SenderAddress
             ));
             message.To.Add(MailboxAddress.Parse(toAddress));
             message.Subject = subject;
@@ -49,6 +49,14 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                     _configuration.SMTP.Port,
                     MailKit.Security.SecureSocketOptions.None
                 );
+
+                if (_configuration.SMTP.Authentication.UseAuthentication)
+                {
+                    await client.AuthenticateAsync(
+                        _configuration.SMTP.Authentication.Username,
+                        _configuration.SMTP.Authentication.Password
+                    );
+                }
 
                 await client.SendAsync(message);
                 await client.DisconnectAsync(true);

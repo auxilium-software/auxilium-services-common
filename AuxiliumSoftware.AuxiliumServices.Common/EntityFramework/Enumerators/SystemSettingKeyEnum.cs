@@ -626,12 +626,6 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators
         [SystemSettingRecommendationAttribute("Be clear about response time expectations for text-based support.")]
         Instance_Contacts_FirstPointOfContact_Text_OpeningHours,
 
-        [JsonPropertyName("instance.contacts.portal.emailAddress")]
-        [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.String)]
-        [SystemSettingDescriptionAttribute("The email address for the portal.")]
-        [SystemSettingRecommendationAttribute("Use this as a no-reply portal-only email address.")]
-        Instance_Contacts_Portal_EmailAddress,
-
         [JsonPropertyName("instance.contacts.maintainer.name")]
         [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.String)]
         [SystemSettingDescriptionAttribute("The name of the organisation or team responsible for technical maintenance of this system. Displayed in technical notices and system information pages.")]
