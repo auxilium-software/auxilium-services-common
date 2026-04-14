@@ -245,6 +245,8 @@ public class AuxiliumDbContext : DbContext
             
             entity.Property(e => e.HasEmailAddressBeenVerified)     .HasColumnName("has_email_address_been_verified")           .HasColumnType("tinyint(1)")                                                    .HasDefaultValue(false)                             .IsRequired();
             entity.Property(e => e.AllowLogin)                      .HasColumnName("allow_login")                               .HasColumnType("tinyint(1)")                                                    .HasDefaultValue(false)                             .IsRequired();
+            entity.Property(e => e.MustChangePassword)              .HasColumnName("must_change_password")                      .HasColumnType("tinyint(1)")                                                    .HasDefaultValue(false)                             .IsRequired();
+
             entity.Property(e => e.IsAdministrator)                 .HasColumnName("is_administrator")                          .HasColumnType("tinyint(1)")                                                    .HasDefaultValue(false)                             .IsRequired();
             entity.Property(e => e.IsCaseWorker)                    .HasColumnName("is_case_worker")                            .HasColumnType("tinyint(1)")                                                    .HasDefaultValue(false)                             .IsRequired();
             entity.Property(e => e.IsCaseWorkerManager)             .HasColumnName("is_case_worker_manager")                    .HasColumnType("tinyint(1)")                                                    .HasDefaultValue(false)                             .IsRequired();
