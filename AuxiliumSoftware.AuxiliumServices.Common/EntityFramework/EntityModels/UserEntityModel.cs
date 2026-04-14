@@ -80,6 +80,15 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// </summary>
         public required bool AllowLogin { get; set; } = false;
         /// <summary>
+        /// Whether the User has to change their password.
+        /// </summary>
+        public required bool MustChangePassword { get; set; } = false;
+
+
+
+
+
+        /// <summary>
         /// Whether the User has the "Case Worker" Role.
         /// </summary>
         public required bool IsCaseWorker { get; set; } = false;
