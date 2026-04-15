@@ -17,7 +17,6 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Configuration.Sections
         public void Validate()
         {
             // SendEmailsFromPortal
-
             Connection.Validate();
             Authentication.Validate();
             From.Validate();
