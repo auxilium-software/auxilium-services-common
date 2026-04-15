@@ -9,7 +9,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Messaging.Models
     {
         public override string RoutingKey => "email.send";
 
-        public required Guid UserId { get; set; }
+        public required Guid TargetUserId { get; set; }
         public required string Subject { get; set; }
 
         public required string TemplateName { get; set; }
