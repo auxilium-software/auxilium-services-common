@@ -7,22 +7,20 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Configuration.Sections
 {
     public class SMTPConfigurationSection
     {
-        public string Host { get; set; } = null!;
-        public int Port { get; set; } = 0;
+        public bool SendEmailsFromPortal { get; set; } = false;
+        public SMTPConnectionConfigurationSection Connection { get; set; } = null!;
         public SMTPAuthenticationConfigurationSection Authentication { get; set; } = null!;
-        public string SenderAddress { get; set; } = null!;
-        public string SenderName { get; set; } = null!;
+        public SMTPFromConfigurationSection From { get; set; } = null!;
 
 
 
         public void Validate()
         {
-            if (string.IsNullOrWhiteSpace(Host))            throw new InvalidOperationException("Configuration value 'SMTP->Host' is missing.");
-            if (Port <= 0)                                  throw new InvalidOperationException("Configuration value 'SMTP->Port' is missing or invalid.");
-            if (string.IsNullOrWhiteSpace(SenderAddress))   throw new InvalidOperationException("Configuration value 'SMTP->SenderAddress' is missing.");
-            if (string.IsNullOrWhiteSpace(SenderName))      throw new InvalidOperationException("Configuration value 'SMTP->SenderName' is missing.");
+            // SendEmailsFromPortal
 
+            Connection.Validate();
             Authentication.Validate();
+            From.Validate();
         }
     }
 }
