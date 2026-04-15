@@ -695,6 +695,13 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators
         Instance_Defaults_Language,
 
         // navigation
+        [JsonPropertyName("instance.navigation.portalBaseUrl")]
+        [SystemSettingVisibilityAttribute(SystemSettingVisibilityEnum.Public)]
+        [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.String)]
+        [SystemSettingDescriptionAttribute("The base URL for the portal.")]
+        [SystemSettingRecommendationAttribute("https://portal.veteranslegallink.org")]
+        Instance_Navigation_PortalBaseUrl,
+
         [JsonPropertyName("instance.navigation.aboutPageRelativePath")]
         [SystemSettingVisibilityAttribute(SystemSettingVisibilityEnum.Public)]
         [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.String)]
