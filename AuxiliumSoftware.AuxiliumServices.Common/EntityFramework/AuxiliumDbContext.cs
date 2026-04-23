@@ -250,6 +250,9 @@ public class AuxiliumDbContext : DbContext
             entity.Property(e => e.IsAdministrator)                 .HasColumnName("is_administrator")                          .HasColumnType("tinyint(1)")                                                    .HasDefaultValue(false)                             .IsRequired();
             entity.Property(e => e.IsCaseWorker)                    .HasColumnName("is_case_worker")                            .HasColumnType("tinyint(1)")                                                    .HasDefaultValue(false)                             .IsRequired();
             entity.Property(e => e.IsCaseWorkerManager)             .HasColumnName("is_case_worker_manager")                    .HasColumnType("tinyint(1)")                                                    .HasDefaultValue(false)                             .IsRequired();
+            
+            entity.Property(e => e.DeletionRequested)               .HasColumnName("deletion_requested")                        .HasColumnType("tinyint(1)")                                                    .HasDefaultValue(false)                             .IsRequired();
+            entity.Property(e => e.DeletionRequestReason)           .HasColumnName("deletion_request_reason")                   .HasColumnType("text");
 
 
 

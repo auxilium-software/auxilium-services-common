@@ -128,6 +128,20 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 
 
         /// <summary>
+        /// Whether the User has requested to delete their account.
+        /// </summary>
+        public required bool DeletionRequested { get; set; } = false;
+
+        /// <summary>
+        /// An optional reason provided by the User for requesting account deletion.
+        /// </summary>
+        public string DeletionRequestReason { get; set; } = string.Empty;
+
+
+
+
+
+        /// <summary>
         /// The User that created the User.
         /// </summary>
         public UserEntityModel? CreatedByUser { get; set; }
