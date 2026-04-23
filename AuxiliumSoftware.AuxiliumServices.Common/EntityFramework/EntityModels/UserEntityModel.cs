@@ -135,7 +135,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// <summary>
         /// An optional reason provided by the User for requesting account deletion.
         /// </summary>
-        public string DeletionRequestReason { get; set; } = string.Empty;
+        public string? DeletionRequestReason { get; set; }
 
 
 
