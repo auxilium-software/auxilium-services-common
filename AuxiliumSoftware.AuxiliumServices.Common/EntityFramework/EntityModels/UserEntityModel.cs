@@ -240,6 +240,11 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// </summary>
         public ICollection<TotpRecoveryCodeEntityModel>? TotpRecoveryCodes { get; set; }
         /// <summary>
+        /// Password Reset Tokens the User has created.
+        /// </summary>
+        public ICollection<PasswordSetTokenEntityModel>? CreatedPasswordSetTokens { get; set; }
+        /// <summary>
+        /// Password Reset Tokens issued to the User.
         /// </summary>
         public ICollection<PasswordSetTokenEntityModel>? PasswordSetTokens { get; set; }
     }

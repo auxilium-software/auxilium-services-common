@@ -651,7 +651,7 @@ public class AuxiliumDbContext : DbContext
             entity.Property(e => e.UsedAt)                          .HasColumnName("used_at")                                   .HasColumnType("datetime");
             entity.Property(e => e.Reason)                          .HasColumnName("reason")                                    .HasColumnType("text")                  .HasConversion(new JsonPropertyNameEnumConverter<PasswordSetTokenReasonEnum>())             .IsRequired();
             
-            entity.HasOne(e => e.CreatedByUser)                     .WithMany(u => u.PasswordSetTokens)                         .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.SetNull);
+            entity.HasOne(e => e.CreatedByUser)                     .WithMany(u => u.CreatedPasswordSetTokens)                         .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.SetNull);
             entity.HasOne(e => e.User)                              .WithMany(u => u.PasswordSetTokens)                         .HasForeignKey(e => e.UserId)           .OnDelete(DeleteBehavior.Cascade);
         });
 
