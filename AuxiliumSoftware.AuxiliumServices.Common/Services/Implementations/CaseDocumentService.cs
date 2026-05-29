@@ -599,7 +599,7 @@ public class CaseDocumentService : ICaseDocumentService
         // actually logging
         var logEntry = new LogCaseModificationEventEntityModel
         {
-            Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.Log_CaseModificationEventEntry),
+            Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.Log_CaseModification_EventEntry),
             CreatedAt = DateTime.UtcNow,
             CreatedBy = currentUser.Id,
             CaseId = targetCase.Id,

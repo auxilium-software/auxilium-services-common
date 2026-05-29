@@ -232,7 +232,7 @@ public class UserDocumentService : IUserDocumentService
         // actually logging
         var logEntry = new LogUserModificationEventEntityModel
         {
-            Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.Log_UserModificationEventEntry),
+            Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.Log_UserModification_EventEntry),
             CreatedAt = DateTime.UtcNow,
             CreatedBy = currentUser.Id,
             UserId = targetUser.Id,

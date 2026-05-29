@@ -129,7 +129,7 @@ public class MessageDocumentService : IMessageDocumentService
                 // create a read-by entry
                 var readBy = new LogCaseMessageReadByEventEntityModel
                 {
-                    Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.Log_CaseMessageReadByEventEntry),
+                    Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.Log_CaseMessageReadBy_EventEntry),
                     MessageId = messageId,
                     CreatedBy = userId,
                     CreatedAt = DateTime.UtcNow
