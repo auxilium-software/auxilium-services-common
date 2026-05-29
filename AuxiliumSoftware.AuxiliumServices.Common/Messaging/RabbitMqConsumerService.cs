@@ -85,7 +85,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Messaging
                 routingKey: _routingKey,
                 cancellationToken: stoppingToken);
 
-            // Process one at a time — keeps it simple, avoids overwhelming SMTP
+            // Process one at a time - keeps it simple, avoids overwhelming SMTP
             await _channel.BasicQosAsync(prefetchSize: 0, prefetchCount: 1, global: false, cancellationToken: stoppingToken);
 
             var consumer = new AsyncEventingBasicConsumer(_channel);
