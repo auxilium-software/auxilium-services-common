@@ -27,7 +27,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         public required DateTime MessageCreatedAt { get; set; }
         /// <summary>
         /// </summary>
-        public required string MessageCorrelationId { get; set; }
+        public required string? MessageCorrelationId { get; set; }
         /// <summary>
         /// </summary>
         public required string MessageRoutingKey { get; set; }

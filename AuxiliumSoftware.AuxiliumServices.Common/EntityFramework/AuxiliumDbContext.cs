@@ -340,7 +340,7 @@ public class AuxiliumDbContext : DbContext
             
             entity.Property(e => e.MessageId)                       .HasColumnName("message_id")                                .HasColumnType("char(36)")                                                                                                          .IsRequired();
             entity.Property(e => e.MessageCreatedAt)                .HasColumnName("message_created_at")                        .HasColumnType("datetime")                                                                                                          .IsRequired();
-            entity.Property(e => e.MessageCorrelationId)            .HasColumnName("message_correlation_id")                    .HasColumnType("text")                                                                                                              .IsRequired();
+            entity.Property(e => e.MessageCorrelationId)            .HasColumnName("message_correlation_id")                    .HasColumnType("text");
             entity.Property(e => e.MessageRoutingKey)               .HasColumnName("message_routing_key")                       .HasColumnType("text")                                                                                                              .IsRequired();
             entity.Property(e => e.MessageJson)                     .HasColumnName("message_json")                              .HasColumnType("longtext")                                                                                                          .IsRequired();
 
@@ -364,7 +364,7 @@ public class AuxiliumDbContext : DbContext
             
             entity.Property(e => e.MessageId)                       .HasColumnName("message_id")                                .HasColumnType("char(36)")                                                                                                          .IsRequired();
             entity.Property(e => e.MessageCreatedAt)                .HasColumnName("message_created_at")                        .HasColumnType("datetime")                                                                                                          .IsRequired();
-            entity.Property(e => e.MessageCorrelationId)            .HasColumnName("message_correlation_id")                    .HasColumnType("text")                                                                                                              .IsRequired();
+            entity.Property(e => e.MessageCorrelationId)            .HasColumnName("message_correlation_id")                    .HasColumnType("text");
             entity.Property(e => e.MessageRoutingKey)               .HasColumnName("message_routing_key")                       .HasColumnType("text")                                                                                                              .IsRequired();
             entity.Property(e => e.MessageJson)                     .HasColumnName("message_json")                              .HasColumnType("longtext")                                                                                                          .IsRequired();
 
